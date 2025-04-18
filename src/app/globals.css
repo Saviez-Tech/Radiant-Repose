@@ -69,4 +69,13 @@
   .glob-px {
     @apply px-4 md:px-8;
   }
+  .app-container {
+    @apply px-5 sm:px-8 md:px-9 lg:px-14 xl:px-20 2xl:px-28;
+  }
+  .btn {
+    @apply inline-flex gap-1 border p-2 items-center justify-center shadow-sm transition duration-150 ease-in-out font-[500] cursor-pointer
+  }
+  .btn-gradient {
+    @apply bg-gradient-to-r from-primary-darkRed to-primary-red text-white rounded-[13px];
+  }
 }
