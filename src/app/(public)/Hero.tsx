@@ -56,64 +56,83 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 -mt-24">  
-            <div className="flex flex-col pt-40  gap-4">
-              <Image
-                src="/images/spa.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
-              <Image
-                src="/images/spa.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
+          <div className="grid grid-cols-3 gap-4 -mt-24">
+            <div className="flex flex-col pt-40 gap-4">
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/spa.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/fw.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
             </div>
-            <div className="flex flex-col pt-16 gap-4 ">
-              <Image
-                src="/images/rings.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
-              <Image
-                src="/images/fw.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
+            <div className="flex flex-col pt-16 gap-4">
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/rings.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/ce.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
             </div>
-           
             <div className="flex flex-col gap-4">
-              <Image
-                 src="/images/dhvs.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
-               <Image
-                src="/images/ce.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
-               <Image
-                src="/images/ce.png"
-                alt="Hero"
-                width={300}
-                height={300}
-                className="object-cover w-full aspect-[167/227] rounded-3xl"
-              />
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/dhvs.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/bag.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
+              <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
+                <Image
+                  src="/images/watch.png"
+                  alt="Hero"
+                  width={300}
+                  height={300}
+                  className="object-cover w-full h-full"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r w-full h-full from-[#D9D9D900] to-primary-deepBlack opacity-70"></div>
+              </div>
             </div>
-           
           </div>
         </div>
       </div>
