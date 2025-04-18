@@ -1,3 +1,5 @@
+import "./globals.css";
+import Header from "@/components/layout-components/Header";
 import { poppins } from "@/fonts";
 import ReduxStoreProvider from "@/lib/redux/ReduxStoreProvider";
 import { Metadata } from "next";
@@ -19,6 +21,7 @@ export default function RootLayout({
         <body
           className={`${poppins.className} min-h-screen`}
         >
+          <Header />
           {children}
         </body>
       </ReduxStoreProvider>
