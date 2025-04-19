@@ -17,7 +17,7 @@ export default function CategoriesTabSection() {
     const router = useRouter()
 
     return (
-       <div className="flex items-center gap-5 mt-4">
+       <div className="flex gap-5 mt-4">
             <div
                 className="flex flex-wrap gap-3"
                 >
@@ -37,11 +37,11 @@ export default function CategoriesTabSection() {
                 ))}
             </div>
 
-            <div className="relative">
+            <div className="relative h-fit">
                 <span className="absolute inset-y-0 left-3 flex items-center text-gray-400 pointer-events-none">
-                <span>
-                    <Icon icon="ic:sharp-search" width="24" height="24" />
-                </span>
+                    <span>
+                        <Icon icon="ic:sharp-search" width="24" height="24" />
+                    </span>
                 </span>
                 <input
                     type="text"
