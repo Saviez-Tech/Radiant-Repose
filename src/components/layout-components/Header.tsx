@@ -21,7 +21,7 @@ export default function Header(){
     
     return(
         !pathName.startsWith("/auth") && !pathName.startsWith("/dashboard") &&
-        <div className="h-28 flex justify-center items-center relative z-20">
+        <div className="h-28 flex justify-center items-center absolute w-full top-0 left-0 z-40">
             <div className="glob-px flex items-center justify-between w-full">
                 <Logo src={LogoSrc} width={190} height={150} />
                 <nav className="hidden lg:block">

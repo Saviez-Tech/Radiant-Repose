@@ -1,10 +1,9 @@
+import ExploreBtn from "@/components/buttons/ExploreBtn";
 import Image from "next/image";
-import Link from "next/link";
-import { LuArrowRight } from "react-icons/lu";
 
 export default function Hero() {
   return (
-    <section className="relative w-full  min-h-[600px] overflow-x-clip">
+    <section className="space-for-header relative w-full min-h-[600px] overflow-x-clip bg-gradient-to-br from-[white] to-[#e8cab9]">
       <Image
         src="/images/logo2.png"
         alt="Logo"
@@ -15,7 +14,7 @@ export default function Hero() {
       <div className="app-container py-12">
         <div className=" mx-auto grid md:grid-cols-2">
           <div className="space-y-6 pt-8">
-            <h1 className="text-4xl text-primary-deepBlack font-bold">
+            <h1 className="text-4xl md:text-[2.5rem] text-primary-deepBlack font-semibold">
               Your Premier Destination <br />
               for <span className="text-primary-darkRed">Wellness, Beauty</span>
               <br />
@@ -34,10 +33,7 @@ export default function Hero() {
               <br />
               across Nigeria.
             </p>
-            <Link href="" className=" btn btn-gradient !px-6 !py-3.5">
-              Explore Now
-              <LuArrowRight />
-            </Link>
+            <ExploreBtn />
 
             {/* Stats */}
             <div className="flex gap-12 pt-8">
@@ -56,7 +52,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 -mt-24">
+          <div className="grid grid-cols-3 gap-4 -mt-20">
             <div className="flex flex-col pt-40 gap-4">
               <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
                 <Image

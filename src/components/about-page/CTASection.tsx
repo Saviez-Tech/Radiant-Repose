@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { FaArrowRight } from "react-icons/fa"
+import ExploreBtn from "../buttons/ExploreBtn"
 
 export default function CTASection() {
     return (
@@ -23,9 +23,7 @@ export default function CTASection() {
                 <p className="text-white/80 text-sm md:text-base mb-8">
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur t in voluptate velit esser.
                 </p>
-                <button className="bg-gradient-to-r from-[#990000] to-[#FF0000] hover:bg-red-800 text-white font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2 transition">
-                Explore Now <FaArrowRight className="text-sm" />
-                </button>
+                <ExploreBtn />
             </div>
         </section>
     )

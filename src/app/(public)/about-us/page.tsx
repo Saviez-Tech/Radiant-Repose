@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function Page(){
     return (
-        <main className="bg-gradient-to-tr from-[#ffffff] to-[#ffefe6db]">
+        <main className="space-for-header bg-gradient-to-tr from-[#ffffff] to-[#ffefe6db]">
             <hr className="w-full bg-gray-300 h-[1px]" />
             <Image
                 src="/images/logo2.png"
