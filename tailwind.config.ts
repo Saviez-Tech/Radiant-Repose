@@ -24,6 +24,8 @@ const config: Config = {
 				dark_ash_slate: '#424F4A',
 				dark_slate: '#444444',
 				midGray: '#333333',
+				light_amber: "#FFAE00",
+				yellow: "#FFAE00",
 				dark_gray: '#5B5B5B',
 				lightGray: '#C6C6C6',
 				DEFAULT: 'hsl(var(--primary))',

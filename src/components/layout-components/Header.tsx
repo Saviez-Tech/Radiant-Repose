@@ -23,7 +23,7 @@ export default function Header(){
         !pathName.startsWith("/auth") && !pathName.startsWith("/dashboard") &&
         <div className="h-28 flex justify-center items-center relative z-20">
             <div className="glob-px flex items-center justify-between w-full">
-                <Logo src={LogoSrc} width={150} height={150} />
+                <Logo src={LogoSrc} width={190} height={150} />
                 <nav className="hidden lg:block">
                     <ul className="flex items-center gap-6">
                         {navItems.map((item) => (

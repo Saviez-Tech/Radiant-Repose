@@ -1,3 +1,4 @@
+import Footer from "@/components/layout-components/Footer";
 import "./globals.css";
 import Header from "@/components/layout-components/Header";
 import { poppins } from "@/fonts";
@@ -23,6 +24,7 @@ export default function RootLayout({
         >
           <Header />
           {children}
+          <Footer />
         </body>
       </ReduxStoreProvider>
     </html>
