@@ -1,8 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
+import barcodeSearchReducer from "./slices/barcodeSearchSlice"
 
 export const makeStore = () => {
   return configureStore({
-    reducer: {}
+    reducer: {
+      barCodeSearch: barcodeSearchReducer
+    }
   })
 }
 

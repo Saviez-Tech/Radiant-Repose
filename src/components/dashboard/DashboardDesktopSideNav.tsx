@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
 import { SupportIcon } from "../Svg";
+import { rubik } from "@/fonts";
 
 
 function DashboardDesktopSideNav() {
@@ -54,8 +55,8 @@ function DashboardDesktopSideNav() {
                     <AvatarImage src="https://github.com/shadcn.png" />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <div className="flex-shrink w-3/5">
-                    <p className="truncate">John Doe</p>
+                <div className={`flex-shrink w-3/5 ${rubik.className}`}>
+                    <p className="truncate font-normal">John Doe</p>
                     <p className="truncate text-[.83rem] font-normal">johndoepenny@gmail.com</p>
                 </div>
                 <DropdownMenu>

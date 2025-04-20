@@ -2,6 +2,9 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { fetchProductsByBarcode, setBarCode } from "@/lib/redux/slices/barcodeSearchSlice";
+import { useEffect } from "react";
 
 
 
@@ -15,6 +18,16 @@ export default function CategoriesTabSection() {
 
     const pathName = usePathname()
     const router = useRouter()
+    const dispatch = useAppDispatch()
+    const { barCode } = useAppSelector(store => store.barCodeSearch)
+
+    useEffect(() => {
+        // Assuming barCode lenth are 16 (will confirm)
+
+        if(barCode && barCode?.length > 15){
+            dispatch(fetchProductsByBarcode(barCode))
+        }
+    },[barCode])
 
     return (
        <div className="flex gap-5 mt-4">
@@ -45,8 +58,9 @@ export default function CategoriesTabSection() {
                 </span>
                 <input
                     type="text"
-                    value=""
-                    className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-cyan-800/60 focus:border-none text-gray-700"
+                    value={barCode || ""}
+                    onChange={(e) => dispatch(setBarCode(e.target.value))}
+                    className="w-full cursor-pointer pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-800/70 text-sm focus:border-none text-gray-700"
                     placeholder="Scan or Enter Barcode here"
                     aria-label="sScan input"
                 />
