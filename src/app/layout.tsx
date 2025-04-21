@@ -4,6 +4,8 @@ import Header from "@/components/layout-components/Header";
 import { poppins } from "@/fonts";
 import ReduxStoreProvider from "@/lib/redux/ReduxStoreProvider";
 import { Metadata } from "next";
+import { Toaster } from "react-hot-toast";
+
 
 export const metadata : Metadata = {
   title: 'Radiant Repose | Wellness, Beauty & Luxury',
@@ -23,6 +25,7 @@ export default function RootLayout({
           className={`${poppins.className} min-h-screen`}
         >
           <Header />
+          <Toaster position="top-right" containerStyle={{ fontSize: "14px"}} />
           {children}
           <Footer />
         </body>

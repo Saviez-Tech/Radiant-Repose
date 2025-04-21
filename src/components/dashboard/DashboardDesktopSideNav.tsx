@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
-import { SupportIcon } from "../Svg";
+import { ReceiptIcon } from "../Svg";
 import { rubik } from "@/fonts";
 
 
@@ -18,9 +18,9 @@ function DashboardDesktopSideNav() {
 
     const isActiveRoute = (route: string) => {
         if (route === "/dashboard") {
-            return pathName === "/dashboard";
+            return pathName === "/dashboard" || pathName.startsWith("/dashboard/categories")
         }
-        return pathName.startsWith(route);
+        return pathName.startsWith(route)
     }
 
     return (
@@ -31,9 +31,9 @@ function DashboardDesktopSideNav() {
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
                         { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href: "/dashboard/support", label: "Support", icon: <SupportIcon className={`${isActiveRoute("/dashboard/support") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/dashboard/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/dashboard/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
-                        const isActive = isActiveRoute(href);
+                        const isActive = isActiveRoute(href)
                         return (
                         <li key={href} className="inline-block">
                             <Link

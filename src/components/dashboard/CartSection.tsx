@@ -1,62 +1,22 @@
-import React from "react";
+"use client"
+
 import { X, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import { dm_mono } from "@/fonts";
+import { calculateCartItemTotal, calculateCartTotal, calculateCartTotalWithDiscountAndBalance } from "@/lib/helperFns/calculateTotal";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import DestructiveActionPrompt from "../modals/DestructiveActionPrompt";
+import DestructiveActionPromptSuccess from "../modals/DestructiveActionPromptSuccess";
+import { useEffect, useState } from "react";
+import { formatNaira } from "@/lib/helperFns/formatNumber";
+import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
+import { usePathname } from "next/navigation";
+import { clearScannedItems } from "@/lib/redux/slices/posFlowSlice";
 
 
-const cartItems = [
-    {
-      id: 1,
-      name: "Louis Vuitton HandBag",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 3,
-      image: "/images/rings.png"
-    },
-    {
-      id: 2,
-      name: "Creed Aventus",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 2,
-      image: "/images/rings.png"
-    },
-    {
-      id: 3,
-      name: "Diamond Rings",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 1,
-      image: "/images/rings.png"
-    },
-    {
-      id: 4,
-      name: "Vee's Heels",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 1,
-      image: "/images/rings.png"
-    },
-    {
-      id: 5,
-      name: "Richard Mille",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 1,
-      image: "/images/rings.png"
-    },
-    {
-      id: 6,
-      name: "Wedding Gown",
-      price: "₦16,200",
-      total: "₦48,600",
-      quantity: 1,
-      image: "/images/rings.png"
-    }
-]
+const CartItem = ({ item }: { item: Product }) => {
 
-const CartItem = ({ item }: { item: typeof cartItems[0]}) => {
-  const { image, name, price, total, quantity } = item;
+  const { image, name, price, quantity } = item;
   
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
@@ -71,9 +31,9 @@ const CartItem = ({ item }: { item: typeof cartItems[0]}) => {
             <X size={16} />
           </button>
         </div>
-        <p className={`${dm_mono.className} text-xs my-1`}>Price: {price}</p>
+        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,false)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{total}</span>
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
           <div className="flex items-center gap-4">
             <button className="text-gray-500">
               <Minus size={13} />
@@ -93,60 +53,107 @@ const CartItem = ({ item }: { item: typeof cartItems[0]}) => {
 
 
 export default function CartSection() {
-  return (
-    <div className="w-[270px] pt-6">
-      <h2 className="text-sm font-medium text-[#111719] mb-4">Order #1234567890</h2>
-      
-      <div className="space-y-0">
-        {cartItems.map(item => (
-          <CartItem key={item.id} item={item} />
-        ))}
-      </div>
 
-      <div className="">
-        <div className={`${dm_mono.className} mb-6 mt-16 text-[#1F1F1F] text-xs`}>
-          <div className="flex justify-between py-2">
-            <span className="">Subtotal</span>
-            <span className="">₦316,200</span>
+  const { scannedItems } = useAppSelector(store => store.posFlow)
+  const [showConfirmModal,setShowConfirmModal] = useState(false)
+  const [showSuccessModal,setShowSuccessModal] = useState(false)
+  const pathName = usePathname()
+  const dispatch = useAppDispatch()
+
+  const onConfirmCancelTransaction = async() => {
+    dispatch(clearScannedItems())
+    setShowConfirmModal(false)
+  }
+
+  const onCancelAction = async () => {
+    setShowConfirmModal(false)
+  }
+
+  const [orderNumber, setOrderNumber] = useState<string>("")
+
+  useEffect(() => {
+    setOrderNumber(generateOrderNumber());
+  }, [])
+
+  return (
+    !pathName.startsWith("/dashboard/categories")
+    ?
+    null
+    :
+    <div className={`w-[270px] pt-6 flex flex-col ${scannedItems && scannedItems.length ? "justify-between" : "justify-center items-center"}`}>
+      {
+        scannedItems && scannedItems.length ?
+
+        <>
+          <div>
+            <h2 className="text-sm font-medium text-[#111719] mb-4">Order {orderNumber}</h2>
+            
+            <div className="space-y-0">
+              {scannedItems.map(item => (
+                <CartItem key={item.id} item={item} />
+              ))}
+            </div>
           </div>
-          
-          <div className="flex justify-between py-2">
-            <span className="">Discount</span>
-            <span className=""></span>
+
+          <div className="">
+            <div className={`${dm_mono.className} mb-6 mt-16 text-[#1F1F1F] text-xs`}>
+              <div className="flex justify-between py-2">
+                <span className="">Subtotal</span>
+                <span className="">{formatNaira(calculateCartTotal(scannedItems), true)}</span>
+              </div>
+              
+              <div className="flex justify-between py-2">
+                <span className="">Discount</span>
+                <span className="">--</span>
+              </div>
+              
+              <div className="flex justify-between py-2">
+                <span className="">Amount Paid</span>
+                <span className="">--</span>
+              </div>
+              
+              <div className="flex justify-between py-2">
+                <span className="">Balance</span>
+                <span className="">--</span>
+              </div>
+              
+              <div className="border-t-2 border-dotted border-gray-500 my-2"></div>
+              
+              <div className="flex justify-between py-2">
+                <span className="font-medium text-base">Total</span>
+                <span className="font-medium text-base">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems,200,50), true)}</span>
+              </div>
+
+              <div className="flex flex-wrap gap-4 mt-5">
+                <button 
+                  onClick={() => setShowConfirmModal(true)}
+                  className="bg-red-600 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none transition-all duration-200"
+                >
+                  Cancel Transaction
+                </button>
+                
+                <button 
+                  className="bg-green-500 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
+                >
+                  Save & Print Transaction
+                </button>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex justify-between py-2">
-            <span className="">Amount Paid</span>
-            <span className=""></span>
-          </div>
-          
-          <div className="flex justify-between py-2">
-            <span className="">Balance</span>
-            <span className="">₦300</span>
-          </div>
-          
-          <div className="border-t-2 border-dotted border-gray-500 my-2"></div>
-          
-          <div className="flex justify-between py-2">
-            <span className="font-medium text-base">Total</span>
-            <span className="font-medium text-base">₦316,000</span>
-          </div>
-        </div>
-        
-        <div className="flex flex-wrap gap-4 pb-4">
-          <button 
-            className="bg-red-600 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:outline-none transition-all duration-200"
-          >
-            Cancel Transaction
-          </button>
-          
-          <button 
-            className="bg-green-500 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
-          >
-            Save & Print Transaction
-          </button>
-        </div>
-      </div>
+
+
+          <DestructiveActionPrompt open={showConfirmModal} description="cancel this transaction" onCancel={onCancelAction} onConfirm={onConfirmCancelTransaction} />
+          <DestructiveActionPromptSuccess onClose={() => setShowSuccessModal(false)} open={showSuccessModal}>
+            <Image src="/icons/cancelled-transaction-success.svg" alt="success" width={110} height={110} />
+            <div className="text-center">
+              <p className="text-sm font-bold text-primary-midGray mt-2 mb-1">Transaction Cancelled!</p>
+              <span className="font-light text-xs text-[#424F4A]">Ongoing transaction has been cancelled.</span>
+            </div>
+          </DestructiveActionPromptSuccess>
+        </>
+        :
+        <p role="alert" className="text-center font-medium text-sm">No Transcation yet</p>
+      }
     </div>
   )
 }

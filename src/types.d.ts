@@ -4,6 +4,18 @@ type Product = {
     price: number;
     image: string;
     quantity: number;
-    totalPrice: number;
     piecesLeft: number;
+    barCode: string;
+    category: "luxury-collection" | "spa-section" | "pharmacy";
+}
+
+interface ScannedProduct extends Product {
+    totalPrice: number;
+}
+
+interface Transaction extends Product {
+    time: string;
+    date: string;
+    amount: string;
+    balance: string;
 }
