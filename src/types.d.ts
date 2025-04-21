@@ -19,3 +19,8 @@ interface Transaction extends Product {
     amount: string;
     balance: string;
 }
+
+type AppPageError = {
+  error: Error & { digest?: string },
+  reset: () => void
+}

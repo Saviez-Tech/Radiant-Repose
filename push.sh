@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "completed index hero section"
+git commit -m "designed error page, notfound page and loading page"
 
 ECHO "________________Committed________________"
 

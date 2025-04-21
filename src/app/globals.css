@@ -81,4 +81,7 @@
   .btn-gradient {
     @apply bg-gradient-to-r from-primary-darkRed to-primary-red text-white rounded-[13px];
   }
+  .skeleton {
+    @apply bg-[#00000022] rounded-md animate-pulse inline-flex;
+  }
 }
