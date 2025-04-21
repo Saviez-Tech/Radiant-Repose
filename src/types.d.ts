@@ -7,3 +7,8 @@ type Product = {
     totalPrice: number;
     piecesLeft: number;
 }
+
+export type AppPageError = {
+  error: Error & { digest?: string },
+  reset: () => void
+}
