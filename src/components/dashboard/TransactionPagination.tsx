@@ -1,0 +1,72 @@
+"use client"
+
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+
+
+// Pagination component
+interface TransactionPaginationProps {
+    totalItems: number;
+    currentPage: number;
+    rowsPerPage: number;
+    onPageChange: (page: number) => void;
+    onRowsPerPageChange: (rows: number) => void;
+}
+
+export function TransactionPagination({
+    totalItems,
+    currentPage,
+    rowsPerPage,
+    onPageChange,
+    onRowsPerPageChange,
+}: TransactionPaginationProps) {
+
+    const totalPages = Math.ceil(totalItems / rowsPerPage);
+    const startItem = (currentPage - 1) * rowsPerPage + 1;
+    const endItem = Math.min(currentPage * rowsPerPage, totalItems);
+    
+    const rowOptions = [7, 10, 25, 50]
+  
+    return (
+      <div className="flex items-center justify-end gap-14 px-4 py-2 mt-8">
+        <div className="relative">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+                <span className="whitespace-nowrap">Rows per page: </span>
+                <Select defaultValue={rowsPerPage.toString()} value={rowsPerPage.toString()} onValueChange={(value: string) => onRowsPerPageChange(Number(value))}>
+                    <SelectTrigger className="w-full bg-transparent p-0 h-auto border-none shadow-none" >
+                        <SelectValue placeholder="Select a filter" className="text-sm text-gray-500" />
+                    </SelectTrigger>
+                    <SelectContent className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
+                        {rowOptions.map((option) => 
+                        <SelectItem key={option} value={option.toString()} className="text-sm text-gray-500">
+                            {option}
+                        </SelectItem>
+                        )}
+                    </SelectContent>
+                </Select>
+            </div>
+        </div>
+        
+        <div className="flex items-center text-xs text-gray-500">
+          {startItem}-{endItem} of {totalItems}
+          
+          <div className="flex items-center ml-2">
+            <button
+              className="p-1 rounded-full hover:bg-gray-200 disabled:opacity-50"
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <button
+              className="p-1 rounded-full hover:bg-gray-200 disabled:opacity-50"
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+}

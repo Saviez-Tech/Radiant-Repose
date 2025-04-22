@@ -1,10 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import barcodeSearchReducer from "./slices/barcodeSearchSlice"
+import posFlowReducer from "./slices/posFlowSlice"
+import categoryTabReducer from "./slices/categoryTabSlice"
+import authUserReducer from "./slices/authUserSlice"
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      barCodeSearch: barcodeSearchReducer
+      posFlow: posFlowReducer,
+      categoryTab: categoryTabReducer,
+      authUser: authUserReducer
     }
   })
 }

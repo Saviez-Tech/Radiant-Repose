@@ -1,6 +1,11 @@
-import { DM_Mono, Poppins, Rubik } from 'next/font/google'
+import { DM_Mono, Inter, Poppins, Rubik } from 'next/font/google'
 
 export const poppins = Poppins({
+    weight: ["300","400","500","600",'700'],
+    subsets: ["latin"]
+})
+
+export const inter = Inter({
     weight: ["300","400","500","600",'700'],
     subsets: ["latin"]
 })

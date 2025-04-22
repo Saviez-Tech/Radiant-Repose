@@ -1,19 +1,17 @@
+import React, { Dispatch, SetStateAction } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
 import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { deselectItem, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
 
-export default function ProductCard2({ product, isSelected }: { product: Product, isSelected: boolean }) {
-
-  const dispatch = useAppDispatch()
+// This Is The Product Card Used For The Manual BarCode Lookup Page
+export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: Product, handleItemRemove: () => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product | null>> }) {
 
   return (
     <div  
       tabIndex={0}
-      onClick={() => isSelected ? dispatch(deselectItem(product.barCode)) : dispatch(selectItem(product))}
-      className={`${isSelected ? "ring-2 ring-red-500" : ""} cursor-pointer relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none`}>
+      onClick={() => setIsSelected(prev => prev?.barCode === product.barCode ? null : product)}
+      className={`${isSelected ? "ring-2 ring-red-500" : ""} relative cursor-pointer max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none`}>
       <div className="relative">
         <Image
           src={product.image}
@@ -23,7 +21,7 @@ export default function ProductCard2({ product, isSelected }: { product: Product
           className="w-full h-40 object-cover"
         />
        
-        <button onClick={() => dispatch(removeScannedItem(product.barCode))} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}>
+        <button onClick={handleItemRemove} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1 hidden`}>
           <X size={16} />
         </button>
       </div>
