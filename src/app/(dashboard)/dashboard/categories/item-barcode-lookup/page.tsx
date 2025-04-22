@@ -5,7 +5,7 @@ import ProductCard2 from "@/components/dashboard/ProductCard2"
 import SpinnerLoader from "@/components/loaders/SpinnerLoader"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
-import { removeBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
+import { addScannedItem, removeBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
 import clsx from "clsx"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -15,7 +15,7 @@ import toast from "react-hot-toast"
 export default function ItemBarCodeManualLookupPage() {
 
     const { barCodeFromManualInput } = useAppSelector(store => store.posFlow)
-    const [item,setItem] = useState<null | Product>(null)
+    const [item,setItem] = useState<null | ScannedProduct>(null)
     const [isLoading,setIsLoading] = useState<boolean>(false)
     const [selectedItem,setSelectedItem] = useState<Product | null>(null)
     const dispatch = useAppDispatch()
@@ -78,7 +78,7 @@ export default function ItemBarCodeManualLookupPage() {
                     </div>
 
                     <Button
-                        onClick={() => {}}
+                        onClick={() => item && dispatch(addScannedItem(item))}
                         disabled={!selectedItem}
                         className={clsx(
                             "flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors",

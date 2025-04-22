@@ -18,7 +18,7 @@ export default function ScannedItemsClientContainer({ category }: { category: st
 
             {
                 isLoading ?
-                <div className="py-16">
+                <div className="py-16 flex justify-center items-center w-full">
                     <SpinnerLoader />
                 </div>
                 :

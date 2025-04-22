@@ -3,9 +3,9 @@ import Image from "next/image";
 import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { deselectItem, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
+import { decrementItemQuantity, deselectItem, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
 
-export default function ProductCard2({ product, isSelected }: { product: Product, isSelected: boolean }) {
+export default function ProductCard2({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
 
   const dispatch = useAppDispatch()
 
@@ -32,10 +32,16 @@ export default function ProductCard2({ product, isSelected }: { product: Product
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-semibold">{product.name}</h3>
           <div className="flex gap-1">
-            <button className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
+            <button onClick={(e) => {
+              e.stopPropagation()
+              dispatch(incrementItemQuantity(product.barCode))
+            }} className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
               <span className="text-xs">+</span>
             </button>
-            <button className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1">
+            <button onClick={(e) => {
+              e.stopPropagation()
+              dispatch(decrementItemQuantity(product.barCode))
+            }} className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1">
               <span className="text-xs">-</span>
             </button>
           </div>

@@ -1,7 +1,7 @@
 "use server"
 
 type FetchProductResult = {
-  product?: Product;
+  product?: ScannedProduct;
   errorMessage?: string;
   status?: number;
 }
