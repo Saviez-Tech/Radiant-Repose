@@ -61,7 +61,10 @@ export default function CategoriesTabSection() {
                 />
                 {barCodeFromManualInput && (
                     <button
-                        onClick={() => dispatch(removeBarCodeFromManualInput())}
+                        onClick={() => {
+                            dispatch(removeBarCodeFromManualInput())
+                            router.back()
+                        }}
                         className="absolute inset-y-0 right-10 flex items-center text-gray-400 hover:text-gray-600"
                         aria-label="Clear input"
                     >

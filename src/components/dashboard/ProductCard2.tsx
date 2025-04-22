@@ -30,10 +30,10 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
         <div className="flex justify-between items-center">
           <h3 className="text-sm font-semibold">{product.name}</h3>
           <div className="flex gap-1">
-            <button className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
+            <button disabled={true} className="bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
               <span className="text-xs">+</span>
             </button>
-            <button className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1">
+            <button disabled={true} className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1">
               <span className="text-xs">-</span>
             </button>
           </div>
@@ -49,7 +49,6 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
        
         <div className="flex justify-between items-center mt-1">
           <span className="text-xs text-gray-500">{product.piecesLeft} Pieces left</span>
-          <span className={`${dm_mono.className} text-primary-dark_gray text-sm font-medium`}>₦{product.totalPrice.toLocaleString()}</span>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ type InitialState = {
   barCode: string | null;
   barCodeFromManualInput: string | null;
   selectedItems: Product[];
-  scannedItems: Product[];
+  scannedItems: ScannedProduct[];
   isLoading: boolean;
   error: string | null;
 }
@@ -162,7 +162,7 @@ const posFlowSlice = createSlice({
     },
     
     // Scanned items management
-    addScannedItem: (state, { payload }: PayloadAction<Product>) => {
+    addScannedItem: (state, { payload }: PayloadAction<ScannedProduct>) => {
       // Check if item is already in scanned items
       const existingIndex = state.scannedItems.findIndex(item => item.barCode === payload.barCode)
       

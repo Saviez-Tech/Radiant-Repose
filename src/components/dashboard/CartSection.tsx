@@ -11,12 +11,13 @@ import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { usePathname } from "next/navigation";
-import { clearScannedItems } from "@/lib/redux/slices/posFlowSlice";
+import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
 
 
 const CartItem = ({ item }: { item: Product }) => {
 
-  const { image, name, price, quantity } = item;
+  const { image, name, price, quantity, barCode } = item;
+  const dispatch = useAppDispatch()
   
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
@@ -27,7 +28,7 @@ const CartItem = ({ item }: { item: Product }) => {
       <div className="flex-grow">
         <div className="flex justify-between">
           <h3 className="text-xs font-semibold truncate">{name}</h3>
-          <button className="text-red-500">
+          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barCode))}>
             <X size={16} />
           </button>
         </div>
@@ -35,11 +36,11 @@ const CartItem = ({ item }: { item: Product }) => {
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
           <div className="flex items-center gap-4">
-            <button className="text-gray-500">
+            <button onClick={() => dispatch(decrementItemQuantity(barCode))} className="text-gray-500">
               <Minus size={13} />
             </button>
             <span className="text-xs">{quantity}</span>
-            <button className="text-gray-500">
+            <button onClick={() => dispatch(incrementItemQuantity(barCode))} className="text-gray-500">
               <Plus size={13} />
             </button>
           </div>
