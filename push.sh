@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "designed error page, notfound page and loading page"
+git commit -m "designed edit and added new product pages"
 
 ECHO "________________Committed________________"
 

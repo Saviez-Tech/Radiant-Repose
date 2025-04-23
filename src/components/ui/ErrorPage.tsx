@@ -1,5 +1,4 @@
 "use client"
-import { AppPageError } from "@/types";
 import { useEffect } from "react";
 
 export default function ErrorPage({error, reset}:AppPageError) {

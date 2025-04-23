@@ -16,13 +16,13 @@ export const metadata : Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode; 
 }>) {
   return (
     <html lang="en">
       <ReduxStoreProvider>
         <body
-          className={`${poppins.className} min-h-screen`}
+          className={`${poppins.className} min-h-screen bg-white`}
         >
           <Header />
           <Toaster position="top-right" containerStyle={{ fontSize: "14px"}} />

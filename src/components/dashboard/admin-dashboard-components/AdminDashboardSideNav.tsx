@@ -21,7 +21,7 @@ function AdminDashboardSideNav() {
         
         const routeSegment = route.split('/')[2]
         console.log(routeSegment, pathName.split("/")[2])
-        return pathName.split("/")[2].startsWith(routeSegment)
+        // return pathName.split("/")[2].startsWith(routeSegment)
     }
 
     return (

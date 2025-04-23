@@ -84,4 +84,10 @@
   .skeleton {
     @apply bg-[#00000022] rounded-md animate-pulse inline-flex;
   }
+   .app-input {
+    @apply bg-neutral-100 w-full border border-gray-300 outline-primary-darkRed text-gray-800 py-2.5 pe-3 rounded-md read-only:opacity-70 read-only:[&not[type="file"]]:pointer-events-none;
+  }
+  .app-select {
+    @apply bg-neutral-100 w-full border border-gray-300 outline-primary-darkRed text-gray-800 py-2.5 pe-3 rounded-md read-only:opacity-70 read-only:[&not[type="file"]]:pointer-events-none;
+  }
 }
