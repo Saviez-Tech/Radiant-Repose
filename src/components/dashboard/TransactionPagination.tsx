@@ -1,8 +1,6 @@
 "use client"
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-
 
 // Pagination component
 interface TransactionPaginationProps {
@@ -31,19 +29,14 @@ export function TransactionPagination({
       <div className="flex items-center justify-end gap-14 px-4 py-2 mt-8">
         <div className="relative">
             <div className="flex items-center gap-2 text-xs text-gray-500">
-                <span className="whitespace-nowrap">Rows per page: </span>
-                <Select defaultValue={rowsPerPage.toString()} value={rowsPerPage.toString()} onValueChange={(value: string) => onRowsPerPageChange(Number(value))}>
-                    <SelectTrigger className="w-full bg-transparent p-0 h-auto border-none shadow-none" >
-                        <SelectValue placeholder="Select a filter" className="text-sm text-gray-500" />
-                    </SelectTrigger>
-                    <SelectContent className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg">
-                        {rowOptions.map((option) => 
-                        <SelectItem key={option} value={option.toString()} className="text-sm text-gray-500">
-                            {option}
-                        </SelectItem>
-                        )}
-                    </SelectContent>
-                </Select>
+              <span className="whitespace-nowrap">Rows per page: </span>
+              <select className="bg-transparent w-auto cursor-pointer" value={rowsPerPage.toString()} onChange={(e) => onRowsPerPageChange(Number(e.target.value))}>
+                {rowOptions.map((option) => 
+                <option key={option} value={option.toString()} className="text-sm text-gray-500">
+                    {option}
+                </option>
+                )}
+              </select>
             </div>
         </div>
         
