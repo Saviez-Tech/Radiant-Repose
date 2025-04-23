@@ -5,7 +5,7 @@ import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
 
 // This Is The Product Card Used For The Manual BarCode Lookup Page
-export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: Product, handleItemRemove: () => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product | null>> }) {
+export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: ScannedProduct, handleItemRemove: () => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product | null>> }) {
 
   return (
     <div  

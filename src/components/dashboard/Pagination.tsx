@@ -3,21 +3,21 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Pagination component
-interface TransactionPaginationProps {
-    totalItems: number;
-    currentPage: number;
-    rowsPerPage: number;
-    onPageChange: (page: number) => void;
-    onRowsPerPageChange: (rows: number) => void;
+interface PaginationProps {
+  totalItems: number;
+  currentPage: number;
+  rowsPerPage: number;
+  onPageChange: (page: number) => void;
+  onRowsPerPageChange: (rows: number) => void;
 }
 
-export function TransactionPagination({
-    totalItems,
-    currentPage,
-    rowsPerPage,
-    onPageChange,
-    onRowsPerPageChange,
-}: TransactionPaginationProps) {
+export function Pagination({
+  totalItems,
+  currentPage,
+  rowsPerPage,
+  onPageChange,
+  onRowsPerPageChange,
+}: PaginationProps) {
 
     const totalPages = Math.ceil(totalItems / rowsPerPage);
     const startItem = (currentPage - 1) * rowsPerPage + 1;

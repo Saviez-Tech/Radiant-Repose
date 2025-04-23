@@ -3,13 +3,14 @@ type Product = {
     name: string;
     price: number;
     image: string;
-    quantity: number;
+    desc?: string;
     piecesLeft: number;
     barCode: string;
     category: "luxury-collection" | "spa-section" | "pharmacy";
 }
 
 interface ScannedProduct extends Product {
+    quantity: number;
     totalPrice: number;
 }
 
