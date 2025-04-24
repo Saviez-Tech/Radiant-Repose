@@ -16,12 +16,17 @@ function AdminDashboardSideNav() {
 
     const pathName = usePathname()
 
-    const isActiveRoute = (route: string) => {
-        if(pathName === "/admin/dashboard") return route === pathName;
-        
-        const routeSegment = route.split('/')[2]
-        return pathName.split("/")[2].startsWith(routeSegment)
-    }
+   const isActiveRoute = (route: string) => {
+    if (!pathName) return false;
+
+    if (pathName === "/admin/dashboard") return route === pathName;
+
+    const routeSegment = route.split('/')[2];
+    const currentSegment = pathName.split('/')[2];
+
+    return currentSegment?.startsWith(routeSegment) ?? false;
+}
+
 
     return (
         <nav className="hidden w-[250px] h-full text-primary-dark_slate font-medium bg-primary-light_peach text-sm p-4 py-7 lg:flex justify-between flex-col gap-20">
