@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../../ui/dropdown-menu";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../../layout-components/Logo";
-import { Analytics, BagIcon, ReceiptIcon2 } from "../../Svg";
+import { Analytics, BagIcon } from "../../Svg";
 import { rubik } from "@/fonts";
 
 
