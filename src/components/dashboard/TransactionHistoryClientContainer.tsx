@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image";
-import { TransactionPagination } from "./TransactionPagination";
+import { Pagination } from "./Pagination";
 import TransactionFilter from "./TransactionFilter";
 import { useEffect, useMemo, useState } from "react";
 
@@ -12,49 +12,49 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
 
   // Apply filter function
   const applyFilter = (transactions: Transaction[], filter: string) => {
-      const today = new Date()
-      const yesterday = new Date()
-      yesterday.setDate(yesterday.getDate() - 1)
-      
-      const lastWeekStart = new Date()
-      lastWeekStart.setDate(lastWeekStart.getDate() - 7)
-      
-      const lastMonthStart = new Date()
-      lastMonthStart.setMonth(lastMonthStart.getMonth() - 1)
-      
-      switch (filter) {
-        case 'today':
-          return transactions.filter(t => {
-            const transactionDate = new Date(t.date)
-            return (
-              transactionDate.getDate() === today.getDate() &&
-              transactionDate.getMonth() === today.getMonth() &&
-              transactionDate.getFullYear() === today.getFullYear()
-            )
-          })
-        case 'yesterday':
-          return transactions.filter(t => {
-            const transactionDate = new Date(t.date)
-            return (
-              transactionDate.getDate() === yesterday.getDate() &&
-              transactionDate.getMonth() === yesterday.getMonth() &&
-              transactionDate.getFullYear() === yesterday.getFullYear()
-            )
-          })
-        case 'lastWeek':
-          return transactions.filter(t => {
-            const transactionDate = new Date(t.date)
-            return transactionDate >= lastWeekStart && transactionDate <= today;
-          })
-        case 'lastMonth':
-          return transactions.filter(t => {
-            const transactionDate = new Date(t.date)
-            return transactionDate >= lastMonthStart && transactionDate <= today;
-          })
-        default:
-          return transactions;
-      }
-  };
+    const today = new Date()
+    const yesterday = new Date()
+    yesterday.setDate(yesterday.getDate() - 1)
+    
+    const lastWeekStart = new Date()
+    lastWeekStart.setDate(lastWeekStart.getDate() - 7)
+    
+    const lastMonthStart = new Date()
+    lastMonthStart.setMonth(lastMonthStart.getMonth() - 1)
+    
+    switch (filter) {
+      case 'today':
+        return transactions.filter(t => {
+          const transactionDate = new Date(t.date)
+          return (
+            transactionDate.getDate() === today.getDate() &&
+            transactionDate.getMonth() === today.getMonth() &&
+            transactionDate.getFullYear() === today.getFullYear()
+          )
+        })
+      case 'yesterday':
+        return transactions.filter(t => {
+          const transactionDate = new Date(t.date)
+          return (
+            transactionDate.getDate() === yesterday.getDate() &&
+            transactionDate.getMonth() === yesterday.getMonth() &&
+            transactionDate.getFullYear() === yesterday.getFullYear()
+          )
+        })
+      case 'lastWeek':
+        return transactions.filter(t => {
+          const transactionDate = new Date(t.date)
+          return transactionDate >= lastWeekStart && transactionDate <= today;
+        })
+      case 'lastMonth':
+        return transactions.filter(t => {
+          const transactionDate = new Date(t.date)
+          return transactionDate >= lastMonthStart && transactionDate <= today;
+        })
+      default:
+        return transactions;
+    }
+  }
 
   // Apply filter immediately using useMemo
   const filteredTransactions = useMemo(() => {
@@ -88,11 +88,11 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
   return (
     <div className="w-full py-16">
       <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-medium text-primary-deepBlack">Transaction History</h2>
-          <TransactionFilter
-              selectedFilter={selectedFilter}
-              setSelectedFilter={setSelectedFilter}
-          />
+        <h2 className="text-lg font-medium text-primary-deepBlack">Transaction History</h2>
+        <TransactionFilter
+          selectedFilter={selectedFilter}
+          setSelectedFilter={setSelectedFilter}
+        />
       </div>
       
       <div className="overflow-x-auto">
@@ -143,12 +143,12 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
           </table>
       </div>
       
-      <TransactionPagination
-          totalItems={filteredTransactions.length}
-          currentPage={currentPage}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handlePageChange}
-          onRowsPerPageChange={handleRowsPerPageChange}
+      <Pagination
+        totalItems={filteredTransactions.length}
+        currentPage={currentPage}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
       />
     </div>
   )

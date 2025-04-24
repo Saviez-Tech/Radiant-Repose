@@ -5,7 +5,7 @@ import { dm_mono } from "@/fonts";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { decrementItemQuantity, deselectItem, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
 
-export default function ProductCard2({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
+export default function ProductCard({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
 
   const dispatch = useAppDispatch()
 
