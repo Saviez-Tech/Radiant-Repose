@@ -1,0 +1,66 @@
+import { cn } from "@/lib/utils";
+import { Label } from "../ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Controller } from "react-hook-form";
+import { ProductFormValues } from "@/schemas/addProduct.schema";
+import ErrorPara from "./ErrorPara";
+
+type FormSelectFieldProps = {
+  label: string;
+  name: keyof ProductFormValues;
+  placeholder: string;
+  options: { value: string; label: string }[];
+  control: any;
+  error?: string;
+  className?: string;
+}
+
+
+
+export default function AppSelect({ 
+  label, 
+  name, 
+  placeholder, 
+  options, 
+  control, 
+  error,
+  className
+}: FormSelectFieldProps){
+
+  return (
+
+    <div className={cn("space-y-1", className)}>
+      <Label htmlFor={name} className="font-medium mb-1 text-primary-dark_gray">
+        {label}
+      </Label>
+      <Controller
+        name={name}
+        control={control}
+        render={({ field }) => (
+          <Select 
+            onValueChange={field.onChange} 
+            defaultValue={field.value}
+          >
+            <SelectTrigger 
+              id={name}
+              className={cn(
+                "border border-gray-300 !text-primary-dark_gray py-4 h-12 bg-[#F8F8F8] px-3 focus:ring-stone-400",
+                error ? "border-red-500 focus:ring-red-500" : ""
+              )}
+            >
+              <SelectValue placeholder={placeholder} />
+            </SelectTrigger>
+            <SelectContent>
+              {options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+      />
+      {error && <ErrorPara errorText={error} />}
+    </div>
+  )
+}

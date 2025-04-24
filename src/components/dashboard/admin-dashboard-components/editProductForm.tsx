@@ -1,6 +1,6 @@
-import AppInput from "@/components/ui/AppInput";
-import AppSelect from "@/components/ui/AppSelect";
-import FileUpload from "@/components/ui/FileUpload";
+import AppInput from "@/components/custom-utils/AppInput";
+import AppSelect from "@/components/custom-utils/AppSelect";
+import FileUpload from "@/components/custom-utils/FileUpload";
 import { LucideArrowRight, SeparatorVertical } from "lucide-react";
 import { FaCamera } from "react-icons/fa";
 

@@ -1,10 +1,12 @@
-import AddProductForm from "@/components/dashboard/admin-dashboard-components/AddProductForm";
+import ProductForm from "@/components/dashboard/admin-dashboard-components/ProductForm";
 
+// Default Values will be gotten from making a query to the database using the barcode from the URL
+// to get the product details and then passing it to the ProductForm component as defaultValues.
 export default function Page(){
     return (
-        <main className="px-8 py-3 flex flex-col gap-5">
-            <h1 className="text-2xl font-semibold text-primary-dark_gray">Edit Product</h1>
-            <AddProductForm />
+        <main className="">
+            <h1 className="text-xl font-medium text-primary-dark_gray my-4">Edit Product</h1>
+            <ProductForm defaultValues={undefined} />
         </main>
     )
 }

@@ -1,0 +1,14 @@
+import { z } from "zod"
+
+export const productFormSchema = z.object({
+    productSection: z.string().min(1, "Product section is required"),
+    productName: z.string().min(1, "Product name is required"),
+    category: z.string().min(1, "Category is required"),
+    barcode: z.string().min(1, "Barcode is required"),
+    unitPrice: z.string().min(1, "Unit price is required"),
+    quantityInStock: z.string().min(1, "Quantity is required"),
+    description: z.string().min(1, "Description is required"),
+    image: z.instanceof(File).optional(),
+})
+  
+export type ProductFormValues = z.infer<typeof productFormSchema>

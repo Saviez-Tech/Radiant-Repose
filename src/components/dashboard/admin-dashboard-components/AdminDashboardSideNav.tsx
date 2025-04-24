@@ -31,9 +31,8 @@ function AdminDashboardSideNav() {
                 <ul className="flex mt-7 flex-col gap-4">
                     {[
                         { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/admin/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href: "/admin/staff-onboarding", label: "Staff Onboarding", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-onboarding") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/product-management", label: "Product Management", icon: <BagIcon className={`${isActiveRoute("/admin/product-management") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
-                        { href: "/admin/sales-analysis", label: "Sales Analysis", icon: <ReceiptIcon2 className={`${isActiveRoute("/admin/sales-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/admin/staff-onboarding", label: "Staff Onboarding", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-onboarding") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/staff-analysis", label: "Staff Analysis", icon: <Analytics className={`${isActiveRoute("/admin/staff-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/payment-tracking", label: "Payment Tracking", icon: <Icon icon="uil:wallet" width="24" height="24" className={`${isActiveRoute("/admin/payment-tracking") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
