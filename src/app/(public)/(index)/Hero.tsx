@@ -12,7 +12,7 @@ export default function Hero() {
         className=" absolute right-0 top-0 aspect-[742/660] max-w-[742px] w-1/2 object-contain object-bottom-left  translate-y-[-20%] translate-x-[15%]"
       />
       <div className="app-container py-12">
-        <div className=" mx-auto grid md:grid-cols-2">
+        <div className=" mx-auto grid md:grid-cols-2 max-md:gap-6">
           <div className="space-y-6 pt-8">
             <h1 className="text-4xl md:text-[2.5rem] text-primary-deepBlack font-semibold">
               Your Premier Destination <br />
@@ -33,26 +33,26 @@ export default function Hero() {
               <br />
               across Nigeria.
             </p>
-            <ExploreBtn />
+            <ExploreBtn children="Explore Now" />
 
             {/* Stats */}
             <div className="flex gap-12 pt-8">
               <div>
                 <h3 className="text-3xl font-bold">280+</h3>
-                <p className="text-sm">Spa Sessions</p>
+                <p className="text-sm truncate">Spa Sessions</p>
               </div>
               <div>
                 <h3 className=" text-3xl font-bold">720+</h3>
-                <p className="text-sm">Happy Clients</p>
+                <p className="text-sm truncate">Happy Clients</p>
               </div>
               <div>
                 <h3 className="text-3xl font-bold">3400+</h3>
-                <p className="text-sm">Luxury Items</p>
+                <p className="text-sm truncate">Luxury Items</p>
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4 -mt-20">
+          <div className="grid grid-cols-3 gap-4 md:-mt-20 mt-0">
             <div className="flex flex-col pt-40 gap-4">
               <div className="relative w-full aspect-[167/227] rounded-3xl overflow-hidden">
                 <Image

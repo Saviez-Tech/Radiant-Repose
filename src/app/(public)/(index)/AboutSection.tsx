@@ -2,13 +2,13 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className=" bg-[#FFAE001A]/10 py-12">
+    <section className=" bg-[#FFAE001A]/10 md:py-12">
       <div className="app-container grid gap-4 md:gap-8 md:grid-cols-2">
-        <div className="space-y-8 ">
-          <h2 className=" text-[38px] font-semibold">
+        <div className="md:space-y-8 space-y-4 ">
+          <h2 className=" md:text-[38px]  text-[22px] font-semibold">
             We are only known for Excellence & Competence
           </h2>
-          <p className=" md:text-xl">
+          <p className=" md:text-xl text-base text-gray-700">
             <span className="font-semibold">Radiant Repose</span> is home to one
             of the finest wellness and luxury self-care destinations in Nigeria.
             Our Excellence in these services speaks for us.
