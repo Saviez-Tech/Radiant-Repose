@@ -38,6 +38,7 @@ const blogs= [
       author: "Dominick Lopez",
       authorImage: "/images/spa.png",
       imageUrl: "/images/spa.png",
+      role: "Spa",
     },
     {
       id: 2,
@@ -47,6 +48,7 @@ const blogs= [
       author: "Dominick Lopez",
       authorImage: "/images/spa.png",
       imageUrl: "/images/watch.png",
+        role: "Expert",
     },
     {
       id: 3,
@@ -56,5 +58,6 @@ const blogs= [
       author: "Dominick Lopez",
       authorImage: "/images/spa.png",
       imageUrl: "/images/spa.png",
+      role: "Spa Expert",
     },
   ];

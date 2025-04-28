@@ -10,6 +10,7 @@ export type BlogCardProps = {
   author: string;
   authorImage: string;
   imageUrl: string;
+  role: string;
 };
 
 export default function BlogCard({
@@ -19,6 +20,7 @@ export default function BlogCard({
   author,
   authorImage,
   imageUrl,
+  role,
 }: BlogCardProps) {
   return (
     <div className="bg-white aspect-[293/415] w-full rounded-xl overflow-hidden shadow-md">
@@ -42,9 +44,12 @@ export default function BlogCard({
                 className="object-cover"
               />
             </div>
+            <div className="flex flex-col items-center text-start">
             <span className="font-medium">{author}</span>
+            <span className="text-gray-500 text-xs">{role}</span>
+            </div>
           </div>
-          <span className="text-primary-yellow px-2 py-0.5 rounded-md bg-[#FFAE001A] text-xs font-semibold whitespace-nowrap">
+          <span className="text-white px-2 py-1.5  bg-primary-yellow text-xs font-semibold whitespace-nowrap">
             {date}
           </span>
         </div>
