@@ -1,38 +1,46 @@
 "use client"
-
 import { Pagination } from "./../Pagination";
 import { useEffect, useMemo, useState } from "react";
 import ProductCategoryFilter from "./ProductCategoryFilter";
 import ProductCard3 from "../ProductCard3";
 import AddNewProductBtn from "@/components/buttons/AddNewProductBtn";
+import { ProductType } from "@/enums";
 
-export default function ProductManagementMC({ data }: { data: Product[] }) {
 
+export default function ProductManagementMC({ data, category }: { data: Product[], category: string }) {
     const [selectedFilter, setSelectedFilter] = useState('all')
+    const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(7)
-
-    // Apply filter function
-    const applyFilter = (products: Product[], filter: string) => {
-        switch (filter) {
-        case 'all':
-            return products
-        case 'luxury-collection':
-            return products.filter(t => t.category === 'luxury-collection')
-        case 'spa-section':
-            return products.filter(t => t.category === 'spa-section')
-        case 'pharmacy':
-            return products.filter(t => t.category === 'pharmacy')
-        default:
-            return products;
-        }
-    }
-
-    // Apply filter immediately using useMemo
-    const filteredProducts = useMemo(() => {
-        return applyFilter(data, selectedFilter)
-    }, [data, selectedFilter])
     
+    // First filter by category from props (If There's no API query to fetch based on category)
+    const categoryFilteredProducts = useMemo(() => {
+        if (category === 'all') {
+            return data;
+        }
+        return data.filter(product => product.category === category)
+    }, [data, category])
+    
+    // Then apply additional filters based on selectedFilter and selectedProductType
+    const filteredProducts = useMemo(() => {
+        // Start with products already filtered by category
+        let products = categoryFilteredProducts;
+        
+        switch (selectedFilter) {
+            case 'all':
+                return products;
+            case 'low-stock':
+                return products.filter(product => product.piecesLeft < 10)
+            case 'product-types':
+                if (selectedProductType) {
+                    return products.filter(product => product.productType === selectedProductType)
+                }
+                return products;
+            default:
+                return products;
+        }
+    }, [categoryFilteredProducts, selectedFilter, selectedProductType])
+   
     // Calculate pagination
     const paginatedProductsData = useMemo(() => {
         return filteredProducts.slice(
@@ -40,39 +48,47 @@ export default function ProductManagementMC({ data }: { data: Product[] }) {
             currentPage * rowsPerPage
         )
     }, [filteredProducts, currentPage, rowsPerPage])
-
+    
     // Reset pagination when filter changes
     useEffect(() => {
         setCurrentPage(1)
-    }, [selectedFilter])
-    
+    }, [selectedFilter, selectedProductType, category])
+   
     // Handle page change
     const handlePageChange = (page: number) => {
         setCurrentPage(page)
     }
-    
+   
     // Handle rows per page change
     const handleRowsPerPageChange = (rows: number) => {
         setRowsPerPage(rows)
         setCurrentPage(1)
     }
-
+    
     return (
         <div className="w-full py-10">
            <div className="mb-16 flex justify-between items-center gap-4 flex-wrap">
                 <ProductCategoryFilter
                     selectedFilter={selectedFilter}
                     setSelectedFilter={setSelectedFilter}
+                    setSelectedProductType={setSelectedProductType}
+                    selectedProductType={selectedProductType}
                 />
                 <AddNewProductBtn />
            </div>
-            
-            <div className="mt-5 grid grid-cols-1 md:grid-col-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
-                {paginatedProductsData.map((v, i) => (
-                    <ProductCard3 key={i} product={v} />
-                ))}
+           
+            <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
+                {paginatedProductsData.length > 0 ? (
+                    paginatedProductsData.map((product, index) => (
+                        <ProductCard3 key={product.id || index} product={product} />
+                    ))
+                ) : (
+                    <div className="col-span-full text-center py-8 text-gray-500">
+                        No products match the selected filters
+                    </div>
+                )}
             </div>
-            
+           
             <Pagination
                 totalItems={filteredProducts.length}
                 currentPage={currentPage}

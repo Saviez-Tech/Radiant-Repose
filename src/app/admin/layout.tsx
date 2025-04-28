@@ -16,7 +16,7 @@ export default function Layout({ children }: LayoutProps) {
 
       <div className="flex-grow relative lg:overflow-y-auto w-full lg:pt-28">
         <AdminDashboardHeaderSection />
-        <div className="px-8">
+        <div className="lg:px-8">
           {children}
         </div>
       </div>

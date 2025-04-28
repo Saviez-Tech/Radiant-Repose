@@ -26,9 +26,9 @@ export default function FileUpload({
 
   const handleContainerClick = () => {
     if (fileInputRef.current) {
-      fileInputRef.current.click();
+      fileInputRef.current.click()
     }
-  };
+  }
 
   return (
     <div className={cn("space-y-1", className)}>
