@@ -25,7 +25,7 @@ function DestructiveActionPrompt({ open, description, onConfirm, onCancel }: Des
           textAlign: "center",
         }}
       >
-        <h5 id="confirm-modal-title" className="text-primary-dark_slate mb-3 lg:mb-4">
+        <h5 id="confirm-modal-title" className="text-primary-dark_slate mb-3 lg:mb-4 text-sm md:text-base">
           Do you want to <span className="font-semibold"> {description}?</span>
         </h5>
 

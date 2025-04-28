@@ -22,8 +22,8 @@ export default function ProductCard3({ product }: { product: Product }) {
       <div className="p-2 flex flex-col flex-grow">
         <div className="flex gap-2 justify-between items-start">
           <div className="flex-grow overflow-hidden">
-            <h3 className="text-sm font-semibold truncate">{product.name}</h3>
-            <p className="text-primary-dark_gray/50 text-[11px] line-clamp-2 h-8">{product.desc}</p>
+            <h3 className="text-xs md:text-sm font-semibold truncate">{product.name}</h3>
+            <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2 h-8">{product.desc}</p>
           </div>
           <div className="flex gap-1 flex-shrink-0">
             <button aria-label="edit" onClick={(e) => {
@@ -44,14 +44,16 @@ export default function ProductCard3({ product }: { product: Product }) {
         <div className="flex justify-between items-center mt-1 gap-2">
             <div className="flex items-center">
                 <DollarSquare />
-                <span className={`${dm_mono.className} text-primary-dark_gray text-xs font-light ml-1`}>₦{product.price.toLocaleString()}</span>
+                <span className={`${dm_mono.className} text-primary-dark_gray text-[9px] md:text-xs font-light ml-1`}>₦{product.price.toLocaleString()}</span>
             </div>
             <p className="text-primary-dark_gray text-right text-[11px] capitalize truncate"><span className="font-semibold">Category:</span> {product.category.split("-").join(" ")}</p>
         </div>
        
-        <div className="flex justify-between items-center gap-2 mt-auto">
-            <span className="text-xs text-gray-500 bg-gray-100 p-1 rounded">{product.piecesLeft} Pieces left</span>
+        <div className="flex justify-between items-center overflow-hidden gap-2 pb-1 mt-auto">
+          <span className="text-[9px] md:text-[11px] text-gray-500 bg-gray-100 p-1 rounded">{product.piecesLeft} Pieces left</span>
+          <div className="max-w-full">
             <BarcodeGenerator barCode={product.barCode} />
+          </div>
         </div>
       </div>
     </div>

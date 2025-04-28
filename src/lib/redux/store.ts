@@ -2,13 +2,15 @@ import { configureStore } from '@reduxjs/toolkit'
 import posFlowReducer from "./slices/posFlowSlice"
 import categoryTabReducer from "./slices/categoryTabSlice"
 import authUserReducer from "./slices/authUserSlice"
+import mobileNavReducer from "./slices/mobileNavSlice"
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       posFlow: posFlowReducer,
       categoryTab: categoryTabReducer,
-      authUser: authUserReducer
+      authUser: authUserReducer,
+      mobileNav: mobileNavReducer
     }
   })
 }

@@ -14,7 +14,7 @@ import { usePathname } from "next/navigation";
 import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
 
 
-const CartItem = ({ item }: { item: Product }) => {
+const CartItem = ({ item }: { item: ScannedProduct }) => {
 
   const { image, name, price, quantity, barCode } = item;
   const dispatch = useAppDispatch()
