@@ -28,7 +28,7 @@ export default function BlogCard({
         <Image src={imageUrl} alt={title} fill className="object-cover" />
       </div>
 
-      <div className="p-5 text-left space-y-4">
+      <div className="px-5 py-2 text-left space-y-4">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             <div className="relative w-7 h-7 rounded-full overflow-hidden">

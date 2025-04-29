@@ -1,6 +1,6 @@
 export default function ConsultationSection() {
     return (
-      <section className="relative w-full h-full py-12">
+      <section className="relative w-full h-full py-12 px-4">
         <div className="absolute inset-0">
           <img
             src="/images/closeup-businessman-using-mobile-phone.png"
@@ -25,11 +25,11 @@ export default function ConsultationSection() {
               <input
                 type="email"
                 placeholder="Enter email address here"
-                className="w-full px-4 py-3 rounded-lg   focus:outline-none focus:ring-2 focus:ring-primary-darkRed"
+                className="w-full px-4 py-3 rounded-lg text-sm  focus:outline-none focus:ring-2 focus:ring-primary-darkRed"
               />
               <button
                 type="submit"
-                className="bg-primary-darkRed text-white px-5 py-2 rounded-lg font-semibold hover:bg-primary-darkRed/90 transition right-2 absolute"
+                className="bg-primary-darkRed text-white px-5 py-2 rounded-lg  hover:bg-primary-darkRed/90 transition right-2 absolute"
               >
                 Continue
               </button>

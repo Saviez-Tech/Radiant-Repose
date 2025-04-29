@@ -66,7 +66,7 @@ export default function Hero() {
               </div>
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/images/fw.png"
+                  src="/icons/fw.svg"
                   alt="Hero"
                   width={300}
                   height={300}
