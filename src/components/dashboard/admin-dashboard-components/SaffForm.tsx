@@ -118,7 +118,7 @@ export default function StaffForm({
 
       <div className="flex mt-10">
         <button className="flex gap-2 bg-primary-green w-fit !text-white font-medium text-sm rounded-md px-5 py-3 hover:bg-green-600 transition-colors">
-          Save changes
+          Create Staff
           <LucideArrowRight />
         </button>
       </div>
