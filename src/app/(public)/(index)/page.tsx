@@ -1,6 +1,7 @@
 // Page.tsx
 import AboutSection from "./AboutSection";
-import BlogSection from "./blog";
+import BlogSection from "./Blog";
+import ConsultationSection from "./Consultation";
 import Hero from "./Hero";
 import ServicesSection from "./Services";
 
@@ -12,6 +13,7 @@ export default function Page() {
           <ServicesSection />
           <AboutSection />
           <BlogSection />
+          <ConsultationSection />
       </div>
     </main>
   );

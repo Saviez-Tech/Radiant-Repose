@@ -1,5 +1,6 @@
 import Link from "next/link";
 import BlogCard from "./BlogCard";
+import { LucideArrowRight } from "lucide-react";
 
 
 export default function Blog() {
@@ -9,7 +10,7 @@ export default function Blog() {
         <h2 className="text-3xl font-bold text-center mb-6">
           Read from our exclusive blog
         </h2>
-        <p className="text-center max-w-2xl mx-auto text-gray-600 mb-10">
+        <p className="text-center max-w-2xl mx-auto text-primary-deepBlack mb-10">
           Discover expert tips, wellness insights, and the latest in luxury self-care — curated to help you live radiantly every day.
         </p>
 
@@ -20,8 +21,8 @@ export default function Blog() {
         </div>
 
         <div className="text-center mt-6">
-          <Link href="#" className="text-primary-red font-semibold inline-flex items-center gap-2">
-            See more articles →
+          <Link href="#" className="text-primary-darkRed font-semibold inline-flex items-center gap-2">
+            See more articles <LucideArrowRight />
           </Link>
         </div>
       </div>

@@ -25,12 +25,7 @@ export default function BlogCard({
   return (
     <div className="bg-white aspect-[293/415] w-full rounded-xl overflow-hidden shadow-md">
       <div className="relative h-56 w-full">
-        <Image
-          src={imageUrl}
-          alt={title}
-          fill
-          className="object-cover"
-        />
+        <Image src={imageUrl} alt={title} fill className="object-cover" />
       </div>
 
       <div className="p-5 text-left space-y-4">
@@ -44,18 +39,19 @@ export default function BlogCard({
                 className="object-cover"
               />
             </div>
-            <div className="flex flex-col items-center text-start">
-            <span className="font-medium">{author}</span>
-            <span className="text-gray-500 text-xs">{role}</span>
+            <div className="flex flex-col text-start">
+              <span className="font-medium">{author}</span>
+              <span className="text-gray-500 text-xs">{role}</span>
             </div>
           </div>
+
           <span className="text-white px-2 py-1.5  bg-primary-yellow text-xs font-semibold whitespace-nowrap">
             {date}
           </span>
         </div>
 
-        <h3 className="font-semibold text-lg">{title}</h3>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <h3 className="font-semibold text-lg text-primary-deepBlack">{title}</h3>
+        <p className="text-primary-dark_gray text-sm">{description}</p>
 
         <Link
           href="#"

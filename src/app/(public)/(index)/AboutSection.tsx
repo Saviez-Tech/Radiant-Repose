@@ -8,7 +8,7 @@ export default function AboutSection() {
           <h2 className=" md:text-[38px]  text-[22px] font-semibold">
             We are only known for Excellence & Competence
           </h2>
-          <p className=" md:text-xl text-base text-gray-700">
+          <p className=" md:text-xl text-base text-primary-deepBlack">
             <span className="font-semibold">Radiant Repose</span> is home to one
             of the finest wellness and luxury self-care destinations in Nigeria.
             Our Excellence in these services speaks for us.
