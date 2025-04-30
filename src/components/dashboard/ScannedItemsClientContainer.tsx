@@ -24,9 +24,9 @@ export default function ScannedItemsClientContainer({ category }: { category: st
                 :
                 scannedItems && scannedItems.length ? (
                     <>
-                        <div className="mt-5 grid grid-cols-1 md:grid-col-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
+                        <div className="mt-5 grid grid-cols-2 md:grid-col-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
                             {scannedItems.map((v, i) => (
-                                <ProductCard isSelected={selectedItems.some(item => item.barCode === v.barCode)} key={i} product={v} />
+                                <ProductCard isSelected={selectedItems.some(item => item.barcode === v.barcode)} key={i} product={v} />
                             ))}
                         </div>
 

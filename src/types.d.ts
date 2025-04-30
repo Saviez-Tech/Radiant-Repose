@@ -1,3 +1,9 @@
+interface IAuthUser {
+    id: string | null;
+    emailOrUsername: string | null;
+    group: "Administrator" | "Worker" | null;
+}
+
 enum ProductType {
     BAGS = "bags",
     SHOES = "shoes",
@@ -9,12 +15,13 @@ type Product = {
     id: string;
     name: string;
     price: number;
-    image: string;
-    desc?: string;
-    piecesLeft: number;
-    barCode: string;
+    image_url: string;
+    description?: string;
+    stock_quantity: number;
+    barcode: string;
     category: "luxury-collection" | "spa-section" | "pharmacy";
     productType: ProductType;
+    branch: number
 }
 
 interface ScannedProduct extends Product {
@@ -31,19 +38,25 @@ interface Transaction extends Product {
 }
 
 
+type Branch = {
+    id: number,
+    name: string,
+    location: string,
+    contact_number: string
+}
+
+
 type TimeFilterType = 'today' | 'yesterday' | 'lastWeek' | 'lastMonth' | 'annual';
 
 interface Staff {
     id: string;
     name: string;
-    staffId: string;
-    phoneNumber: string;
-    storeLocation: string;
+    user: number;
+    phone_number: string;
+    branch: Branch;
     status: 'Active' | 'Inactive';
-    avatar?: string;
-    regDate: string //Date string
+    address: string,
 }
-
 
 interface AdminTransaction extends Product {
     quantity: number;

@@ -28,7 +28,7 @@ export default function Layout({ children }: LayoutProps) {
             {children}
           </div>
 
-          <Scanner />
+          {/* <Scanner /> */}
           <CartSection />
         </main>
       </div>

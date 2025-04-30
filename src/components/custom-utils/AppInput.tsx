@@ -42,9 +42,9 @@ export default function AppInput({
           id={name}
           placeholder={placeholder}
           className={cn(
-            "border border-gray-300 rounded-md max-w-full text-sm py-3 h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400", 
+            "border rounded-md max-w-full text-sm py-3 h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400", 
             prefix ? "pl-8" : "",
-            error ? "border-red-500 focus:ring-red-500" : ""
+            error ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           )}
           {...register(name)}
         />

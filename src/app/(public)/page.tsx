@@ -5,5 +5,5 @@ export default function Page() {
        <main>
         <Hero />
        </main>
-    );
+    )
 }

@@ -9,9 +9,8 @@ import DestructiveActionPrompt from "../modals/DestructiveActionPrompt";
 import DestructiveActionPromptSuccess from "../modals/DestructiveActionPromptSuccess";
 import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { usePathname } from "next/navigation";
-import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
+import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
 
 
 const CartItem = ({ item }: { item: ScannedProduct }) => {
@@ -55,7 +54,7 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
 
 export default function CartSection() {
 
-  const { scannedItems } = useAppSelector(store => store.posFlow)
+  const { scannedItems, orderNumber } = useAppSelector(store => store.posFlow)
   const [showConfirmModal,setShowConfirmModal] = useState(false)
   const [showSuccessModal,setShowSuccessModal] = useState(false)
   const pathName = usePathname()
@@ -70,11 +69,9 @@ export default function CartSection() {
     setShowConfirmModal(false)
   }
 
-  const [orderNumber, setOrderNumber] = useState<string>("")
-
   useEffect(() => {
-    setOrderNumber(generateOrderNumber());
-  }, [])
+    dispatch(manageOrderNumber())
+  },[scannedItems.length])
 
   return (
     !pathName.startsWith("/dashboard/categories")

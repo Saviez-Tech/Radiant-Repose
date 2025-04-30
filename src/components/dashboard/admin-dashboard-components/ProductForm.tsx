@@ -1,5 +1,6 @@
 "use client"
 
+import { addProductHandler } from "@/actions";
 import AppInput from "@/components/custom-utils/AppInput";
 import AppSelect from "@/components/custom-utils/AppSelect";
 import FileUpload from "@/components/custom-utils/FileUpload";
@@ -9,36 +10,45 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { productFormSchema, ProductFormValues } from "@/schemas/addProduct.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LucideArrowRight } from "lucide-react";
+import { Loader2, LucideArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
-export default function ProductForm({ defaultValues }: { defaultValues?: ProductFormValues }) {
+export default function ProductForm({ defaultValues, formActionType }: { defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
 
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productFormSchema),
     defaultValues,
   })
 
+  const router = useRouter()
+
   const productSectionOptions = [
     { value: "luxury-item", label: "Luxury Item" },
-    { value: "pharmacy", label: "Pharmacy" },
-    { value: "wellness", label: "Wellness" },
   ]
 
   const categoryOptions = [
-    { value: "skincare", label: "Skincare" },
-    { value: "haircare", label: "Haircare" },
-    { value: "makeup", label: "Makeup" },
-    { value: "fragrance", label: "Fragrance" },
+    { value: "bags", label: "Bags" },
+    { value: "shoes", label: "Shoes" },
+    { value: "jewelry", label: "Jewelry" },
+    { value: "perfumes", label: "Perfumes" },
   ]
 
-  const onSubmit: SubmitHandler<ProductFormValues> = (data) => {
-    console.log("Product data:", data)
+  const onSubmit: SubmitHandler<ProductFormValues> = async(data) => {
+    const { success, error } = await addProductHandler(data)
+    if (success){
+      toast.success("Product Added")
+      router.push("/admin/product-management/luxury-collection")
+    }
+    else if (error){
+      toast.error(error)
+    }
   }
 
   return (
@@ -102,8 +112,8 @@ export default function ProductForm({ defaultValues }: { defaultValues?: Product
                 id="unitPrice"
                 placeholder="150,000"
                 className={cn(
-                  "border border-gray-300 rounded-r-md border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
-                  errors.unitPrice ? "border-red-500 focus:ring-red-500" : ""
+                  "border rounded-r-md border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
+                  errors.unitPrice ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                 )}
                 {...register("unitPrice")}
               />
@@ -143,8 +153,17 @@ export default function ProductForm({ defaultValues }: { defaultValues?: Product
 
       <div className="flex mt-10">
         <button className="flex gap-2 bg-primary-green w-fit !text-white font-medium text-sm rounded-md px-5 py-3 hover:bg-green-600 transition-colors">
-          Save changes
-          <LucideArrowRight />
+          {isSubmitting ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Loading...
+          </>
+        ) : (
+          <>
+            Save Changes
+            <LucideArrowRight className="h-4 w-4" />
+          </>
+        )}
         </button>
       </div>
     </form>

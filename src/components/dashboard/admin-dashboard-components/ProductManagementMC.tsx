@@ -7,19 +7,19 @@ import AddNewProductBtn from "@/components/buttons/AddNewProductBtn";
 import { ProductType } from "@/enums";
 
 
-export default function ProductManagementMC({ data, category }: { data: Product[], category: string }) {
+export default function ProductManagementMC({ data, section }: { data: Product[], section: string }) {
     const [selectedFilter, setSelectedFilter] = useState('all')
     const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(7)
     
-    // First filter by category from props (If There's no API query to fetch based on category)
+    // First filter by section from props (If There's no API query to fetch based on category)
     const categoryFilteredProducts = useMemo(() => {
-        if (category === 'all') {
+        if (section === 'all') {
             return data;
         }
-        return data.filter(product => product.category === category)
-    }, [data, category])
+        return data.filter(product => product.category === section)
+    }, [data, section])
     
     // Then apply additional filters based on selectedFilter and selectedProductType
     const filteredProducts = useMemo(() => {
@@ -30,7 +30,7 @@ export default function ProductManagementMC({ data, category }: { data: Product[
             case 'all':
                 return products;
             case 'low-stock':
-                return products.filter(product => product.piecesLeft < 10)
+                return products.filter(product => product.stock_quantity < 10)
             case 'product-types':
                 if (selectedProductType) {
                     return products.filter(product => product.productType === selectedProductType)
@@ -52,7 +52,7 @@ export default function ProductManagementMC({ data, category }: { data: Product[
     // Reset pagination when filter changes
     useEffect(() => {
         setCurrentPage(1)
-    }, [selectedFilter, selectedProductType, category])
+    }, [selectedFilter, selectedProductType, section])
    
     // Handle page change
     const handlePageChange = (page: number) => {
@@ -63,6 +63,15 @@ export default function ProductManagementMC({ data, category }: { data: Product[
     const handleRowsPerPageChange = (rows: number) => {
         setRowsPerPage(rows)
         setCurrentPage(1)
+    }
+
+    if (!data.length){
+        return (
+            <div className="h-screen flex gap-10 flex-col justify-center items-center text-center py-8 text-gray-500">
+                <AddNewProductBtn />
+                <span>No products in this section</span>
+            </div>
+        )
     }
     
     return (

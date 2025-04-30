@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import LogoSrc from "../../../public-assets/logo/Logo1.svg"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Modal as MuiModal } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
@@ -10,12 +9,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { LayoutDashboard } from "lucide-react";
 import Logo from "@/components/layout-components/Logo";
 import { Analytics, BagIcon } from "@/components/Svg";
-import { productManagementCategories } from "@/components-data/productsManagementCategoriesLinkData";
+import { productManagementSections } from "@/components-data/productsManagementSectionsLinkData";
 import React, { useEffect, useState } from "react";
-import { rubik } from "@/fonts";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { closeMobileNav } from "@/lib/redux/slices/mobileNavSlice";
 import { motion, AnimatePresence } from "framer-motion";
+import AuthUserDetails from "@/components/layout-components/AuthUserDetails";
 
 export default function AdminMobileSidebar() {
     const pathName = usePathname()
@@ -118,14 +117,14 @@ export default function AdminMobileSidebar() {
 
                                             <DropdownMenuContent>
                                                 {
-                                                    productManagementCategories.map(({ href: categoryHref, label: categoryLabel },i) => {
+                                                    productManagementSections.map(({ href: categoryHref, label: categoryLabel },i) => {
                                                         return (
                                                             <React.Fragment key={categoryHref}>
                                                                 <DropdownMenuItem onClick={() => router.push(`${href}/${categoryHref}`)}>
                                                                     {categoryLabel}
                                                                 </DropdownMenuItem>
                                                                 {
-                                                                    i < productManagementCategories.length - 1 && <DropdownMenuSeparator />
+                                                                    i < productManagementSections.length - 1 && <DropdownMenuSeparator />
                                                                 }
                                                             </React.Fragment>
                                                         )
@@ -149,31 +148,7 @@ export default function AdminMobileSidebar() {
                             </ul>
                         </div>
 
-                        <div className="flex justify-between items-center gap-3">
-                            <Avatar className="flex-shrink-0">
-                                <AvatarImage src="https://github.com/shadcn.png" />
-                                <AvatarFallback>CN</AvatarFallback>
-                            </Avatar>
-                            <div className={`flex-shrink w-3/5 ${rubik.className}`}>
-                                <p className="truncate font-normal">John Doe</p>
-                                <p className="truncate text-[.83rem] font-normal">johndoepenny@gmail.com</p>
-                            </div>
-                            <DropdownMenu>
-                                <DropdownMenuTrigger className="focus:outline-none focus:ring-2 focus:ring-darkbg-primary-darkRed-400">
-                                    <Icon icon="radix-icons:caret-sort" width="30" height="30" aria-label="open" />
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent className="text-primary-dark_slate py-3">
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Icon icon="qlementine-icons:user-16" width="40" height="40" aria-hidden="true" className="text-darkbg-primary-darkRed-500 block" />
-                                        <span>Switch Account</span>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem className="cursor-pointer">
-                                        <Icon icon="solar:logout-2-outline" width="40" height="40" aria-hidden="true" className="text-darkbg-primary-darkRed-500 block" />
-                                        <span>Sign Out</span>
-                                    </DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </div>
+                        <AuthUserDetails />
                     </motion.nav>
                 )}
             </AnimatePresence>
