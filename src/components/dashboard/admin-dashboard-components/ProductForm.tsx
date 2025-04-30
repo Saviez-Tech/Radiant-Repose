@@ -55,7 +55,7 @@ export default function ProductForm({ defaultValues, formActionType }: { default
     <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
       
       {/* Grid layout with 3 columns and auto rows */}
-      <div className="grid grid-cols-3 gap-x-6 gap-y-8 mb-6">
+      <div className="grid md:grid-cols-3 gap-x-6 gap-y-8 mb-6">
         <AppSelect
           label="Product Section"
           name="productSection"

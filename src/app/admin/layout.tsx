@@ -9,7 +9,7 @@ type LayoutProps = {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="flex lg:min-h-screen bg-gray-50/80 px-4 md:px-7 lg:px-0">
+    <div className="flex lg:min-h-screen bg-gray-50/80 md:px-7 lg:px-0">
       <div className="flex-grow">
         <AdminDashboardSideNav />
       </div>
