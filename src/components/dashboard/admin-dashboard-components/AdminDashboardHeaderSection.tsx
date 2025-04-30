@@ -7,6 +7,7 @@ import LogoSrc from "../../../public-assets/logo/Logo1.svg";
 import AdminMobileSidebar from "./AdminMobileSidebar";
 import { Menu } from "lucide-react";
 import ToggleMobileMenuButton from "@/components/custom-utils/ToggleMobileMenuButton";
+import AuthUserDetailsWithActiveStatus from "@/components/layout-components/AuthUserDetailsWithActiveStatus";
 
 
 export default function AdminDashboardHeaderSection(){
@@ -15,21 +16,7 @@ export default function AdminDashboardHeaderSection(){
             <header className="hidden lg:flex pt-6 items-center px-8 absolute mx-auto h-24 border-b-2 border-b-gray-200/70 py-4 top-0 left-0 w-full justify-between">
                 <AdminDashBoardHeaderSectionPageName />
 
-                <div className="flex items-center gap-2  basis-2/6 w-2/6">
-                    <div className="relative w-fit">
-                        <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
-                        </Avatar>
-
-                        <span className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-green-500 ring-2 ring-white animate-ping" />
-                        <span className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-green-500" />
-                    </div>
-                    <div className="basis-2/6 w-2/6">
-                        <p className="truncate text-sm text-primary-deepBlack font-medium">Jessica Blessing</p>
-                        <p className="text-xs">Admin</p>
-                    </div>
-                </div>
+                <AuthUserDetailsWithActiveStatus />
 
 
                 <div className="flex items-center gap-1 text-sm font-light">

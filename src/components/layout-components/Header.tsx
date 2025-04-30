@@ -20,7 +20,10 @@ export default function Header(){
     ];
     
     return(
-        !pathName.startsWith("/auth") && !pathName.startsWith("/dashboard") && !pathName.startsWith("/admin") &&
+        !pathName.startsWith("/auth") && 
+        !pathName.startsWith("/pos") && 
+        !pathName.startsWith("/cart-monitor") && 
+        !pathName.startsWith("/admin") &&
         <div className="h-28 flex justify-center items-center absolute w-full top-0 left-0 z-40">
             <div className="glob-px flex items-center justify-between w-full">
                 <Logo src={LogoSrc} width={190} height={150} />
@@ -44,5 +47,5 @@ export default function Header(){
                 <div></div>
             </div>
         </div>
-    );
+    )
 }

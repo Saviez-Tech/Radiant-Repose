@@ -477,3 +477,128 @@ export const statuses = [
     icon: <Icon icon="icon-park-outline:folder-failed-one" width="24" height="24" className="size-7" />
   }
 ]
+
+
+
+export const demoCartProducts: ScannedProduct[] = [
+  {
+    id: "1",
+    name: "Creed Aventus",
+    price: 34000,
+    image: "/images/watch.png",
+    piecesLeft: 10,
+    barCode: "#5302001",
+    category: "luxury-collection",
+    productType: ProductType.PERFUMES,
+    quantity: 2,
+    totalPrice: 68000
+  },
+  {
+    id: "2",
+    name: "Louis Vuitton Speedy",
+    price: 125000,
+    image: "/images/watch.png",
+    piecesLeft: 3,
+    barCode: "#5302002",
+    category: "luxury-collection",
+    productType: ProductType.BAGS,
+    quantity: 1,
+    totalPrice: 125000
+  },
+  {
+    id: "3",
+    name: "Christian Louboutin Heels",
+    price: 85000,
+    image: "/images/watch.png",
+    piecesLeft: 5,
+    barCode: "#5302003",
+    category: "luxury-collection",
+    productType: ProductType.SHOES,
+    quantity: 1,
+    totalPrice: 85000
+  },
+  {
+    id: "4",
+    name: "Chanel N°5",
+    price: 46000,
+    image: "/images/watch.png",
+    piecesLeft: 8,
+    barCode: "#5302004",
+    category: "luxury-collection",
+    productType: ProductType.PERFUMES,
+    quantity: 3,
+    totalPrice: 138000
+  },
+  {
+    id: "5",
+    name: "Rolex Daytona",
+    price: 3500000,
+    image: "/images/watch.png",
+    piecesLeft: 1,
+    barCode: "#5302005",
+    category: "luxury-collection",
+    productType: ProductType.JEWELRY,
+    quantity: 1,
+    totalPrice: 3500000
+  },
+  {
+    id: "6",
+    name: "Gucci Bag Marmont",
+    price: 95000,
+    image: "/images/watch.png",
+    piecesLeft: 4,
+    barCode: "#5302006",
+    category: "luxury-collection",
+    productType: ProductType.BAGS,
+    quantity: 1,
+    totalPrice: 95000
+  },
+  {
+    id: "7",
+    name: "Spa Essential Oil Set",
+    price: 15000,
+    image: "/images/watch.png",
+    piecesLeft: 20,
+    barCode: "#5302007",
+    category: "spa-section",
+    productType: ProductType.PERFUMES,
+    quantity: 2,
+    totalPrice: 30000
+  },
+  {
+    id: "8",
+    name: "Pharmacy Vitamin C",
+    price: 3500,
+    image: "/images/watch.png",
+    piecesLeft: 50,
+    barCode: "#5302008",
+    category: "pharmacy",
+    productType: ProductType.PERFUMES,
+    quantity: 5,
+    totalPrice: 17500
+  },
+  {
+    id: "9",
+    name: "Cartier Love Bracelet",
+    price: 780000,
+    image: "/images/watch.png",
+    piecesLeft: 2,
+    barCode: "#5302009",
+    category: "luxury-collection",
+    productType: ProductType.JEWELRY,
+    quantity: 1,
+    totalPrice: 780000
+  },
+  {
+    id: "10",
+    name: "Adidas Superstar Sneakers",
+    price: 42000,
+    image: "/images/watch.png",
+    piecesLeft: 7,
+    barCode: "#5302010",
+    category: "luxury-collection",
+    productType: ProductType.SHOES,
+    quantity: 1,
+    totalPrice: 42000
+  }
+]

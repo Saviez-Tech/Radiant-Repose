@@ -6,7 +6,7 @@ export default function Page(){
     return (
         <main className="w-full pt-10 app-container">
             <h1 className="text-xl font-medium text-primary-dark_gray my-4">Edit Product</h1>
-            <ProductForm defaultValues={undefined} />
+            <ProductForm formActionType={"edit"} defaultValues={undefined} />
         </main>
     )
 }

@@ -10,7 +10,11 @@ export default function Footer() {
     const pathName = usePathname()
 
     return (
-        pathName.startsWith("/auth") || pathName.startsWith("/dashboard") || pathName.startsWith("/admin") || pathName === "/" ? null :
+        pathName.startsWith("/auth") || 
+        pathName.startsWith("/pos") || 
+        pathName.startsWith("/cart-monitor") || 
+        pathName.startsWith("/admin") || 
+        pathName === "/" ? null :
         <footer className="bg-primary-darkRed text-primary-base_color1 pt-12 glob-px">
             <div className="text-center md:text-left md:flex gap-10 justify-between">
                 <div>

@@ -9,26 +9,25 @@ import DestructiveActionPrompt from "../modals/DestructiveActionPrompt";
 import DestructiveActionPromptSuccess from "../modals/DestructiveActionPromptSuccess";
 import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { usePathname } from "next/navigation";
-import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
+import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
 
 
 const CartItem = ({ item }: { item: ScannedProduct }) => {
 
-  const { image, name, price, quantity, barCode } = item;
+  const { image_url, name, price, quantity, barcode } = item;
   const dispatch = useAppDispatch()
   
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="w-14 h-14 rounded-xl overflow-hidden mr-4">
-        <Image src={image} alt={name} width={40} height={40} className="w-full h-full object-cover" />
+        <Image src={image_url} alt={name} width={40} height={40} className="w-full h-full object-cover" />
       </div>
       
       <div className="flex-grow">
         <div className="flex justify-between">
           <h3 className="text-xs font-semibold truncate">{name}</h3>
-          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barCode))}>
+          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barcode))}>
             <X size={16} />
           </button>
         </div>
@@ -36,11 +35,11 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
           <div className="flex items-center gap-4">
-            <button onClick={() => dispatch(decrementItemQuantity(barCode))} className="text-gray-500">
+            <button onClick={() => dispatch(decrementItemQuantity(barcode))} className="text-gray-500">
               <Minus size={13} />
             </button>
             <span className="text-xs">{quantity}</span>
-            <button onClick={() => dispatch(incrementItemQuantity(barCode))} className="text-gray-500">
+            <button onClick={() => dispatch(incrementItemQuantity(barcode))} className="text-gray-500">
               <Plus size={13} />
             </button>
           </div>
@@ -55,7 +54,7 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
 
 export default function CartSection() {
 
-  const { scannedItems } = useAppSelector(store => store.posFlow)
+  const { scannedItems, orderNumber } = useAppSelector(store => store.posFlow)
   const [showConfirmModal,setShowConfirmModal] = useState(false)
   const [showSuccessModal,setShowSuccessModal] = useState(false)
   const pathName = usePathname()
@@ -70,14 +69,12 @@ export default function CartSection() {
     setShowConfirmModal(false)
   }
 
-  const [orderNumber, setOrderNumber] = useState<string>("")
-
   useEffect(() => {
-    setOrderNumber(generateOrderNumber());
-  }, [])
+    dispatch(manageOrderNumber())
+  },[scannedItems.length])
 
   return (
-    !pathName.startsWith("/dashboard/categories")
+    !pathName.startsWith("/pos/categories")
     ?
     null
     :

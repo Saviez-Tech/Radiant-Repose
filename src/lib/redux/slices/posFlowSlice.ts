@@ -1,4 +1,6 @@
 import { fetchProductByBarcodeAction } from "@/actions";
+import { demoCartProducts } from "@/components-data/sample-data";
+import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 
@@ -9,100 +11,51 @@ type InitialState = {
   scannedItems: ScannedProduct[];
   isLoading: boolean;
   error: string | null;
+  orderNumber: string | null
 }
-
-const productItems: ScannedProduct[] = [
-  {
-    id: "1",
-    name: "Louis Vuitton Bag",
-    price: 16200,
-    image: "/images/watch.png",
-    quantity: 3,
-    totalPrice: 48600,
-    piecesLeft: 24,
-    barCode: "1234567890",
-    category: "spa-section"
-  },
-  {
-    id: "2",
-    name: "Creed Aventus",
-    price: 25000,
-    image: "/images/watch.png",
-    quantity: 2,
-    totalPrice: 50000,
-    piecesLeft: 15,
-    barCode: "123456799",
-    category: "luxury-collection"
-  },
-  {
-    id: "3",
-    name: "Diamond Rings",
-    price: 450000,
-    image: "/images/watch.png",
-    quantity: 1,
-    totalPrice: 450000,
-    piecesLeft: 8,
-    barCode: "2234567890",
-    category: "luxury-collection"
-  },
-  {
-    id: "4",
-    name: "Rolex Watch",
-    price: 350000,
-    image: "/images/watch.png",
-    quantity: 1,
-    totalPrice: 350000,
-    piecesLeft: 5,
-    barCode: "1234500890",
-    category: "luxury-collection"
-  }
-]
 
 const initialState: InitialState = {
   barCode: null,
   barCodeFromManualInput: null,
   selectedItems: [],
-  scannedItems: [],
+  scannedItems: demoCartProducts,
   isLoading: false,
+  orderNumber: null,
   error: null
 }
 
 export const fetchProductsByBarcode = createAsyncThunk(
   "barcodeSearch/fetchProducts",
   async (barcode: string, { rejectWithValue }) => {
-    // Just a demo function to test scanner feature
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    return productItems[Math.floor(Math.random() * productItems.length)]
 
-
-    // try {      
-    //   const { product, errorMessage, status } = await fetchProductByBarcodeAction(barcode)
+    try {      
+      const { product, errorMessage, status } = await fetchProductByBarcodeAction(barcode)
       
-    //   if (product) {
-    //     return product;
-    //   }
-    //   else if (errorMessage) {
-    //     return rejectWithValue({
-    //       message: errorMessage,
-    //       status
-    //     })
-    //   }
-    //   // Add a fallback return in case neither condition is met
-    //   return rejectWithValue({
-    //     message: "Unknown error occurred",
-    //     status: 500
-    //   })
-    // } catch (error) {
-    //   return rejectWithValue({
-    //     message: "Failed to process request",
-    //     status: 500
-    //   })
-    // }
+      if (product) {
+        return product;
+      }
+      else if (errorMessage) {
+        return rejectWithValue({
+          message: errorMessage,
+          status
+        })
+      }
+      // Add a fallback return in case neither condition is met
+      return rejectWithValue({
+        message: "Unknown error occurred",
+        status: 500
+      })
+    } catch (error) {
+      return rejectWithValue({
+        message: "Failed to process request",
+        status: 500
+      })
+    }
   }
 )
 
 // Helper function to update item quantity and total price
-const updateItemQuantity = (item: Product, change: number): ScannedProduct => {
+const updateItemQuantity = (item: ScannedProduct, change: number): ScannedProduct => {
   const newQuantity = Math.max(1, item.quantity + change)
   return {
     ...item,
@@ -138,7 +91,7 @@ const posFlowSlice = createSlice({
     
     // Product list management
     clearProducts: (state) => {
-      state.scannedItems = [];
+      state.scannedItems = []
     },
     
     // Selected items management
@@ -205,9 +158,18 @@ const posFlowSlice = createSlice({
         item => item.barCode !== payload
       )
     },
+
+    manageOrderNumber: (state) => {
+      if(state.scannedItems.length && !state.orderNumber) {
+        state.orderNumber = generateOrderNumber()
+      }else if (!state.scannedItems.length && state.orderNumber){
+        state.orderNumber = null
+      }
+    },
     
     clearScannedItems: (state) => {
-      state.scannedItems = [];
+      state.scannedItems = []
+      state.orderNumber = null;
     },
     
     clearError: (state) => {
@@ -263,6 +225,7 @@ export const {
   selectItem,
   deselectItem,
   clearSelectedItems,
+  manageOrderNumber,
   removeBarCodeFromManualInput,
   addScannedItem,
   incrementItemQuantity,

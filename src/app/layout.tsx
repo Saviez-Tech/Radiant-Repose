@@ -5,6 +5,8 @@ import { poppins } from "@/fonts";
 import ReduxStoreProvider from "@/lib/redux/ReduxStoreProvider";
 import { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
+import AuthUserPersistor from "@/components/layout-components/AuthUserPersistor";
+import { cookies } from "next/headers";
 
 
 export const metadata : Metadata = {
@@ -13,11 +15,26 @@ export const metadata : Metadata = {
 }
 
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode; 
 }>) {
+
+  const cookieStore = await cookies()
+  const persistedUserData = () => {
+    try {
+      const cookieValue = cookieStore.get("user_session")?.value;
+      if (!cookieValue) return null;
+      const userData = JSON.parse(cookieValue)
+    
+      return !userData.id || !userData.username ? null : userData;
+
+    } catch (error) {
+      return null;
+    }
+  }
+
   return (
     <html lang="en">
       <ReduxStoreProvider>
@@ -29,7 +46,8 @@ export default function RootLayout({
           {children}
           <Footer />
         </body>
+        <AuthUserPersistor persistedUserData={persistedUserData()} />
       </ReduxStoreProvider>
     </html>
-  );
+  )
 }

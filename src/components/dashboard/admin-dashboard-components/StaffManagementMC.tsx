@@ -96,19 +96,19 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
                                     <td className="p-4 min-w-40">
                                         <div className="flex items-center gap-3">
                                             <Image
-                                                src={staff.avatar || "/placeholder-avatar.png"}
+                                                src="/icons/cashier.svg"
                                                 alt={staff.name}
                                                 width={40}
                                                 height={40}
-                                                className="w-10 h-10 rounded-full object-cover"
+                                                className="w-10 h-10 rounded-full shadow object-cover"
                                             />
                                             <span className="text-[0.85rem] text-gray-700">{staff.name}</span>
                                         </div>
                                     </td>
-                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.staffId}</td>
-                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.phoneNumber}</td>
+                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.user}</td>
+                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.phone_number}</td>
                                     <td className="p-4 text-[0.85rem] text-primary-dark_gray max-w-xs">
-                                        <p className="truncate">{staff.storeLocation}</p>
+                                        <p className="truncate">{staff.branch.location}</p>
                                     </td>
                                     <td className="p-4 text-center">
                                         <span className={`px-5 py-[6px] text-xs rounded-lg ${

@@ -50,8 +50,8 @@ export default function CategoriesTabSection() {
                     type="text"
                     value={barCodeFromManualInput || ""}
                     onChange={(e) => {
-                        if (pathName !== "/dashboard/categories/item-barcode-lookup") {
-                            router.push("/dashboard/categories/item-barcode-lookup")
+                        if (pathName !== "/pos/categories/item-barcode-lookup") {
+                            router.push("/pos/categories/item-barcode-lookup")
                         }
                         dispatch(setBarCodeFromManualInput(e.target.value))
                     }}

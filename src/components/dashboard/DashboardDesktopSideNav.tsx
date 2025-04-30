@@ -10,6 +10,7 @@ import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
 import { ReceiptIcon } from "../Svg";
 import { rubik } from "@/fonts";
+import AuthUserDetails from "../layout-components/AuthUserDetails";
 
 
 function DashboardDesktopSideNav() {
@@ -17,8 +18,8 @@ function DashboardDesktopSideNav() {
     const pathName = usePathname()
 
     const isActiveRoute = (route: string) => {
-        if (route === "/dashboard") {
-            return pathName === "/dashboard" || pathName.startsWith("/dashboard/categories")
+        if (route === "/pos") {
+            return pathName === "/pos" || pathName.startsWith("/pos/categories")
         }
         return pathName.startsWith(route)
     }
@@ -30,8 +31,8 @@ function DashboardDesktopSideNav() {
 
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
-                        { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href: "/dashboard/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/dashboard/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/pos", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
+                        { href: "/pos/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (
@@ -50,31 +51,7 @@ function DashboardDesktopSideNav() {
                 </ul>
             </div>
 
-            <div className="flex justify-between items-center gap-3">
-                <Avatar className="flex-shrink-0">
-                    <AvatarImage src="https://github.com/shadcn.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <div className={`flex-shrink w-3/5 ${rubik.className}`}>
-                    <p className="truncate font-normal">John Doe</p>
-                    <p className="truncate text-[.83rem] font-normal">johndoepenny@gmail.com</p>
-                </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger className="focus:outline-none focus:ring-2 focus:ring-darkbg-primary-darkRed-400">
-                        <Icon icon="radix-icons:caret-sort" width="30" height="30" aria-label="open" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="text-primary-dark_slate py-3">
-                        <DropdownMenuItem className="cursor-pointer">
-                            <Icon icon="qlementine-icons:user-16" width="40" height="40" aria-hidden="true" className="text-darkbg-primary-darkRed-500 block" />
-                            <span>Switch Account</span>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="cursor-pointer">
-                            <Icon icon="solar:logout-2-outline" width="40" height="40" aria-hidden="true" className="text-darkbg-primary-darkRed-500 block" />
-                            <span>Sign Out</span>
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
-            </div>
+            <AuthUserDetails />
         </nav>
     )
 }
