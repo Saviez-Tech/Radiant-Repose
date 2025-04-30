@@ -40,7 +40,7 @@ export default function Login(){
                 router.push(redirectPath)
                 return;
             }
-            group === "Administrator" ? router.push("/admin") : router.push("/dashboard")
+            group === "Administrator" ? router.push("/admin") : router.push("/pos")
         }
         catch(err){
             if (err instanceof Error) {

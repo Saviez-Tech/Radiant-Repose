@@ -21,7 +21,7 @@ export default function Header(){
     
     return(
         !pathName.startsWith("/auth") && 
-        !pathName.startsWith("/dashboard") && 
+        !pathName.startsWith("/pos") && 
         !pathName.startsWith("/cart-monitor") && 
         !pathName.startsWith("/admin") &&
         <div className="h-28 flex justify-center items-center absolute w-full top-0 left-0 z-40">

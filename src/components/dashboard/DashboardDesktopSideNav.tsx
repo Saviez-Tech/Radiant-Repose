@@ -18,8 +18,8 @@ function DashboardDesktopSideNav() {
     const pathName = usePathname()
 
     const isActiveRoute = (route: string) => {
-        if (route === "/dashboard") {
-            return pathName === "/dashboard" || pathName.startsWith("/dashboard/categories")
+        if (route === "/pos") {
+            return pathName === "/pos" || pathName.startsWith("/pos/categories")
         }
         return pathName.startsWith(route)
     }
@@ -31,8 +31,8 @@ function DashboardDesktopSideNav() {
 
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
-                        { href: "/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href: "/dashboard/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/dashboard/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/pos", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
+                        { href: "/pos/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (

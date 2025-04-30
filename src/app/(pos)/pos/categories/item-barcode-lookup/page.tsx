@@ -42,7 +42,7 @@ export default function ItemBarCodeManualLookupPage() {
 
         dispatch(removeBarCodeFromManualInput())
         setItem(null)
-        router.push("/dashboard/categories/luxury-collection")
+        router.push("/pos/categories/luxury-collection")
     }
 
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function ItemBarCodeManualLookupPage() {
                             product={item} 
                             handleItemRemove={handleItemRemove} 
                             setIsSelected={setSelectedItem} 
-                            isSelected={selectedItem?.barCode === item.barCode}
+                            isSelected={selectedItem?.barcode === item.barcode}
                         />
                     </div>
 

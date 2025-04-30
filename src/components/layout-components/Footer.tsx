@@ -11,7 +11,7 @@ export default function Footer() {
 
     return (
         pathName.startsWith("/auth") || 
-        pathName.startsWith("/dashboard") || 
+        pathName.startsWith("/pos") || 
         pathName.startsWith("/cart-monitor") || 
         pathName.startsWith("/admin") || 
         pathName === "/" ? null :
