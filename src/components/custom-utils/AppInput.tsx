@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ProductFormValues, StaffFormValues } from "@/schemas/addProduct.schema";
 import { Label } from "../ui/label";
 import ErrorPara from "./ErrorPara";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { ProductFormValues } from "@/schemas/addProduct.schema";
+import { StaffFormValues } from "@/schemas/staffSchema";
 
 type FormInputFieldProps = {
   label: string;

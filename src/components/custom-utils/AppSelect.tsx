@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Controller } from "react-hook-form";
-import { ProductFormValues, StaffFormValues } from "@/schemas/addProduct.schema";
+import { ProductFormValues} from "@/schemas/addProduct.schema";
 import ErrorPara from "./ErrorPara";
+import { StaffFormValues } from "@/schemas/staffSchema";
 
 type FormSelectFieldProps = {
   label: string;

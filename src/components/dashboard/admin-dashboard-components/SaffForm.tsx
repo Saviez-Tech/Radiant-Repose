@@ -2,16 +2,8 @@
 
 import AppInput from "@/components/custom-utils/AppInput";
 import AppSelect from "@/components/custom-utils/AppSelect";
-import FileUpload from "@/components/custom-utils/FileUpload";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { cn } from "@/lib/utils";
-import {
-  ProductFormValues,
-  staffFormSchema,
-  StaffFormValues,
-} from "@/schemas/addProduct.schema";
+import { staffFormSchema } from "@/schemas/staffSchema";
+import { StaffFormValues } from "@/schemas/staffSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LucideArrowRight } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";

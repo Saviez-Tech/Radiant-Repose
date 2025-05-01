@@ -3,7 +3,7 @@ import StaffForm from "@/components/dashboard/admin-dashboard-components/SaffFor
 
 export default function Page(){
     return (
-        <main className="w-full pt-10 app-container ">
+        <main className="w-full pt-10 app-container">
             <h1 className="text-xl font-medium text-primary-dark_gray">Add  New Staff</h1>
             <StaffForm  />
         </main>
