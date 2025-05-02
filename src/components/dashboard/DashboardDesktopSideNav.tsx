@@ -10,6 +10,7 @@ import { ReceiptIcon } from "../Svg";
 import AuthUserDetails from "../layout-components/AuthUserDetails";
 
 
+
 function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
 
     const pathName = usePathname()
