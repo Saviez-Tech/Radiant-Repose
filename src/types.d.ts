@@ -11,17 +11,17 @@ enum ProductType {
     PERFUMES = "perfumes"
 }
 
-type Product = {
+export type Product = {
     id: string;
     name: string;
     price: number;
     image_url: string;
     description?: string;
     stock_quantity: number;
-    barcode: string;
-    category: "luxury-collection" | "spa-section" | "pharmacy";
+    barcode?: string;
+    category?: "luxury-collection" | "spa-section" | "pharmacy";
     productType: ProductType;
-    branch: number
+    branch?: number
 }
 
 interface ScannedProduct extends Product {

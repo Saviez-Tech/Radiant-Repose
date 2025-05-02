@@ -1,3 +1,4 @@
+"use client"
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -7,11 +8,11 @@ import ErrorPara from "./ErrorPara";
 import { StaffFormValues } from "@/schemas/staffSchema";
 
 type FormSelectFieldProps = {
-  label: string;
-   name: (keyof ProductFormValues | keyof StaffFormValues);
-  placeholder: string;
+  label?: string;
+   name: (keyof ProductFormValues | keyof StaffFormValues | string);
+  placeholder?: string;
   options: { value: string; label: string }[];
-  control: any;
+  control?: any;
   error?: string;
   className?: string;
 }

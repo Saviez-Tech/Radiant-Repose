@@ -3,7 +3,7 @@ export function formatNaira(value: number | string, showDecimal: boolean): strin
 
   if (isNaN(amount)) return "N0.00";
 
-  return `N${new Intl.NumberFormat("en-NG", {
+  return `₦${new Intl.NumberFormat("en-NG", {
     minimumFractionDigits: showDecimal ? 2 : 0,
     maximumFractionDigits: showDecimal ? 2 : 0,
   }).format(amount)}`;
