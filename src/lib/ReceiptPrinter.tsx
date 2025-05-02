@@ -1,11 +1,12 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import Receipt from '@/components/dashboard/Receipt';
 import toast from 'react-hot-toast';
-import { Modal, Box, Button, Typography } from '@mui/material';
+import { Modal, Box, Typography } from '@mui/material';
 import { Printer, Save } from 'lucide-react';
+import { formatNaira } from './helperFns/formatNumber';
 
 interface ReceiptPrinterProps {
     orderNumber: string;
@@ -102,7 +103,7 @@ export default function ReceiptPrinter({
       toast.error('Failed to generate receipt. Please try again.');
     }
     finally {
-      setPrint(false);
+      setPrint(false)
     }
   };
 
@@ -134,7 +135,7 @@ export default function ReceiptPrinter({
 
   return (
     <Modal
-      open={true}
+      open={false}
       onClose={handleClose}
       aria-labelledby="receipt-modal-title"
       aria-describedby="receipt-modal-description"
@@ -148,21 +149,29 @@ export default function ReceiptPrinter({
         maxHeight: '90vh',
         bgcolor: 'background.paper',
         boxShadow: 24,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         p: 4,
         borderRadius: 2,
         overflow: 'auto'
       }}>
-        <Typography id="receipt-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
+        <Typography 
+          id="receipt-modal-title" 
+          variant="h6" 
+          component="h2" 
+          sx={{ mb: 2, textAlign: 'center' }}
+        >
           Receipt #{orderNumber}
         </Typography>
         
-        <div ref={receiptRef} className="bg-white">
+        <div ref={receiptRef} className="bg-white w-full flex justify-center flex-col items-center">
           <Receipt
             date={date}
             orderNumber={orderNumber}
             scannedItems={scannedItems}
-            subTotal={subTotal}
-            total={total}
+            subTotal={formatNaira(subTotal,true,true)}
+            total={formatNaira(total,true,true)}
             amountPaid={amountPaid}
             cashierName={cashierName}
             customerName={customerName}
@@ -170,36 +179,23 @@ export default function ReceiptPrinter({
           />
         </div>
 
-        {/* Print and Save buttons */}
-        <Box sx={{ 
-          mt: 4, 
-          display: 'flex', 
-          gap: 2,
-          justifyContent: 'center' 
-        }}>
-          <Button
-            variant="contained"
-            startIcon={<Printer />}
+        <div className="flex justify-center gap-4 mt-6 w-full">
+          <button
             onClick={printReceiptAsImage}
-            sx={{ 
-              bgcolor: 'success.main',
-              '&:hover': { bgcolor: 'success.dark' }
-            }}
+            className="flex items-center gap-2 bg-green-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-green-700 active:bg-green-800 transition-colors duration-200 shadow-sm"
           >
-            Print Receipt
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<Save />}
+            <Printer size={16} />
+            Print
+          </button>
+          <button
             onClick={saveReceiptAsImage}
-            sx={{ 
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' }
-            }}
+            style={{ background: "#2563eb "}}
+            className="flex items-center gap-2 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-sm"
           >
-            Save as Image
-          </Button>
-        </Box>
+            <Save size={16} />
+            Save
+          </button>
+        </div>
       </Box>
     </Modal>
   )

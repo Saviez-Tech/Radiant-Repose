@@ -1,14 +1,13 @@
 "use client"
 
 import Link from "next/link";
-import LogoSrc from "../../public-assets/Logo/Logo1.svg"
+import LogoSrc from "../../public-assets/logo/Logo1.svg"
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
 import { ReceiptIcon } from "../Svg";
 import AuthUserDetails from "../layout-components/AuthUserDetails";
-import { useAppSelector } from "@/lib/redux/hooks";
 
 
 function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {

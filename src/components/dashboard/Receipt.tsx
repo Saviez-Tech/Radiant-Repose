@@ -14,7 +14,7 @@ const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h3 className="text-xs font-semibold truncate">{name}</h3>
+          <h3 className="text-xs font-semibold truncate pb-3">{name}</h3>
           <span className="text-xs">{quantity}x</span>
         </div>
         <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price, false)}</p>
@@ -34,8 +34,8 @@ interface ReceiptProps {
   amountPaid?: number;
   customerName?: string;
   cashierName?: string;
-  total: number,
-  subTotal: number
+  total: string;
+  subTotal: string;
 }
 
 export default function Receipt({ 
