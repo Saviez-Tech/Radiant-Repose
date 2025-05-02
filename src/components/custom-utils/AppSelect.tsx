@@ -2,8 +2,9 @@ import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Controller } from "react-hook-form";
-import { ProductFormValues, StaffFormValues } from "@/schemas/addProduct.schema";
+import { ProductFormValues } from "@/schemas/addProduct.schema";
 import ErrorPara from "./ErrorPara";
+import { StaffFormValues } from "@/schemas/addStaff.schema";
 
 type FormSelectFieldProps = {
   label: string;
@@ -13,6 +14,7 @@ type FormSelectFieldProps = {
   control: any;
   error?: string;
   className?: string;
+  disabled?: boolean
 }
 
 export default function AppSelect({ 
@@ -21,6 +23,7 @@ export default function AppSelect({
   placeholder, 
   options, 
   control, 
+  disabled,
   error,
   className
 }: FormSelectFieldProps){
@@ -38,6 +41,7 @@ export default function AppSelect({
           <Select 
             onValueChange={field.onChange} 
             defaultValue={field.value}
+            disabled={disabled}
           >
             <SelectTrigger 
               id={name}

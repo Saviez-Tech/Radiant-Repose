@@ -1,6 +1,6 @@
 // Page.tsx
 import AboutSection from "./AboutSection";
-import BlogSection from "./Blog";
+import BlogSection from "./AboutSection";
 import ConsultationSection from "./Consultation";
 import Hero from "./Hero";
 import ServicesSection from "./Services";

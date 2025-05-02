@@ -4,6 +4,7 @@ const initialState: IAuthUser = {
     id: null, 
     emailOrUsername: null,
     group: null,
+    name: null
 }
 
 const authUserSlice = createSlice({
@@ -14,11 +15,13 @@ const authUserSlice = createSlice({
             state.id = payload.id;
             state.emailOrUsername = payload.emailOrUsername;
             state.group = payload.group;
+            state.name = payload.name
         },
         logoutUser: (state) => {
             state.id = null;
             state.emailOrUsername = null;
             state.group = null;
+            state.name = null
         }
    }
 })

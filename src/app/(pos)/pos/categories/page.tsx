@@ -2,6 +2,6 @@ import ScannedItemsClientContainer from "@/components/dashboard/ScannedItemsClie
 
 export default function Page(){
     return (
-        <ScannedItemsClientContainer category="luxury-collection" />
+        <ScannedItemsClientContainer />
     )
 }

@@ -2,20 +2,19 @@
 
 import Link from "next/link";
 import LogoSrc from "../../public-assets/Logo/Logo1.svg"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
 import { ReceiptIcon } from "../Svg";
-import { rubik } from "@/fonts";
 import AuthUserDetails from "../layout-components/AuthUserDetails";
+import { useAppSelector } from "@/lib/redux/hooks";
 
 
-function DashboardDesktopSideNav() {
+function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
 
     const pathName = usePathname()
+
 
     const isActiveRoute = (route: string) => {
         if (route === "/pos") {
@@ -31,8 +30,8 @@ function DashboardDesktopSideNav() {
 
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
-                        { href: "/pos", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href: "/pos/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/pos/categories", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos/categories") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
+                        { href:  `/pos/transaction-history/${sessionUserID}`, label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (

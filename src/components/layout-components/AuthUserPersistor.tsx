@@ -1,14 +1,16 @@
 "use client"
 
-import { useAppDispatch } from "@/lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice";
+import { clearStaffToEdit } from "@/lib/redux/slices/editStaffSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export default function AuthUserPersistor({ persistedUserData }:{ persistedUserData: { id: string, username: string, group: "Administrator" | "Worker" } | null }){
+export default function AuthUserPersistor({ persistedUserData }:{ persistedUserData: { id: string, username: string, group: "Administrator" | "Worker", name: string } | null }){
 
     const dispatch = useAppDispatch()
     const pathName = usePathname()
+    const { staffToEdit } = useAppSelector(store => store.editStaff)
     const router = useRouter()
 
     useEffect(() => {
@@ -16,7 +18,8 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
             dispatch(setAuthUser({
                 id: persistedUserData.id,
                 emailOrUsername: persistedUserData.username,
-                group: persistedUserData.group
+                group: persistedUserData.group,
+                name: persistedUserData.name
             }))
 
             if (persistedUserData.group === "Administrator" && !pathName.startsWith("/admin")){
@@ -24,6 +27,13 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
             }
         }
     },[persistedUserData?.id,persistedUserData?.username])
+
+
+    useEffect(() => {
+        if (pathName !== "/admin/staff-management/edit-staff" && staffToEdit){
+            dispatch(clearStaffToEdit())
+        }
+    },[pathName])
 
     return null;
 }

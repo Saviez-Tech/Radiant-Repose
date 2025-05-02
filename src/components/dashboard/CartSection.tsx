@@ -1,6 +1,6 @@
 "use client"
 
-import { X, Plus, Minus } from "lucide-react";
+import { X, Plus, Minus, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { dm_mono } from "@/fonts";
 import { calculateCartItemTotal, calculateCartTotal, calculateCartTotalWithDiscountAndBalance } from "@/lib/helperFns/calculateTotal";
@@ -11,6 +11,9 @@ import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { usePathname } from "next/navigation";
 import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
+import { addSaleHandler } from "@/actions/product.server";
+import toast from "react-hot-toast";
+import ReceiptPrinter from "@/lib/ReceiptPrinter";
 
 
 const CartItem = ({ item }: { item: ScannedProduct }) => {
@@ -55,8 +58,11 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
 export default function CartSection() {
 
   const { scannedItems, orderNumber } = useAppSelector(store => store.posFlow)
+  const { name } = useAppSelector(store => store.authUser)
   const [showConfirmModal,setShowConfirmModal] = useState(false)
   const [showSuccessModal,setShowSuccessModal] = useState(false)
+  const [isProcessing,setIsProcessing] = useState(false)
+  const [print,setPrint] = useState(false)
   const pathName = usePathname()
   const dispatch = useAppDispatch()
 
@@ -67,6 +73,22 @@ export default function CartSection() {
 
   const onCancelAction = async () => {
     setShowConfirmModal(false)
+  }
+
+  const handleCompleteSale = async() => {
+    const { success, error } = await addSaleHandler({
+      customer_contact: "",
+      customer_name: "",
+      discount: 0,
+      scanned_items: scannedItems.map(v => ({ product_id: v.id, quantity: v.quantity })),
+      subtotal: calculateCartTotal(scannedItems)
+    })
+
+    if(success){
+      toast.success("Sale Proccessed Successfully")
+    }else{
+      toast.error(error || "Error Processing Sale")
+    }
   }
 
   useEffect(() => {
@@ -119,7 +141,7 @@ export default function CartSection() {
               
               <div className="flex justify-between py-2">
                 <span className="font-medium text-base">Total</span>
-                <span className="font-medium text-base">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems,200,50), true)}</span>
+                <span className="font-medium text-base">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems,0,0), true)}</span>
               </div>
 
               <div className="flex flex-wrap gap-4 mt-5">
@@ -130,17 +152,42 @@ export default function CartSection() {
                   Cancel Transaction
                 </button>
                 
-                <button 
+                <button
+                  onClick={handleCompleteSale} 
+                  disabled={isProcessing}
                   className="bg-green-500 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
                 >
-                  Save & Print Transaction
+                  {
+                    !isProcessing && !print ?
+                    "Save & Print Transaction"
+                    :
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Processing...
+                    </> 
+                  }
                 </button>
               </div>
             </div>
           </div>
 
 
-          <DestructiveActionPrompt open={showConfirmModal} description="cancel this transaction" onCancel={onCancelAction} onConfirm={onConfirmCancelTransaction} />
+          {/* Printer Lib */}
+          <ReceiptPrinter 
+            date={new Date().toISOString()}
+            orderNumber={orderNumber || ""}
+            print={print}
+            setPrint={setPrint}
+            scannedItems={scannedItems}
+            subTotal={calculateCartTotal(scannedItems)}
+            total={calculateCartTotalWithDiscountAndBalance(scannedItems,0,0)}
+            amountPaid={0}
+            cashierName={name || ""}
+            customerName=""
+            discount={0}
+          />
+
+          <DestructiveActionPrompt processing={false} open={showConfirmModal} description="cancel this transaction" onCancel={onCancelAction} onConfirm={onConfirmCancelTransaction} />
           <DestructiveActionPromptSuccess onClose={() => setShowSuccessModal(false)} open={showSuccessModal}>
             <Image src="/icons/cancelled-transaction-success.svg" alt="success" width={110} height={110} />
             <div className="text-center">

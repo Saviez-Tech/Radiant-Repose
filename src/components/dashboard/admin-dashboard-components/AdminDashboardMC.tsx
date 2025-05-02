@@ -1,24 +1,70 @@
 "use client"
 
-import { useState } from "react";
-import { sampleAdminTransactions, statuses } from "@/components-data/sample-data";
+import { ReactNode, useEffect, useState } from "react";
 import ProductCategoriesRevenue from "./charts/ProductCategoriesRevenue";
 import RevenueGrowthChart from "./charts/RevenueGrowthChart";
-import StatusBox from "./charts/StatusBox";
+import StatusBox from "./charts/StatBox";
 import AdminStoreLocationsSelect from "./AdminStoreLocationsSelect";
 import { storeLocation } from "@/components-data/store-locations";
 import ExportDataBtn from "@/components/buttons/ExportDataBtn";
 import TimeFrameSelect from "@/components/custom-utils/TimeFrameSelect";
 import AdminDashboardTransactionHistory from "./AdminDashboardTransactionHistory";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
+import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
+import { useRouter } from "next/navigation";
+import { revalidatePathHandler } from "@/actions/revalidatePathHandler";
 
 
 
-export default function AdminDashboardMC(){
+export default function AdminDashboardMC({ data }:{  data: {
+    categorySales: SalesSummaryData;
+    sales: SalesRecordList;
+    totalGoodsSold: StatData;
+    filter: DateFilter
+  } | undefined }){
 
-    const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch)
-    const [timeFilter, setTimeFilter] = useState<TimeFilterType>('lastWeek')
+    const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
+    const [timeFilter, setTimeFilter] = useState<DateFilter>(data?.filter || 'month')
+
+    const router = useRouter()
+    const [isLoading,setIsLoading] = useState(false)
+
+    const statMeta: Record<keyof StatData, { label: string; icon: ReactNode }> = {
+        total_goods_sold: { label: "Total Goods", icon: <Icon icon="octicon:tracked-by-closed-completed-16" width="24" height="24" className="size-7" /> },
+        total_price: { label: "Total Sales", icon: <Icon icon="ic:outline-pending" width="33" height="33" className="size-8" /> },
+        low_stock: { label: "Low Stock", icon: <Icon icon="ph:hourglass-simple-low-fill" width="33" height="33" className="size-8" /> },
+    }
+
+    const statsArray = (data: StatData) => 
+        (Object.entries(data) as [keyof StatData, number][]).map(([key, value]) => ({
+            value,
+            label: statMeta[key].label,
+            icon: statMeta[key].icon,
+            stat: key,
+        })
+    )
+
+    const transactions = data?.sales ? transformSaleRecordsToTransactions(data?.sales) : []
+    const handlePageRefresh = async() => {
+        setIsLoading(true)
+        await revalidatePathHandler("/admin/dashboard")
+        router.push(`/admin/dashboard?filter=${timeFilter}`)
+        setIsLoading(false)
+    }
+
+    useEffect(() => {
+        if (timeFilter !== data?.filter){
+            handlePageRefresh()
+        }
+    },[timeFilter])
+
 
     return (
+        data?.categorySales &&
+        data.sales &&
+        data.totalGoodsSold &&
+        !isLoading ?
         <main className="gap-9 overflow-x-auto px-1">
             <div className="flex justify-between mt-6 mb-3 items-center px-1 gap-y-3">
                 <h2 className="text-primary-deepBlack font-medium text-lg hidden md:block">Total Luxury Sales</h2>
@@ -35,26 +81,28 @@ export default function AdminDashboardMC(){
                 <div className="md:flex-1 lg:min-w-[40em] space-y-6 md:space-y-0">
                     <div className="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] ">
                         {
-                            statuses.map((v,i) => (
+                            statsArray(data.totalGoodsSold).map((v,i) => (
                                 <StatusBox {...v} key={i} />
                             ))
                         }
                     </div>
                     <div className="hidden md:block !mt-10">
-                        <RevenueGrowthChart />
+                        <RevenueGrowthChart transactions={transactions} timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
                     </div>
                 </div>
 
                 <div className="md:w-[19.125rem]">
-                    <ProductCategoriesRevenue />
+                    <ProductCategoriesRevenue data={data.categorySales} />
                 </div>
 
                 <div className="block md:hidden">
-                    <RevenueGrowthChart />
+                    <RevenueGrowthChart transactions={transactions} timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
                 </div>
             </div>
 
-            <AdminDashboardTransactionHistory data={sampleAdminTransactions as AdminTransaction[]} />
+            <AdminDashboardTransactionHistory transactions={transactions} timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
         </main>
+        :
+        <AdminDashboardSkeleton />
     )
 }

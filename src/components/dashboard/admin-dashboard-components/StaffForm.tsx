@@ -1,0 +1,133 @@
+"use client";
+
+import { addStaffHandler, editStaffHandler } from "@/actions/staff.server";
+import { storeLocation } from "@/components-data/store-locations";
+import SubmitBtnWithLoader from "@/components/buttons/SubmitBtnWithLoader";
+import AppInput from "@/components/custom-utils/AppInput";
+import AppSelect from "@/components/custom-utils/AppSelect";
+import {
+  EditStaffFormValues,
+  staffEditFormSchema,
+  staffFormSchema,
+  StaffFormValues,
+} from "@/schemas/addStaff.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+
+export default function StaffForm({
+  defaultValues,
+  staffID = "",
+  formActionType
+}: {
+  defaultValues?: StaffFormValues;
+  formActionType: "add" | "edit";
+  staffID?: string
+}) {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<StaffFormValues | EditStaffFormValues>({
+    resolver: zodResolver(formActionType === "add" ? staffFormSchema : staffEditFormSchema),
+    defaultValues,
+  })
+
+  const router = useRouter()
+
+  const locationOptions = [
+    { value: storeLocation[0].branch.toString(), label: storeLocation[0].location },
+  ]
+
+  const onSubmit: SubmitHandler<StaffFormValues | EditStaffFormValues> = async(data) => {
+    const { success, error } = formActionType === "add" ? await addStaffHandler(data as StaffFormValues) : await editStaffHandler(data as EditStaffFormValues,staffID)
+    if (success){
+      toast.success(`Staff ${formActionType === "add" ? "Added" : "Editted"}`)
+      router.push("/admin/staff-management")
+    }
+    else if (error){
+      toast.error(error)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
+      {/* Grid layout with 3 columns and auto rows */}
+      <div className="grid md:grid-cols-3 gap-x-6 gap-y-8 mb-6">
+        <AppSelect
+          label="Assigned Location"
+          name="AssignedLocation"
+          placeholder="Select Location"
+          options={locationOptions}
+          control={control}
+          error={errors.AssignedLocation?.message}
+        />
+
+        <AppInput
+          label="Full Name"
+          name="fullName"
+          placeholder="Enter Full Name"
+          register={register}
+          error={errors.fullName?.message}
+        />
+        <AppInput
+          label="Phone Number"
+          name="phoneNumber"
+          placeholder="Enter Phone Number"
+          register={register}
+          error={errors.phoneNumber?.message}
+        />
+        <AppInput
+          label="Email Address Or Username"
+          name="emailOrUsername"
+          placeholder="Enter Email Address Or Username"
+          register={register}
+          error={errors.emailOrUsername?.message}
+        />
+        <AppInput
+          label="Address"
+          name="address"
+          placeholder="Enter Address"
+          register={register}
+          error={errors.address?.message}
+        />
+
+        {/* <FileUpload
+          label="Upload Staff Photo"
+          name="image"
+          className="h-12"
+          control={control}
+          error={errors.staffPhoto?.message}
+        /> */}
+
+        {
+          formActionType === "add" &&
+          <>
+            <AppInput
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Enter Password"
+              register={register}
+              error={errors.password?.message}
+            />
+            <AppInput
+              label="Confirm Password"
+              name="confirmPassword"
+              type="password"
+              placeholder="Enter Password"
+              register={register}
+              error={errors.confirmPassword?.message}
+            />
+          </>
+        }
+      </div>
+
+      <div className="flex mt-10">
+        <SubmitBtnWithLoader isSubmitting={isSubmitting} text={formActionType === "add" ? "Create Staff" : "Edit Staff"}/>
+      </div>
+    </form>
+  );
+}

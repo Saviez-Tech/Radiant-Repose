@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ProductFormValues, StaffFormValues } from "@/schemas/addProduct.schema";
+import { ProductFormValues } from "@/schemas/addProduct.schema";
 import { Label } from "../ui/label";
 import ErrorPara from "./ErrorPara";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { StaffFormValues } from "@/schemas/addStaff.schema";
 
 type FormInputFieldProps = {
   label: string;
@@ -14,6 +15,7 @@ type FormInputFieldProps = {
   type?: string;
   prefix?: React.ReactNode;
   className?: string;
+  disabled?: boolean
 };
 
 export default function AppInput({ 
@@ -24,6 +26,7 @@ export default function AppInput({
   error, 
   type = "text", 
   prefix,
+  disabled,
   className
 }: FormInputFieldProps) {
 
@@ -46,8 +49,9 @@ export default function AppInput({
           type={inputType}
           id={name as string}
           placeholder={placeholder}
+          disabled={disabled}
           className={cn(
-            "border border-gray-300 rounded-md max-w-full w-full text-sm py-3 h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400", 
+            "border border-gray-300 rounded-md max-w-full w-full text-sm py-3 disabled:cursor-not-allowed h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400", 
             prefix ? "pl-8" : "",
             error ? "border-red-500 focus:ring-red-500" : "border-gray-300"
           )}

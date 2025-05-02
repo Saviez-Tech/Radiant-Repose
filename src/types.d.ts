@@ -1,6 +1,7 @@
 interface IAuthUser {
     id: string | null;
     emailOrUsername: string | null;
+    name: string | null,
     group: "Administrator" | "Worker" | null;
 }
 
@@ -19,8 +20,8 @@ type Product = {
     description?: string;
     stock_quantity: number;
     barcode: string;
-    category: "luxury-collection" | "spa-section" | "pharmacy";
-    productType: ProductType;
+    section: "luxury-collection" | "spa-section" | "pharmacy";
+    category: ProductType;
     branch: number
 }
 
@@ -28,15 +29,6 @@ interface ScannedProduct extends Product {
     quantity: number;
     totalPrice: number;
 }
-
-interface Transaction extends Product {
-    quantity: number;
-    time: string;
-    date: string;
-    amount: string;
-    balance: string;
-}
-
 
 type Branch = {
     id: number,
@@ -46,25 +38,79 @@ type Branch = {
 }
 
 
-type TimeFilterType = 'today' | 'yesterday' | 'lastWeek' | 'lastMonth' | 'annual';
+type DateFilter = "day" | "week" | "month" ;
+
 
 interface Staff {
     id: string;
     name: string;
-    user: number;
+    user: string;
+    username: string;
     phone_number: string;
     branch: Branch;
     status: 'Active' | 'Inactive';
     address: string,
 }
 
-interface AdminTransaction extends Product {
-    quantity: number;
-    time: string;
+
+// Admin Dashboard Area Components Data
+type SalesSummaryData = {
+    [category: ProductType]: {
+      total_quantity_sold: number;
+      total_amount_made: number;
+    }
+}  
+
+type StatData = {
+    total_goods_sold: number,
+    total_price: number
+    low_stock: number
+}
+
+interface SaleRecord {
+    staff: Staff;
+    subtotal: string;
+    discount: string;
+    customer_name: string;
+    customer_contact: string;
     date: string;
+    scanned_items: ScannedProduct[]
+}
+  
+// For an array of sales:
+type SalesRecordList = SaleRecord[]
+
+
+interface Transaction {
+    id: string;
+    barcode: string;
+    name: string;
+    image_url: string;
+    quantity: number;
+    price: number;
+    date: string;
+    time: string;
     amount: string;
     staff: Staff;
+    subtotal: string;
+    discount: string;
+    customer_name: string;
+    customer_contact: string;
 }
+  
+
+type SalePayload = {
+    subtotal: number;
+    discount: number;
+    customer_name: string;
+    customer_contact: string;
+    scanned_items: {
+      product_id: string;
+      quantity: number;
+    }[]
+}
+  
+
 
 type AppPageError = {
   error: Error & { digest?: string },

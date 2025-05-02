@@ -1,32 +1,32 @@
 "use client"
 
-import { addProductHandler } from "@/actions";
+import { addProductHandler, editProductHandler } from "@/actions/product.server";
+import SubmitBtnWithLoader from "@/components/buttons/SubmitBtnWithLoader";
 import AppInput from "@/components/custom-utils/AppInput";
-import AppSelect from "@/components/custom-utils/AppSelect";
-import FileUpload from "@/components/custom-utils/FileUpload";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
-import { productFormSchema, ProductFormValues } from "@/schemas/addProduct.schema";
+import { editProductFormSchema, EditProductFormValues, productFormSchema, ProductFormValues } from "@/schemas/addProduct.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, LucideArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import AppSelect from "@/components/custom-utils/AppSelect";
+import FileUpload from "@/components/custom-utils/FileUpload";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-export default function ProductForm({ defaultValues, formActionType }: { defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
+export default function ProductForm({ defaultValues, formActionType, productID }: { productID: string, defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
 
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<ProductFormValues>({
-    resolver: zodResolver(productFormSchema),
+  } = useForm({
+    resolver: formActionType === "edit" 
+      ? zodResolver(editProductFormSchema)
+      : zodResolver(productFormSchema),
     defaultValues,
   })
-
   const router = useRouter()
 
   const productSectionOptions = [
@@ -40,10 +40,10 @@ export default function ProductForm({ defaultValues, formActionType }: { default
     { value: "perfumes", label: "Perfumes" },
   ]
 
-  const onSubmit: SubmitHandler<ProductFormValues> = async(data) => {
-    const { success, error } = await addProductHandler(data)
+  const onSubmit: SubmitHandler<ProductFormValues | EditProductFormValues> = async(data) => {
+    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID)
     if (success){
-      toast.success("Product Added")
+      toast.success(`Product ${formActionType === "add" ? "Added" : "Edited"}`)
       router.push("/admin/product-management/luxury-collection")
     }
     else if (error){
@@ -51,10 +51,60 @@ export default function ProductForm({ defaultValues, formActionType }: { default
     }
   }
 
+  // Render different form based on formActionType
+  if (formActionType === "edit") {
+    return (
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
+        <div className="grid grid-cols-2 gap-8 mb-6">
+          <AppInput
+            label="Product Name"
+            name="productName"
+            placeholder="Enter Product name"
+            register={register}
+            error={errors.productName?.message}
+          />
+
+        <FileUpload
+          label="Upload Product Photo"
+          name="image"
+          className="h-12"
+          control={control}
+          error={errors.image?.message}
+        />
+
+          <div className="space-y-1 max-w-full">
+            <Label htmlFor="unitPrice" className="font-medium mb-1 text-primary-dark_gray">
+              Unit Price
+            </Label>
+            <div className="flex max-w-full rounded-md focus-within:outline-offset-0 focus-within:outline focus-within:outline-[1.5px] focus-within:outline-stone-400">
+              <div className="flex items-center justify-center bg-gray-100 px-3 border border-r-0 border-gray-300 rounded-l-md">
+                <span className="text-gray-500">₦</span>
+              </div>
+              <input
+                type="text"
+                id="unitPrice"
+                placeholder="150,000"
+                className={cn(
+                  "border rounded-r-md border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
+                  errors.unitPrice ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                )}
+                {...register("unitPrice")}
+              />
+            </div>
+            {errors.unitPrice && <p className="text-xs text-red-500">{errors.unitPrice.message}</p>}
+          </div>
+        </div>
+
+        <div className="flex mt-10">
+          <SubmitBtnWithLoader isSubmitting={isSubmitting} text="Update Product" />
+        </div>
+      </form>
+    )
+  }
+
+  // Add mode form with all fields
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
-      
-      {/* Grid layout with 3 columns and auto rows */}
       <div className="grid md:grid-cols-3 gap-x-6 gap-y-8 mb-6">
         <AppSelect
           label="Product Section"
@@ -152,19 +202,7 @@ export default function ProductForm({ defaultValues, formActionType }: { default
       </div>
 
       <div className="flex mt-10">
-        <button className="flex gap-2 bg-primary-green w-fit !text-white font-medium text-sm rounded-md px-5 py-3 hover:bg-green-600 transition-colors">
-          {isSubmitting ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            Loading...
-          </>
-        ) : (
-          <>
-            Save Changes
-            <LucideArrowRight className="h-4 w-4" />
-          </>
-        )}
-        </button>
+        <SubmitBtnWithLoader isSubmitting={isSubmitting} text="Create Product" />
       </div>
     </form>
   )

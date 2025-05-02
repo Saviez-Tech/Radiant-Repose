@@ -9,7 +9,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { LoginAccountFormData, loginSchema } from "@/schemas/login.schema";
 import Logo from "@/components/layout-components/Logo";
 import PasswordInput from "@/components/custom-utils/PasswordInput";
-import { LoginHandler } from "@/actions";
+import { LoginHandler } from "@/actions/auth.server";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice";
@@ -32,15 +32,17 @@ export default function Login(){
 
     const handleFormSubmit : SubmitHandler<LoginAccountFormData> = async(data) => {
         try{
-            const { group, id, username } = await LoginHandler(data.phoneOrEmail, data.password)
-            dispatch(setAuthUser({ emailOrUsername: username, id, group }))
+            const { group, id, username, name } = await LoginHandler(data.phoneOrEmail, data.password)
+            dispatch(setAuthUser({ emailOrUsername: username, id, group, name }))
 
             toast.success("Login Successful")
             if (redirectPath && redirectPath.length > 2){
-                router.push(redirectPath)
+                redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator" ? router.push("/admin") : 
+                redirectPath.startsWith("/pos")  && group.toLowerCase() === "worker" ? router.push("/pos") : null;
                 return;
             }
-            group === "Administrator" ? router.push("/admin") : router.push("/pos")
+
+            group.toLowerCase() === "administrator" ? router.push("/admin") : router.push("/pos")  
         }
         catch(err){
             if (err instanceof Error) {
@@ -88,7 +90,6 @@ export default function Login(){
                             <PasswordInput id="password" name="password" register={register} />
                             {errors.password?.message && <ErrorPara errorText={errors.password?.message} />}
                         </div>
-                        <button onClick={() => router.push("/auth/forgot_password")} className="text-primary-bright_yellow text-sm font-medium hover:text-red-400">Forgot Password?</button>
 
                         <div className="mt-6">
                             <button
@@ -107,7 +108,6 @@ export default function Login(){
                                     "Login"
                                 )}
                             </button>
-                            <p className="md:hidden mt-3 font-medium text-sm md:text-base">Don’t have an account? <Link className="text-primary-bright_yellow  ms-2 font-semibold" href="/auth/login">Sign  up</Link></p>
                         </div>
                     </form>
                 </div>
