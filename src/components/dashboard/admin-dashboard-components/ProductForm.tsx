@@ -14,7 +14,7 @@ import FileUpload from "@/components/custom-utils/FileUpload";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export default function ProductForm({ defaultValues, formActionType, productID }: { productID: string, defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
+export default function ProductForm({ defaultValues, formActionType, productID }: { productID?: string, defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
 
   const {
     register,
@@ -41,7 +41,7 @@ export default function ProductForm({ defaultValues, formActionType, productID }
   ]
 
   const onSubmit: SubmitHandler<ProductFormValues | EditProductFormValues> = async(data) => {
-    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID)
+    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID || "")
     if (success){
       toast.success(`Product ${formActionType === "add" ? "Added" : "Edited"}`)
       router.push("/admin/product-management/luxury-collection")
