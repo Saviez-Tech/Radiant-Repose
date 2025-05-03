@@ -79,13 +79,27 @@
 //     }
 // ]
 
+import BlogPageForm from "@/components/blog-page/BlogPageInput";
+
 export default function Page(){
     return (
         <main>
             <section>
                 <div>
-                    <div>
-                        <h1></h1>
+                    <div className="flex w-full bg-gradient-to-r from-amber-50 to-amber-100 relative">
+                        <div className="w-7/12 p-8 pl-6">
+                            <h1 className="text-3xl font-bold text-gray-900 mb-4">Read from our exclusive blog</h1>
+                            <p className="text-gray-700 leading-relaxed">
+                                Discover expert tips, wellness insights, and the latest in luxury self-care — curated to help you live radiantly every day.
+                            </p>
+                        </div>
+                        
+                        <div className="w-5/12 p-8 flex flex-col justify-center">
+                            <p className="text-right mb-2 text-gray-800 font-medium">Find article using "Specific Keywords"</p>
+                            <BlogPageForm />
+                        </div>
+                        
+                        <div className="absolute right-1/3 top-0 bottom-0 w-0.5 bg-blue-500"></div>
                     </div>
                 </div>
             </section>

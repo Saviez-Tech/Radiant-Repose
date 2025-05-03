@@ -40,7 +40,7 @@ export default function FileUpload({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, ref, ...rest } }) => (
+        render={({ field: { onChange, value, ref, ...rest } }) => (
           <div
             onClick={handleContainerClick}
             className={cn(
@@ -60,6 +60,7 @@ export default function FileUpload({
                   ref(instance)
                 }}
                 onChange={(e) => {
+                  console.log(value)
                   const file = e.target.files?.[0]
                   if (file) {
                     setFileName(file.name)
