@@ -26,8 +26,10 @@ export default function ServicesSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
+
 const services = [
   {
     title: "Spa session",
@@ -50,4 +52,4 @@ const services = [
     className: "bg-white",
     img: "/icons/phamacy.svg",
   },
-];
+]
