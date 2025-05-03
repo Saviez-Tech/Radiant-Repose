@@ -15,37 +15,6 @@ export default function BlogCard({ blogData }:{ blogData: BlogPost }) {
           />
         </div>
         
-        {/* Cloud and wifi icons overlay */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="flex w-full items-center justify-center space-x-6">
-            <div className="flex flex-col items-center">
-              <div className="mb-4 h-5 w-5 rounded-full bg-white/20"></div>
-              <div className="h-10 w-10 rounded-full bg-white/20"></div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="mb-12 h-5 w-5 rounded-full bg-white/20"></div>
-              <div className="h-6 w-12 rounded-lg bg-white/20"></div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="mb-8 h-5 w-5 rounded-full bg-white/20"></div>
-              <div className="h-8 w-14 rounded-lg bg-white/20"></div>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="mb-16 h-5 w-5 rounded-full bg-white/20"></div>
-              <div className="h-6 w-10 rounded-lg bg-white/20"></div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Glowing tablet and hand */}
-        <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-6">
-          <div className="relative">
-            <div className="h-4 w-36 rounded-lg bg-yellow-300 shadow-lg shadow-yellow-300/50"></div>
-            <div className="absolute -top-6 right-4 h-8 w-4 rounded-full bg-gray-800"></div>
-          </div>
-        </div>
-        
-        {/* Date badge */}
         <div className="absolute bottom-0 right-0 bg-yellow-500 px-4 py-2 text-white">
           {blogData.date}
         </div>
@@ -54,23 +23,22 @@ export default function BlogCard({ blogData }:{ blogData: BlogPost }) {
       {/* Author info */}
       <div className="border-b border-gray-200 p-4">
         <div className="flex items-center">
-          <img 
-            src="/api/placeholder/40/40" 
-            alt="Dominica Lopez" 
+          <Image
+            src={blogData.author.avatar}
+            alt={blogData.author.name}
             className="mr-3 h-10 w-10 rounded-full object-cover"
           />
           <div>
-            <h3 className="font-bold text-gray-800">Dominica Lopez</h3>
-            <p className="text-sm text-gray-600">Spa Expert</p>
+            <h3 className="font-bold text-gray-800">{blogData.author.name}</h3>
+            <p className="text-sm text-gray-600">{blogData.author.role}</p>
           </div>
         </div>
       </div>
       
-      {/* Content */}
       <div className="p-4">
-        <h2 className="mb-3 text-2xl font-bold text-gray-800">How to Stay on Track Without Stress</h2>
+        <h2 className="mb-3 text-2xl font-bold text-gray-800">{blogData.title}</h2>
         <p className="mb-4 text-gray-600">
-          Discover pharmacy tools and techniques that simplify your daily medication routine.
+          {blogData.description.slice(0,20)}
         </p>
         
         <ReadMoreBtn />

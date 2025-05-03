@@ -9,15 +9,17 @@ import ErrorPara from "./ErrorPara";
 type FormFileUploadFieldProps = {
   label: string;
   name: keyof ProductFormValues;
-  control: Control<any,any>;
+  control: Control<any>;
   error?: string;
   className?: string;
+  disabled?: boolean
 }
 
 export default function FileUpload({ 
   label, 
   name, 
   control, 
+  disabled,
   error,
   className
 }: FormFileUploadFieldProps){
@@ -38,7 +40,7 @@ export default function FileUpload({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, ref, ...rest } }) => (
+        render={({ field: { onChange, value, ref, ...rest } }) => (
           <div
             onClick={handleContainerClick}
             className={cn(
@@ -52,6 +54,7 @@ export default function FileUpload({
                 accept="image/*"
                 id={name}
                 className="hidden"
+                disabled={disabled}
                 ref={(instance) => {
                   fileInputRef.current = instance;
                   ref(instance)
