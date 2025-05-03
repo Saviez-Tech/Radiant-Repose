@@ -64,7 +64,7 @@ export default function Login(){
     return(
         <main className="">
             <div className="glob-px text-primary-light_black pb-12 md:basis-1/2 md:px-10">
-                <div className="flex justify-between gap-4 items-center py-10">
+                <div className="flex flex-col md:flex-row justify-between gap-y-8 gap-x-4 items-center py-10">
                     <Logo src={LogoSrc} className="w-48" />
                     <div>
                         <h2 className="font-medium text-base text-primary-deepBlack"><span className="font-semibold">Radiant Repose</span> Point of Sales System</h2>
