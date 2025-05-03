@@ -28,7 +28,7 @@ export async function LoginHandler(email: string, password: string) {
     try {
       // Try to parse as JSON
       data = JSON.parse(responseText)
-    } catch (e) {
+    } catch {
       console.error("Failed to parse response as JSON:", responseText)
       throw new Error("Invalid response from server")
     }

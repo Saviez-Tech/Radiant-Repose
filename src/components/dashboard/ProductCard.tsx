@@ -12,9 +12,13 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
   
   const handleCardClick = () => {
-    if (isOutOfStock) return; // Do nothing if out of stock
-    isSelected ? dispatch(deselectItem(product.barcode)) : dispatch(selectItem(product));
-  };
+    if (isOutOfStock) return; 
+    if (isSelected){
+      dispatch(deselectItem(product.barcode))
+    }else{
+      dispatch(selectItem(product))
+    }
+  }
 
   return (
     <div  
