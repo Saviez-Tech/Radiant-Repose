@@ -85,7 +85,11 @@ export default function CustomerMonitorCart() {
 
 
   useEffect(() => {
-    (scannedItems.length && orderNumber) ? router.replace(`/cart-monitor?order=${orderNumber}`) : router.replace(`/cart-monitor`)
+    if (scannedItems.length && orderNumber) {
+      router.replace(`/cart-monitor?order=${orderNumber}`);
+    } else {
+      router.replace(`/cart-monitor`);
+    }
   },[scannedItems.length,orderNumber])
 
 

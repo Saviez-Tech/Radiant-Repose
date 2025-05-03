@@ -48,13 +48,17 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
             success = (await staffStatusHandler(showConfirmModal.staffID,"disable")).success;
             error = (await staffStatusHandler(showConfirmModal.staffID,"disable")).error;
 
-            success &&  toast.success(`Staff #${showConfirmModal.staffID} is disabled`)
+            if(success){
+                toast.success(`Staff #${showConfirmModal.staffID} is disabled`)
+            }
             await revalidatePathHandler("/admin/staff-management")
         }else if (paginatedStaff.find(v => v.id === showConfirmModal.staffID)?.status === "Inactive"){
             success = (await staffStatusHandler(showConfirmModal.staffID,"enable")).success;
             error = (await staffStatusHandler(showConfirmModal.staffID,"enable")).error;
 
-            success &&  toast.success(`Staff #${showConfirmModal.staffID} is enabled`)
+            if(success){
+                toast.success(`Staff #${showConfirmModal.staffID} is enabled`)
+            }
             await revalidatePathHandler("/admin/staff-management")
         }
 

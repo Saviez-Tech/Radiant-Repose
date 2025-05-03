@@ -26,7 +26,7 @@ export default function Page(){
                     phoneNumber: staffToEdit?.phone_number || ""
                 }} 
                 formActionType="edit" 
-                staffID={staffToEdit?.id!}
+                staffID={staffToEdit?.id || ""}
             />
         </main>
     )

@@ -15,9 +15,6 @@ export default function ClearTransactionBtn(){
     const [showSuccessModal,setShowSuccessModal] = useState(false)
     const dispatch = useAppDispatch()
 
-    const onConfirmClearTransaction = async() => {
-        setShowConfirmModal(false)
-    }
 
     const onCancelAction = async () => {
         setShowConfirmModal(false)
@@ -25,8 +22,8 @@ export default function ClearTransactionBtn(){
 
     const handleConfirmClear = () => {
         dispatch(clearScannedItems())
-        setShowSuccessModal(false)
-        setShowSuccessModal(true)
+        setShowConfirmModal(false)
+        setShowConfirmModal(true)
     }
     
     return (
@@ -39,7 +36,7 @@ export default function ClearTransactionBtn(){
                 <X className="ml-2" size={16} />
             </Button>
 
-            <DestructiveActionPrompt open={showConfirmModal} description="clear this transaction" onCancel={onCancelAction} onConfirm={handleConfirmClear} />
+            <DestructiveActionPrompt processing={false} open={showConfirmModal} description="clear this transaction" onCancel={onCancelAction} onConfirm={handleConfirmClear} />
             <DestructiveActionPromptSuccess onClose={() => setShowSuccessModal(false)} open={showSuccessModal}>
                 <Image src="/icons/cleared-transaction-success.svg" alt="success" width={110} height={110} />
                 <div className="text-center">

@@ -17,8 +17,7 @@ export async function LoginHandler(email: string, password: string) {
     
     if (!response.ok) {
       console.log(response)
-      let errorMessage;
-      errorMessage = response.status === 401 || response.status === 404
+      const errorMessage = response.status === 401 || response.status === 404
         ? "Invalid credentials. Please try again."
         : "Failed to login. Please check your network or try again later.";
       throw new Error(errorMessage)
@@ -60,7 +59,7 @@ export default async function logoutHandler(){
 
     return { success: true, data: "Logout Successful" }
   }
-  catch(err){
+  catch{
     return {
       success: false,
       errorMessage: "Logout Failed"

@@ -4,7 +4,6 @@ import LogoSrc from "../../../../public-assets/logo/Logo1.svg";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoginAccountFormData, loginSchema } from "@/schemas/login.schema";
 import Logo from "@/components/layout-components/Logo";
@@ -37,12 +36,20 @@ export default function Login(){
 
             toast.success("Login Successful")
             if (redirectPath && redirectPath.length > 2){
-                redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator" ? router.push("/admin") : 
-                redirectPath.startsWith("/pos")  && group.toLowerCase() === "worker" ? router.push("/pos") : null;
-                return;
+                if (redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator") {
+                    router.push("/admin");
+                    return;
+                } else if (redirectPath.startsWith("/pos") && group.toLowerCase() === "worker") {
+                    router.push("/pos");
+                    return;
+                }
             }
 
-            group.toLowerCase() === "administrator" ? router.push("/admin") : router.push("/pos")  
+            if (group.toLowerCase() === "administrator") {
+                router.push("/admin")
+            } else {
+                router.push("/pos")
+            }
         }
         catch(err){
             if (err instanceof Error) {

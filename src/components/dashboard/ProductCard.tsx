@@ -6,7 +6,6 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { decrementItemQuantity, deselectItem, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import { parse } from "path";
 
 export default function ProductCard({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
 

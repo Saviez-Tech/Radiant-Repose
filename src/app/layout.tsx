@@ -30,7 +30,7 @@ export default async function RootLayout({
     
       return !userData.id || !userData.username ? null : userData;
 
-    } catch (error) {
+    } catch {
       return null;
     }
   }

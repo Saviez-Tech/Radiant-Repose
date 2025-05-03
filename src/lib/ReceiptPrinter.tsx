@@ -9,17 +9,17 @@ import { Printer, Save } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
 
 interface ReceiptPrinterProps {
-    orderNumber: string;
-    scannedItems: ScannedProduct[];
-    date: string;
-    discount?: number;
-    amountPaid?: number;
-    customerName?: string;
-    cashierName?: string;
-    total: number,
-    subTotal: number,
-    print: boolean,
-    setPrint: Dispatch<SetStateAction<boolean>>
+  orderNumber: string;
+  scannedItems: ScannedProduct[];
+  date: string;
+  discount?: number;
+  amountPaid?: number;
+  customerName?: string;
+  cashierName?: string;
+  total: number,
+  subTotal: number,
+  print: boolean,
+  setPrint: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ReceiptPrinter({ 
@@ -135,7 +135,7 @@ export default function ReceiptPrinter({
 
   return (
     <Modal
-      open={false}
+      open={print}
       onClose={handleClose}
       aria-labelledby="receipt-modal-title"
       aria-describedby="receipt-modal-description"

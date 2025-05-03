@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation"
 import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa"
 import Logo from "./Logo"
 import LogoSrc from "../../public-assets/logo/Logo2.svg"
+import Link from "next/link"
 
 export default function Footer() {
 
@@ -56,36 +57,36 @@ export default function Footer() {
                     <nav>
                         <ul className="space-y-1 text-primary-base_color1/80">
                         <li>
-                            <a
-                            href="/"
-                            className="hover:text-primary-base_color1 transition-colors duration-200"
+                            <Link
+                                href="/"
+                                className="hover:text-primary-base_color1 transition-colors duration-200"
                             >
                             Home
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                             href="/about"
                             className="text-primary-base_color1 font-semibold hover:text-primary-base_color1 transition-colors duration-200"
                             >
                             About Us
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                             href="/services"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                             >
                             Services
-                            </a>
+                            </Link>
                         </li>
                         <li>
-                            <a
+                            <Link
                             href="/blog"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                             >
                             Blog
-                            </a>
+                            </Link>
                         </li>
                         </ul>
                     </nav>
@@ -103,21 +104,21 @@ export default function Footer() {
                         </div>
                         <div className="flex items-center gap-2">
                         <FaEnvelope />
-                        <a
+                        <Link
                             href="mailto:info@radiantrepose.com"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                         >
                             info@radiantrepose.com
-                        </a>
+                        </Link>
                         </div>
                         <div className="flex items-center gap-2">
                         <FaPhone />
-                        <a
+                        <Link
                             href="tel:+2349160666820"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                         >
                             +234 (0)916 0666 820
-                        </a>
+                        </Link>
                         </div>
                     </address>
                 </div>
@@ -127,34 +128,34 @@ export default function Footer() {
                     <h4 className="font-semibold mb-2">SOCIALS</h4>
                     <ul className="space-y-1 text-primary-base_color1/80">
                         <li>
-                        <a
+                        <Link
                             href="https://facebook.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                         >
                             Facebooks
-                        </a>
+                        </Link>
                         </li>
                         <li>
-                        <a
+                        <Link
                             href="https://instagram.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                         >
                             Instagram
-                        </a>
+                        </Link>
                         </li>
                         <li>
-                        <a
+                        <Link
                             href="https://twitter.com"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-primary-base_color1 transition-colors duration-200"
                         >
                             Twitter
-                        </a>
+                        </Link>
                         </li>
                     </ul>
                 </div>

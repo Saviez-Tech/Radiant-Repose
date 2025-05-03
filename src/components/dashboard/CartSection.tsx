@@ -76,6 +76,7 @@ export default function CartSection() {
   }
 
   const handleCompleteSale = async() => {
+    setIsProcessing(true)
     const { success, error } = await addSaleHandler({
       customer_contact: "",
       customer_name: "",
@@ -85,10 +86,13 @@ export default function CartSection() {
     })
 
     if(success){
+      setPrint(true)
       toast.success("Sale Proccessed Successfully")
     }else{
       toast.error(error || "Error Processing Sale")
     }
+
+    setIsProcessing(false)
   }
 
   useEffect(() => {

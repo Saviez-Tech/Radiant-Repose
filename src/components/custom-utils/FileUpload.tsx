@@ -2,7 +2,7 @@ import { ProductFormValues } from "@/schemas/addProduct.schema";
 import { useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { HiMiniCamera } from "react-icons/hi2";
 import ErrorPara from "./ErrorPara";
 import toast from "react-hot-toast";
@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 type FormFileUploadFieldProps = {
   label: string;
   name: keyof ProductFormValues;
-  control: any;
+  control: Control<any,any>;
   error?: string;
   className?: string;
   disabled?: boolean
@@ -41,7 +41,7 @@ export default function FileUpload({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value, ref, ...rest } }) => (
+        render={({ field: { onChange, ref, ...rest } }) => (
           <div
             onClick={handleContainerClick}
             className={cn(

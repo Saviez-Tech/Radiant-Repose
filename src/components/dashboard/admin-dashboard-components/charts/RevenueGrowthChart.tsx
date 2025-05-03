@@ -136,56 +136,10 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
     })
   }
   
-  // Generate monthly data for annual view
-  const generateMonthlyData = (transactions: Transaction[]): ChartDataPoint[] => {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    
-    const now = new Date()
-    const currentMonth = now.getMonth()
-    
-    // Create an array of the last 12 months in order
-    const lastTwelveMonths = Array.from({ length: 12 }, (_, i) => {
-      const monthIndex = (currentMonth - i + 12) % 12;
-      return months[monthIndex];
-    }).reverse()
-    
-    // Group transactions by month
-    const groupedByMonth = transactions.reduce((acc, transaction) => {
-      const date = new Date(transaction.date)
-      const month = months[date.getMonth()];
-      
-      if (!acc[month]) {
-        acc[month] = [];
-      }
-      
-      acc[month].push(transaction)
-      return acc;
-    }, {} as Record<string, Transaction[]>)
-    
-    // Generate data for each month
-    return lastTwelveMonths.map(month => {
-      const monthTransactions = groupedByMonth[month] || [];
-      
-      // Calculate actual revenue from transactions
-      const monthlyRevenue = monthTransactions.reduce((total, t) => {
-        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
-      }, 0);
-      
-      return {
-        label: month.substring(0, 3), // Short month name for display
-        value: monthlyRevenue,
-        displayLabel: month
-      }
-    })
-  }
-  
   // Filter transactions by time period
   const filterTransactionsByTime = (transactions: Transaction[], filter: DateFilter): Transaction[] => {
     const now = new Date()
-    let filterDate = new Date()
+    const filterDate = new Date()
     
     switch (filter) {
       case 'day':

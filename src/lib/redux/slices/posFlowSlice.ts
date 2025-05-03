@@ -44,7 +44,7 @@ export const fetchProductsByBarcode = createAsyncThunk(
         message: "Unknown error occurred",
         status: 500
       })
-    } catch (error) {
+    } catch{
       return rejectWithValue({
         message: "Failed to process request",
         status: 500

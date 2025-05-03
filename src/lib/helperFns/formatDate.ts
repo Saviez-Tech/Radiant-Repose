@@ -26,7 +26,7 @@ export const validateDate = (dateStr: string | undefined): string => {
         if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) {
           return dateStr;
         }
-      } catch (e) {
+      } catch {
         // Invalid date, will return today's date below
       }
     }

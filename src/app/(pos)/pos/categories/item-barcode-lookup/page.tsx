@@ -5,7 +5,7 @@ import ProductCard2 from "@/components/dashboard/ProductCard2"
 import SpinnerLoader from "@/components/loaders/SpinnerLoader"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
-import { addScannedItem, removeBarCodeFromManualInput, setBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
+import { addScannedItem, removeBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
 import clsx from "clsx"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -31,7 +31,9 @@ export default function ItemBarCodeManualLookupPage() {
             setItem(product)
         } else if (errorMessage) {
             setItem(null)
-            status !== 404 && toast.error(errorMessage)
+            if(status !== 404){
+                toast.error(errorMessage)
+            }
         }
 
         setIsLoading(false)

@@ -19,8 +19,8 @@ export function transformSaleRecordsToTransactions(
         day: "2-digit",
         year: "numeric",
       });
-    } catch (error) {
-      console.warn("Could not parse date for time extraction:", sale.date);
+    } catch{
+      console.warn("Could not parse date for time extraction:", sale.date)
     }
 
     sale.scanned_items.forEach((item) => {

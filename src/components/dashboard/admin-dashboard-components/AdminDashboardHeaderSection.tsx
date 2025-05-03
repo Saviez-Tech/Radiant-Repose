@@ -1,11 +1,9 @@
 import { formattedDate } from "@/lib/helperFns/formatDate";
-import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { AdminDashBoardHeaderSectionPageName } from "./AdminDashboardPageName";
 import Logo from "@/components/layout-components/Logo";
 import LogoSrc from "../../../public-assets/logo/Logo1.svg";
 import AdminMobileSidebar from "./AdminMobileSidebar";
-import { Menu } from "lucide-react";
 import ToggleMobileMenuButton from "@/components/custom-utils/ToggleMobileMenuButton";
 import AuthUserDetailsWithActiveStatus from "@/components/layout-components/AuthUserDetailsWithActiveStatus";
 
