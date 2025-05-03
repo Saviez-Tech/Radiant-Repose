@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+
 // Paths that require authentication
 const protectedPaths = ['/pos', '/admin']
 
