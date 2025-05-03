@@ -28,10 +28,10 @@ export const fetchProductsByBarcode = createAsyncThunk(
   async (barcode: string, { rejectWithValue }) => {
 
     try {      
-      const { product, errorMessage, status } = await fetchProductAction(barcode)
+      const { products, errorMessage, status } = await fetchProductAction(barcode)
       
-      if (product) {
-        return product;
+      if (products?.length) {
+        return products;
       }
       else if (errorMessage) {
         return rejectWithValue({
@@ -189,21 +189,29 @@ const posFlowSlice = createSlice({
       .addCase(fetchProductsByBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
         
-        // Check if the product already exists in scanned items
-        const existingIndex = action.payload
-          ? state.scannedItems.findIndex(
-              item => item.barcode === action.payload?.barcode
-            )
-          : -1;
-        
-        if (existingIndex !== -1) {
-          // If exists, increment quantity and update total price
-          const existingItem = state.scannedItems[existingIndex];
-          state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1)
-        } else {
-          // If new, add it to scanned items
-          state.scannedItems.push(action.payload)
+        if (!action.payload || !Array.isArray(action.payload) || action.payload.length === 0) {
+          state.error = "No products found for this barcode";
+          state.barcode = null;
+          return;
         }
+        
+        action.payload?.forEach(product => {
+          if (!product) return;
+          
+          // Check if the product already exists in scanned items
+          const existingIndex = state.scannedItems.findIndex(
+            item => item.barcode === product.barcode
+          )
+          
+          if (existingIndex !== -1) {
+            // If exists, increment quantity and update total price
+            const existingItem = state.scannedItems[existingIndex]
+            state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1);
+          } else {
+            // If new, add it to scanned items
+            state.scannedItems.push(product)
+          }
+        })
         
         state.barcode = null;
         state.error = null;
