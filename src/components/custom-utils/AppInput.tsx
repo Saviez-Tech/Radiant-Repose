@@ -5,13 +5,12 @@ import { Label } from "../ui/label";
 import ErrorPara from "./ErrorPara";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { StaffFormValues } from "@/schemas/addStaff.schema";
-import { UseFormRegister } from "react-hook-form";
 
 type FormInputFieldProps = {
   label: string;
   name: keyof StaffFormValues | keyof ProductFormValues;
   placeholder: string;
-  register: UseFormRegister<any>;
+  register: any;
   error?: string;
   type?: string;
   prefix?: React.ReactNode;

@@ -13,7 +13,7 @@ import {
 } from "@/schemas/addStaff.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form";
 import toast from "react-hot-toast";
 
 export default function StaffForm({
@@ -69,28 +69,28 @@ export default function StaffForm({
           label="Full Name"
           name="fullName"
           placeholder="Enter Full Name"
-          register={register}
+          register={register as UseFormRegister<StaffFormValues>}
           error={errors.fullName?.message}
         />
         <AppInput
           label="Phone Number"
           name="phoneNumber"
           placeholder="Enter Phone Number"
-          register={register}
+          register={register as UseFormRegister<StaffFormValues>}
           error={errors.phoneNumber?.message}
         />
         <AppInput
           label="Email Address Or Username"
           name="emailOrUsername"
           placeholder="Enter Email Address Or Username"
-          register={register}
+          register={register as UseFormRegister<StaffFormValues>}
           error={errors.emailOrUsername?.message}
         />
         <AppInput
           label="Address"
           name="address"
           placeholder="Enter Address"
-          register={register}
+          register={register as UseFormRegister<StaffFormValues>}
           error={errors.address?.message}
         />
 
@@ -110,7 +110,7 @@ export default function StaffForm({
               name="password"
               type="password"
               placeholder="Enter Password"
-              register={register}
+              register={register as UseFormRegister<StaffFormValues>}
               error={errors.password?.message}
             />
             <AppInput
@@ -118,7 +118,7 @@ export default function StaffForm({
               name="confirmPassword"
               type="password"
               placeholder="Enter Password"
-              register={register}
+              register={register as UseFormRegister<StaffFormValues>}
               error={errors.confirmPassword?.message}
             />
           </>
