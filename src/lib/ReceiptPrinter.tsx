@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import Receipt from '@/components/dashboard/Receipt';
 import toast from 'react-hot-toast';
-import { Modal, Box, Typography } from '@mui/material';
+import { Modal, Box } from '@mui/material';
 import { Printer, Save } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
 import { useAppDispatch } from './redux/hooks';

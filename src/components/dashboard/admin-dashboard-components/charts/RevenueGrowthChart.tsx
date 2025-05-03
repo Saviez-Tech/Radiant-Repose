@@ -144,7 +144,6 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
     oneMonthAgo.setHours(0, 0, 0, 0);
     
     // Create 4 weekly buckets
-    const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
     const weeklyData: ChartDataPoint[] = [];
     
     // Calculate the start date for each week (counting backward from today)

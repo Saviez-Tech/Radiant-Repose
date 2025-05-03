@@ -43,7 +43,6 @@ export default function Receipt({
   scannedItems, 
   date, 
   discount = 0,
-  amountPaid = 0,
   customerName = "",
   total,
   subTotal,

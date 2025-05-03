@@ -38,7 +38,7 @@ export default function FileUpload({
       <Controller
         name={name}
         control={control}
-        render={({ field: { onChange, value, ref, ...rest } }) => (
+        render={({ field: { onChange, ref, ...rest } }) => (
           <div
             onClick={handleContainerClick}
             className={cn(
