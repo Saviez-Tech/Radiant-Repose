@@ -32,7 +32,7 @@ export default function AuthUserDetailsWithActiveStatus(){
                 <span className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-green-500" />
             </div>
             <div>
-                <p className="truncate text-sm text-primary-deepBlack capitalize font-medium">{emailOrUsername}</p>
+                <p className="truncate text-sm text-primary-deepBlack capitalize font-medium">{name || emailOrUsername}</p>
                 <p className="text-xs">{group?.toLowerCase() === "worker" ? `Staff/Cashier ${userID}` : "Admin"}</p>
             </div>
         </div>
