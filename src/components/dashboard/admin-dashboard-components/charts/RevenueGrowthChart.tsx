@@ -62,7 +62,7 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
       case 'week':
         return generateDailyData(filteredTransactions)
       case 'month':
-        return generateDailyData(filteredTransactions)
+        return generateWeeklyData(filteredTransactions)
       default:
         return generateDailyData(filteredTransactions)
     }
@@ -136,6 +136,50 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
     })
   }
   
+  // Generate weekly data for month view
+  const generateWeeklyData = (transactions: Transaction[]): ChartDataPoint[] => {
+    const now = new Date();
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(now.getMonth() - 1);
+    oneMonthAgo.setHours(0, 0, 0, 0);
+    
+    // Create 4 weekly buckets
+    const weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+    const weeklyData: ChartDataPoint[] = [];
+    
+    // Calculate the start date for each week (counting backward from today)
+    for (let i = 0; i < 4; i++) {
+      const weekEnd = new Date(now);
+      weekEnd.setDate(now.getDate() - (i * 7));
+      
+      const weekStart = new Date(weekEnd);
+      weekStart.setDate(weekEnd.getDate() - 6);
+      
+      // Filter transactions for this week
+      const weekTransactions = transactions.filter(t => {
+        const transactionDate = new Date(t.date);
+        return transactionDate >= weekStart && transactionDate <= weekEnd;
+      });
+      
+      // Calculate revenue for this week
+      const weeklyRevenue = weekTransactions.reduce((total, t) => {
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
+      
+      // Format date range for tooltip
+      const dateRangeStr = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+      
+      weeklyData.unshift({
+        label: `Week ${4-i}`,
+        value: weeklyRevenue,
+        displayLabel: `Week ${4-i}`,
+        displayTime: dateRangeStr
+      });
+    }
+    
+    return weeklyData;
+  }
+  
   // Filter transactions by time period
   const filterTransactionsByTime = (transactions: Transaction[], filter: DateFilter): Transaction[] => {
     const now = new Date()
@@ -170,9 +214,9 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
         <div className="bg-white p-3 text-xs border border-gray-200 rounded shadow-sm">
           <p className="font-medium text-gray-600">
             {data.displayLabel}
-            {data.displayTime ? ` - ${data.displayTime}` : ''}
+            {data.displayTime ? ` (${data.displayTime})` : ''}
           </p>
-          <p className="text-green-600 font-medium">{`Revenue: $${(payload?.[0]?.value ?? 0).toLocaleString()}`}</p>
+          <p className="text-green-600 font-medium">{`Revenue: N${(payload?.[0]?.value ?? 0).toLocaleString()}`}</p>
         </div>
       )
     }
@@ -184,7 +228,7 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
     switch(timeFilter) {
       case 'day': return 'Today\'s Revenue (Hourly)';
       case 'week': return 'Weekly Revenue (Daily)';
-      case 'month': return 'Monthly Revenue (Daily)';
+      case 'month': return 'Monthly Revenue (Weekly)';
       default: return 'Revenue Growth Chart';
     }
   }
@@ -215,19 +259,11 @@ function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transa
                 stroke="#E5E7EB"
               />
               <XAxis 
-                dataKey="label" 
+                dataKey="displayLabel" 
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: '#6B7280', fontSize: 12 }}
                 padding={{ left: 10, right: 10 }}
-                tickFormatter={(value, index) => {
-                  // Format x-axis labels based on filter type
-                  if (timeFilter === 'day') {
-                    // For hourly view, show only selected hours
-                    return parseInt(value) % 3 === 0 ? chartData[index].displayLabel : '';
-                  }
-                  return value;
-                }}
               />
               <YAxis
                 axisLine={false}

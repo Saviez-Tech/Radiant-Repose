@@ -1,11 +1,11 @@
-import { fetchProductByBarcodeAction } from "@/actions/product.server";
+import { fetchProductAction } from "@/actions/product.server";
 import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 
 type InitialState = {
   barcode: string | null;
-  barCodeFromManualInput: string | null;
+  searchValue: string | null;
   selectedItems: Product[];
   scannedItems: ScannedProduct[];
   isLoading: boolean;
@@ -15,7 +15,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   barcode: null,
-  barCodeFromManualInput: null,
+  searchValue: null,
   selectedItems: [],
   scannedItems: [],
   isLoading: false,
@@ -28,7 +28,7 @@ export const fetchProductsByBarcode = createAsyncThunk(
   async (barcode: string, { rejectWithValue }) => {
 
     try {      
-      const { product, errorMessage, status } = await fetchProductByBarcodeAction(barcode)
+      const { product, errorMessage, status } = await fetchProductAction(barcode)
       
       if (product) {
         return product;
@@ -74,8 +74,8 @@ const posFlowSlice = createSlice({
       state.error = null;
     },
 
-    setBarCodeFromManualInput: (state, { payload }: PayloadAction<string>) => {
-      state.barCodeFromManualInput = payload;
+    setSearchValue: (state, { payload }: PayloadAction<string>) => {
+      state.searchValue = payload;
       // Clear error when barcode is being inputted
       state.error = null;
     },
@@ -84,8 +84,8 @@ const posFlowSlice = createSlice({
       state.barcode = null;
     },
     
-    removeBarCodeFromManualInput: (state) => {
-      state.barCodeFromManualInput = null;
+    removeSearchValue: (state) => {
+      state.searchValue = null;
     },
     
     // Product list management
@@ -225,10 +225,10 @@ export const {
   deselectItem,
   clearSelectedItems,
   manageOrderNumber,
-  removeBarCodeFromManualInput,
+  removeSearchValue,
   addScannedItem,
   incrementItemQuantity,
-  setBarCodeFromManualInput,
+  setSearchValue,
   decrementItemQuantity,
   removeScannedItem,
   clearScannedItems,

@@ -7,6 +7,8 @@ import toast from 'react-hot-toast';
 import { Modal, Box, Typography } from '@mui/material';
 import { Printer, Save } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
+import { useAppDispatch } from './redux/hooks';
+import { clearScannedItems } from './redux/slices/posFlowSlice';
 
 interface ReceiptPrinterProps {
   orderNumber: string;
@@ -35,7 +37,8 @@ export default function ReceiptPrinter({
   print,
   cashierName = "" 
 }: ReceiptPrinterProps) {
-  const receiptRef = useRef(null);
+  const receiptRef = useRef(null)
+  const dispatch = useAppDispatch()
 
   const handleClose = () => {
     setPrint(false);
@@ -96,8 +99,9 @@ export default function ReceiptPrinter({
             </script>
           </body>
         </html>
-      `);
-      printWindow.document.close();
+      `)
+      dispatch(clearScannedItems())
+      printWindow.document.close()
     } catch (error) {
       console.error('Error generating receipt image:', error);
       toast.error('Failed to generate receipt. Please try again.');
@@ -123,13 +127,14 @@ export default function ReceiptPrinter({
       link.download = `Receipt-${orderNumber}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
-      toast.success('Receipt saved successfully');
+      toast.success('Receipt saved successfully')
+      dispatch(clearScannedItems())
     } catch (error) {
       console.error('Error saving receipt image:', error);
       toast.error('Failed to save receipt. Please try again.');
     }
     finally {
-      setPrint(false);
+      setPrint(false)
     }
   }
 
@@ -156,16 +161,14 @@ export default function ReceiptPrinter({
         borderRadius: 2,
         overflow: 'auto'
       }}>
-        <Typography 
+        <h2 
           id="receipt-modal-title" 
-          variant="h6" 
-          component="h2" 
-          sx={{ mb: 2, textAlign: 'center' }}
+          className='text-center font-medium'
         >
           Receipt #{orderNumber}
-        </Typography>
+        </h2>
         
-        <div ref={receiptRef} className="bg-white w-full flex justify-center flex-col items-center">
+        <div ref={receiptRef} className="bg-white border-2 mt-2 border-dotted border-gray-400 w-full flex justify-center flex-col items-center">
           <Receipt
             date={date}
             orderNumber={orderNumber}

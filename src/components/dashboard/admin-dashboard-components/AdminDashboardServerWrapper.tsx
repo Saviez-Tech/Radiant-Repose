@@ -8,12 +8,12 @@ import { validateDate } from "@/lib/helperFns/formatDate";
 export const revalidate = 1800 ;
 
 const validateFilter = (filter: string | undefined) => {
-  if (!filter) return "today";
+  if (!filter) return "day";
 
-  const validFilters = ['month', 'yesterday', 'week', 'today', 'yesterday']
+  const validFilters = ['month','week', 'day']
   return validFilters.includes(filter) 
     ? (filter) 
-    : 'today';
+    : 'day';
 }
 
 export async function fetchDashboardData(filter?: string, date?: string): Promise<{
@@ -38,12 +38,7 @@ export async function fetchDashboardData(filter?: string, date?: string): Promis
       axiosInstance.get(`${baseUrl}/api/admin/sales/?date=${validatedDate}`),
       axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=${validatedFilter}`)
     ])
-    
-    console.log({
-      categorySales: categorySalesRes.data,
-      sales: salesRes.data,
-      totalGoodsSold: totalGoodsSoldRes.data
-    })
+
     return {
       success: true,
       data: {
@@ -57,6 +52,7 @@ export async function fetchDashboardData(filter?: string, date?: string): Promis
     
     if (axios.isAxiosError(err)) {
       if (err.response) {
+        console.log(err.response.data)
         errorMessage = handleApiError(err.response.data);
       } else if (err.request) {
         console.error("Request failed:", err.request);

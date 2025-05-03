@@ -14,10 +14,10 @@ const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h3 className="text-xs font-semibold truncate pb-3">{name}</h3>
+          <h3 className="text-xs font-semibold truncate pb-1">{name}</h3>
           <span className="text-xs">{quantity}x</span>
         </div>
-        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price, false)}</p>
+        <p className={`${dm_mono.className} text-xs`}>Price: {formatNaira(price, false)}</p>
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price, quantity), false)}</span>
         </div>
@@ -77,11 +77,6 @@ export default function Receipt({
         <div className="flex justify-between py-2">
           <span className="">Discount</span>
           <span className="">{discount ? formatNaira(discount, true) : '--'}</span>
-        </div>
-        
-        <div className="flex justify-between py-2">
-          <span className="">Amount Paid</span>
-          <span className="">{amountPaid ? formatNaira(amountPaid, true) : '--'}</span>
         </div>
         
         <div className="flex justify-between py-2">

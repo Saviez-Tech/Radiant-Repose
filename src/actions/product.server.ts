@@ -7,16 +7,16 @@ import { revalidatePath } from "next/cache";
 
 
 type FetchProductResult = {
-  product?: ScannedProduct;
+  products?: ScannedProduct[];
   errorMessage?: string;
   status?: number;
 }
   
-export const fetchProductByBarcodeAction = async (
-  barcode: string
+export const fetchProductAction: (searchValue: string) => Promise<FetchProductResult> = async (
+  searchValue: string
 ): Promise<FetchProductResult> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${barcode}`,{
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
       method: "GET",
       headers: {
         'Authorization': `Token ${await getUserSession()}`,
@@ -41,12 +41,13 @@ export const fetchProductByBarcodeAction = async (
 
 
     return {
-      product: (data && typeof data === "object" && data.length) ? data[0] : null,
+      products: (data && typeof data === "object" && data.length) ? data : [],
       status: 200,
     }
   } catch (err) {
     console.error("Error fetching product:", err)
     return {
+      products: [],
       errorMessage: "An unexpected error occurred. Please try again.",
       status: 500,
     }
@@ -105,8 +106,7 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
     })
 
     if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(handleApiError(errorData))
+      console.log(response)
     }
 
     const data = await response.json()
@@ -224,9 +224,10 @@ export async function addSaleHandler(saleDetails: SalePayload){
   try {
     const auth_token = await getUserSession()
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/sale`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/sales/`, {
       method: "POST",
       headers: {
+        'Content-Type': 'application/json',
         Authorization: `Token ${auth_token}`,
       },
       body: JSON.stringify(saleDetails)

@@ -17,18 +17,20 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
       onClick={() => isSelected ? dispatch(deselectItem(product.barcode)) : dispatch(selectItem(product))}
       className={`${isSelected ? "ring-2 ring-red-500" : ""} cursor-pointer relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none`}>
       <div className="relative">
-        {
-          product.image_url?.length ?
-          <Image
-            src={product.image_url}
-            width={300}
-            height={300}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
-          :
-          <Skeleton className="w-full h-full" />
-        }
+        <div className="relative h-40 flex-shrink-0">
+          {
+            product.image_url?.length ?
+            <Image
+              src={product.image_url}
+              width={300}
+              height={300}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+            :
+            <Skeleton className="w-full h-full" />
+          }
+        </div>
        
         <button onClick={() => dispatch(removeScannedItem(product.barcode))} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}>
           <X size={16} />

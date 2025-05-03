@@ -178,7 +178,7 @@ export default function ProductForm({ defaultValues, formActionType, productID }
             register={register}
             error={errors.quantityInStock?.message}
             type="number"
-            className="w-1/2"
+            className="w-1/2 whitespace-nowrap"
           />
         </div>
         

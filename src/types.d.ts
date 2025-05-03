@@ -37,9 +37,7 @@ type Branch = {
     contact_number: string
 }
 
-
-type DateFilter = "day" | "week" | "month" ;
-
+type DateFilter = "day" | "week" | "month";
 
 interface Staff {
     id: string;
@@ -49,13 +47,12 @@ interface Staff {
     phone_number: string;
     branch: Branch;
     status: 'Active' | 'Inactive';
-    address: string,
+    address: string;
 }
-
 
 // Admin Dashboard Area Components Data
 type SalesSummaryData = {
-    [category: ProductType]: {
+    [category in ProductType]?: {
       total_quantity_sold: number;
       total_amount_made: number;
     }
@@ -68,19 +65,25 @@ type StatData = {
 }
 
 interface SaleRecord {
-    staff: Staff;
-    subtotal: string;
-    discount: string;
-    customer_name: string;
-    customer_contact: string;
-    date: string;
-    scanned_items: ScannedProduct[]
+    id: number;
+    product: Product;
+    quantity: number;
+    price_at_sale: string;
+    transaction: {
+        id: number;
+        staff: Staff;
+        timestamp: string;
+        subtotal: string;
+        discount: string;
+        customer_name: string;
+        customer_contact: string;
+    }
 }
-  
+ 
 // For an array of sales:
 type SalesRecordList = SaleRecord[]
 
-
+// Legacy Transaction type - keeping for reference or compatibility
 interface Transaction {
     id: string;
     barcode: string;
@@ -97,8 +100,7 @@ interface Transaction {
     customer_name: string;
     customer_contact: string;
 }
-  
-
+ 
 type SalePayload = {
     subtotal: number;
     discount: number;
@@ -109,9 +111,7 @@ type SalePayload = {
       quantity: number;
     }[]
 }
-  
-
-
+ 
 type AppPageError = {
   error: Error & { digest?: string },
   reset: () => void

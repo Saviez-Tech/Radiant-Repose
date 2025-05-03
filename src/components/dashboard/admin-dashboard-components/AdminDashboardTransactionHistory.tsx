@@ -9,7 +9,7 @@ export default function AdminDashboardTransactionHistory({ transactions, timeFil
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
-  const applyDateFilter = (transactions: Transaction [], filter: DateFilter) => {
+  const applyDateFilter = (transactions: Transaction[], filter: DateFilter) => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     

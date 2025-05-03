@@ -7,28 +7,41 @@ import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 
 // This Is The Product Card Used For The Manual Barcode Lookup Page
-export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: ScannedProduct, handleItemRemove: () => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product | null>> }) {
+export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: ScannedProduct, handleItemRemove: (barcode: string) => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product[]>> }) {
 
   return (
     <div  
       tabIndex={0}
-      onClick={() => setIsSelected(prev => prev?.barcode === product.barcode ? null : product)}
+      onClick={() =>
+        setIsSelected((prev) => {
+          const isSelected = prev.some((v) => v.barcode === product.barcode)
+          if (isSelected) {
+            // Remove it
+            return prev.filter((v) => v.barcode !== product.barcode)
+          } else {
+            // Add it
+            return [...prev, product]
+          }
+        })
+      }
       className={`${isSelected ? "ring-2 ring-red-500" : ""} relative cursor-pointer max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none`}>
       <div className="relative">
-        {
-          product.image_url?.length ?
-          <Image
-            src={product.image_url}
-            width={300}
-            height={300}
-            alt={product.name}
-            className="w-full h-full object-cover"
-          />
-          :
-          <Skeleton className="w-full h-full" />
-        }
+        <div className="relative h-40 flex-shrink-0">
+          {
+            product.image_url?.length ?
+            <Image
+              src={product.image_url}
+              width={300}
+              height={300}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+            :
+            <Skeleton className="w-full h-full" />
+          }
+        </div>
        
-        <button onClick={handleItemRemove} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1 hidden`}>
+        <button onClick={() => handleItemRemove(product.barcode)} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}>
           <X size={16} />
         </button>
       </div>

@@ -159,7 +159,7 @@ export default function CartSection() {
                 <button
                   onClick={handleCompleteSale} 
                   disabled={isProcessing}
-                  className="bg-green-500 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
+                  className="bg-green-500 disabled:cursor-pointer flex justify-center items-center gap-1 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
                 >
                   {
                     !isProcessing && !print ?
