@@ -15,7 +15,7 @@ export default function BlogPageForm(){
             <input
                 type="text"
                 placeholder="Enter search keywords here"
-                className="w-full p-3 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="w-full p-3 pr-10 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-800/50"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
