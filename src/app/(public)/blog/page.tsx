@@ -95,7 +95,7 @@ export default function Page(){
                         </div>
                         
                         <div className="w-5/12 p-8 flex flex-col justify-center">
-                            <p className="text-right mb-2 text-gray-800 font-medium">Find article using "Specific Keywords"</p>
+                            <p className="text-right mb-2 text-gray-800 font-medium">Find article using &quot;Specific Keywords&quot;</p>
                             <BlogPageForm />
                         </div>
                         
