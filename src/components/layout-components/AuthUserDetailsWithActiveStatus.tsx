@@ -10,7 +10,7 @@ export default function AuthUserDetailsWithActiveStatus(){
     // Use local state to prevent hydration mismatch
     const [isMounted, setIsMounted] = useState(false)
     
-    const { emailOrUsername, id: userID, group } = useAppSelector(store => store.authUser)
+    const { emailOrUsername, name, id: userID, group } = useAppSelector(store => store.authUser)
     
     useEffect(() => {
         setIsMounted(true)
@@ -25,7 +25,7 @@ export default function AuthUserDetailsWithActiveStatus(){
             <div className="relative w-fit">
                 <Avatar>
                     <AvatarImage src="/icons/user.svg" />
-                    <AvatarFallback className="uppercase">{emailOrUsername?.slice(0,2)}</AvatarFallback>
+                    <AvatarFallback className="uppercase">{name ? name?.slice(0,2) : emailOrUsername?.slice(0,2)}</AvatarFallback>
                 </Avatar>
 
                 <span className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-green-500 ring-2 ring-white animate-ping" />
@@ -33,7 +33,7 @@ export default function AuthUserDetailsWithActiveStatus(){
             </div>
             <div>
                 <p className="truncate text-sm text-primary-deepBlack capitalize font-medium">{emailOrUsername}</p>
-                <p className="text-xs">{group === "worker" ? `Staff/Cashier ${userID}` : "Admin"}</p>
+                <p className="text-xs">{group?.toLowerCase() === "worker" ? `Staff/Cashier ${userID}` : "Admin"}</p>
             </div>
         </div>
     )

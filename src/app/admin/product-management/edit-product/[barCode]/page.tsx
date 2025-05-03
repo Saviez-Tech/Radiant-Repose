@@ -1,0 +1,12 @@
+import ProductForm from "@/components/dashboard/admin-dashboard-components/ProductForm";
+
+// Default Values will be gotten from making a query to the database using the barcode from the URL
+// to get the product details and then passing it to the ProductForm component as defaultValues.
+export default function Page(){
+    return (
+        <main className="w-full pt-10 app-container">
+            <h1 className="text-xl font-medium text-primary-dark_gray my-4">Edit Product</h1>
+            <ProductForm formActionType={"edit"} defaultValues={undefined} />
+        </main>
+    )
+}

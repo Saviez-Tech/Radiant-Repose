@@ -1,14 +1,16 @@
 import { inter } from "@/fonts";
 import { Modal, Box } from "@mui/material";
+import { Loader2 } from "lucide-react";
 
 interface DestructiveActionPromptProps {
   open: boolean;
   description: string;
   onConfirm: () => void;
   onCancel: () => void;
+  processing: boolean
 }
 
-function DestructiveActionPrompt({ open, description, onConfirm, onCancel }: DestructiveActionPromptProps){
+function DestructiveActionPrompt({ open, description, onConfirm, onCancel, processing }: DestructiveActionPromptProps){
   return (
     <Modal open={open} onClose={onCancel} aria-labelledby="confirm-modal-title">
       <Box
@@ -32,9 +34,19 @@ function DestructiveActionPrompt({ open, description, onConfirm, onCancel }: Des
         <Box sx={{ display: "flex", gap: 2, justifyContent: "between", width: "100%" }}>
           <button
             onClick={onConfirm}
-            className={`${inter.className} w-full bg-primary-darkRed text-white font-medium text-sm py-3 rounded-lg transition hover:bg-red-700`}
+            disabled={processing}
+            className={`w-full flex items-center justify-center gap-2 bg-primary-darkRed text-white font-medium text-sm py-3 rounded-lg transition hover:bg-red-700 ${
+              processing ? "opacity-70 cursor-not-allowed" : ""
+            }`}
           >
-            Yes, I do
+            {processing ? (
+              <>
+                <Loader2 className="animate-spin w-4 h-4" />
+                Processing...
+              </>
+            ) : (
+              "Yes, I do"
+            )}
           </button>
 
           <button

@@ -26,47 +26,18 @@ export type Product = {
 
 interface ScannedProduct extends Product {
     quantity: number;
+    piecesLeft: number;
+    barCode: string;
+    category: "luxury-collection" | "spa-section" | "pharmacy";
+}
+
+interface ScannedProduct extends Product {
     totalPrice: number;
 }
 
 interface Transaction extends Product {
-    quantity: number;
     time: string;
     date: string;
     amount: string;
     balance: string;
-}
-
-
-type Branch = {
-    id: number,
-    name: string,
-    location: string,
-    contact_number: string
-}
-
-
-type TimeFilterType = 'today' | 'yesterday' | 'lastWeek' | 'lastMonth' | 'annual';
-
-interface Staff {
-    id: string;
-    name: string;
-    user: number;
-    phone_number: string;
-    branch: Branch;
-    status: 'Active' | 'Inactive';
-    address: string,
-}
-
-interface AdminTransaction extends Product {
-    quantity: number;
-    time: string;
-    date: string;
-    amount: string;
-    staff: Staff;
-}
-
-type AppPageError = {
-  error: Error & { digest?: string },
-  reset: () => void
 }

@@ -6,7 +6,7 @@ import TransactionFilter from "./TransactionFilter";
 import { useEffect, useMemo, useState } from "react";
 
 export default function TransactionHistoryClientContainer({ data }: { data: Transaction[] }) {
-  const [selectedFilter, setSelectedFilter] = useState('yesterday')
+  const [selectedFilter, setSelectedFilter] = useState('day')
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
@@ -23,7 +23,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
     lastMonthStart.setMonth(lastMonthStart.getMonth() - 1)
     
     switch (filter) {
-      case 'today':
+      case 'day':
         return transactions.filter(t => {
           const transactionDate = new Date(t.date)
           return (
@@ -32,21 +32,12 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
             transactionDate.getFullYear() === today.getFullYear()
           )
         })
-      case 'yesterday':
-        return transactions.filter(t => {
-          const transactionDate = new Date(t.date)
-          return (
-            transactionDate.getDate() === yesterday.getDate() &&
-            transactionDate.getMonth() === yesterday.getMonth() &&
-            transactionDate.getFullYear() === yesterday.getFullYear()
-          )
-        })
-      case 'lastWeek':
+      case 'week':
         return transactions.filter(t => {
           const transactionDate = new Date(t.date)
           return transactionDate >= lastWeekStart && transactionDate <= today;
         })
-      case 'lastMonth':
+      case 'month':
         return transactions.filter(t => {
           const transactionDate = new Date(t.date)
           return transactionDate >= lastMonthStart && transactionDate <= today;
@@ -112,11 +103,11 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
                   {paginatedTransactions.length > 0 ? (
                       paginatedTransactions.map((transaction) => (
                           <tr key={transaction.id} className="border-t hover:bg-gray-50">
-                              <td className="p-4 text-sm text-gray-600">{transaction.barCode}</td>
+                              <td className="p-4 text-sm text-gray-600">{transaction.barcode}</td>
                               <td className="p-4">
                                   <div className="flex items-center gap-3">
                                       <Image
-                                          src={transaction.image}
+                                          src={transaction.image_url}
                                           alt={transaction.name}
                                           width={40}
                                           height={40}
@@ -129,7 +120,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.time}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.date}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.amount}</td>
-                              <td className="p-4 text-center text-xs text-gray-600">{transaction.balance}</td>
+                              <td className="p-4 text-center text-xs text-gray-600">{transaction.subtotal}</td>
                           </tr>
                       ))
                   ) : (

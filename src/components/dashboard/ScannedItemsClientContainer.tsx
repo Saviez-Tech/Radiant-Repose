@@ -5,10 +5,9 @@ import ProductCard from "./ProductCard";
 import SpinnerLoader from "../loaders/SpinnerLoader";
 import ClearTransactionBtn from "../buttons/ClearTransactionBtn";
 
-export default function ScannedItemsClientContainer({ category }: { category: string }) {
+export default function ScannedItemsClientContainer() {
 
     const { scannedItems, selectedItems, isLoading } = useAppSelector(store => store.posFlow)
-    
     return (
         <section className="mt-14 pb-10">
             <div className="flex items-center gap-4">

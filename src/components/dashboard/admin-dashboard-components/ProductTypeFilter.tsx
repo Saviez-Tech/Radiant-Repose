@@ -1,4 +1,4 @@
-// Transaction Timeframe Filter component
+// Transaction Product Category Filter component
 
 import { ProductType as ProductTypeEnum } from "@/enums";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../ui/select";

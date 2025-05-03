@@ -3,6 +3,7 @@ import posFlowReducer from "./slices/posFlowSlice"
 import categoryTabReducer from "./slices/categoryTabSlice"
 import authUserReducer from "./slices/authUserSlice"
 import mobileNavReducer from "./slices/mobileNavSlice"
+import editStaffReducer from "./slices/editStaffSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -10,7 +11,8 @@ export const makeStore = () => {
       posFlow: posFlowReducer,
       categoryTab: categoryTabReducer,
       authUser: authUserReducer,
-      mobileNav: mobileNavReducer
+      mobileNav: mobileNavReducer,
+      editStaff: editStaffReducer
     }
   })
 }

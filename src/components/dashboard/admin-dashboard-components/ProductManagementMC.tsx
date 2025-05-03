@@ -7,15 +7,17 @@ import AddNewProductBtn from "@/components/buttons/AddNewProductBtn";
 import { ProductType } from "@/enums";
 
 
+
 export default function ProductManagementMC({ data, section }: { data: Product[], section: string }) {
     const [selectedFilter, setSelectedFilter] = useState('all')
     const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(7)
+
     
     // First filter by section from props (If There's no API query to fetch based on category)
     const categoryFilteredProducts = useMemo(() => {
-        if (section === 'all') {
+        if (section) {
             return data;
         }
         return data.filter(product => product.category === section)
@@ -33,7 +35,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
                 return products.filter(product => product.stock_quantity < 10)
             case 'product-types':
                 if (selectedProductType) {
-                    return products.filter(product => product.productType === selectedProductType)
+                    return products.filter(product => product.category.toLocaleLowerCase() === selectedProductType.toLocaleLowerCase())
                 }
                 return products;
             default:
@@ -64,6 +66,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         setRowsPerPage(rows)
         setCurrentPage(1)
     }
+
 
     if (!data.length){
         return (

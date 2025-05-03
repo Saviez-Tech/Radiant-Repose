@@ -1,11 +1,11 @@
 "use client"
 
-import { fetchProductByBarcodeAction } from "@/actions"
+import { fetchProductByBarcodeAction } from "@/actions/product.server"
 import ProductCard2 from "@/components/dashboard/ProductCard2"
 import SpinnerLoader from "@/components/loaders/SpinnerLoader"
 import { Button } from "@/components/ui/button"
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
-import { addScannedItem, removeBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
+import { addScannedItem, removeBarCodeFromManualInput, setBarCodeFromManualInput } from "@/lib/redux/slices/posFlowSlice"
 import clsx from "clsx"
 import { ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -14,7 +14,7 @@ import toast from "react-hot-toast"
 
 export default function ItemBarCodeManualLookupPage() {
 
-    const { barCodeFromManualInput } = useAppSelector(store => store.posFlow)
+    const { barCodeFromManualInput, scannedItems } = useAppSelector(store => store.posFlow)
     const [item,setItem] = useState<null | ScannedProduct>(null)
     const [isLoading,setIsLoading] = useState<boolean>(false)
     const [selectedItem,setSelectedItem] = useState<Product | null>(null)
@@ -24,12 +24,14 @@ export default function ItemBarCodeManualLookupPage() {
     const handleFetchProductByBarcode = async () => {
 
         setIsLoading(true)
+        setItem(null)
         const { product, errorMessage, status } = await fetchProductByBarcodeAction(barCodeFromManualInput!)
 
         if (product){
             setItem(product)
         } else if (errorMessage) {
-            status === 404 ? setItem(null) : toast.error(errorMessage)
+            setItem(null)
+            status !== 404 && toast.error(errorMessage)
         }
 
         setIsLoading(false)
@@ -41,15 +43,26 @@ export default function ItemBarCodeManualLookupPage() {
         // the user should return to the page showing scanned Items
 
         dispatch(removeBarCodeFromManualInput())
-        setItem(null)
-        router.push("/pos/categories/luxury-collection")
+        router.push("/pos/categories")
     }
 
     useEffect(() => {
-        if (barCodeFromManualInput && barCodeFromManualInput.length > 15) {
+        const debounce = setTimeout(() => {
+          if (barCodeFromManualInput?.trim() !== "" && (barCodeFromManualInput && barCodeFromManualInput?.trim().length > 4)) {
             handleFetchProductByBarcode()
+          }
+        }, 500)
+      
+        return () => clearTimeout(debounce)
+    }, [barCodeFromManualInput])
+
+    useEffect(() => {
+        if(scannedItems.some(v => v.barcode === item?.barcode)){
+            dispatch(removeBarCodeFromManualInput())
+            router.push("/pos/categories")
         }
-    },[barCodeFromManualInput])
+    },[scannedItems.length])
+      
 
     if (isLoading){
         return (
@@ -81,7 +94,7 @@ export default function ItemBarCodeManualLookupPage() {
                         onClick={() => item && dispatch(addScannedItem(item))}
                         disabled={!selectedItem}
                         className={clsx(
-                            "flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors",
+                            "flex items-center gap-2 px-4 my-6 py-3 h-12 rounded-md font-medium transition-colors",
                             selectedItem
                             ? "bg-green-600 text-white hover:bg-green-700"
                             : "bg-gray-200 text-gray-400 cursor-not-allowed"

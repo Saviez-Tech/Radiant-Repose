@@ -25,7 +25,7 @@ export default function AdminStoreLocationsSelect({ selectedStore, setSelectedSt
             <SelectContent>
                 {
                     storeLocation.map((v,i) => (
-                        <SelectItem key={i} value={v.branch}>{v.location}</SelectItem>
+                        <SelectItem key={i} value={v.branch.toString()}>{v.location}</SelectItem>
                     ))
                 }
             </SelectContent>

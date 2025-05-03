@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
 import {
   BarChart,
   Bar,
@@ -11,21 +11,30 @@ import {
   Tooltip,
   TooltipProps
 } from 'recharts';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { sampleStaffData } from '@/components-data/sample-data';
+import TimeFrameSelect from '@/components/custom-utils/TimeFrameSelect';
 
 // TypeScript interfaces
 interface Staff {
   id: string;
   name: string;
-  regDate: string;
   // Add other staff properties as needed
+}
+
+interface Transaction {
+  id: string;
+  barcode: string;
+  name: string;
+  image_url: string;
+  quantity: number;
+  price: number;
+  date: string;
+  time: string;
+  amount: string;
+  staff: Staff;
+  subtotal: string;
+  discount: string;
+  customer_name: string;
+  customer_contact: string;
 }
 
 interface ChartDataPoint {
@@ -35,51 +44,48 @@ interface ChartDataPoint {
   displayTime?: string;
 }
 
-type TimeFilterType = 'today' | 'yesterday' | 'lastWeek' | 'lastMonth' | 'annual';
 
 // Using the recharts native tooltip types
 type CustomTooltipProps = TooltipProps<number, string>;
 
-const RevenueGrowthChart = () => {
+function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transactions: Transaction[], timeFilter: DateFilter, setTimeFilter: Dispatch<SetStateAction<DateFilter>> }) {
   
-  const [timeFilter, setTimeFilter] = useState<TimeFilterType>('lastWeek');
-  const [chartData, setChartData] = useState<ChartDataPoint[]>([]);
+  const [chartData, setChartData] = useState<ChartDataPoint[]>([])
   
-  // Function to generate chart data based on staff registration dates and the selected filter
-  const generateChartData = (filter: TimeFilterType): ChartDataPoint[] => {
-    const filteredStaff = filterStaffByTime(sampleStaffData, filter);
+  // Function to generate chart data based on transaction dates and the selected filter
+  const generateChartData = (filter: DateFilter): ChartDataPoint[] => {
+    const filteredTransactions = filterTransactionsByTime(transactions, filter)
     
     switch (filter) {
-      case 'today':
-      case 'yesterday':
-        return generateHourlyData(filteredStaff, filter);
-      case 'lastWeek':
-        return generateDailyData(filteredStaff);
-      case 'lastMonth':
-        return generateDailyData(filteredStaff);
-      case 'annual':
-        return generateMonthlyData(filteredStaff);
+      case 'day':
+        return generateHourlyData(filteredTransactions, filter)
+      case 'week':
+        return generateDailyData(filteredTransactions)
+      case 'month':
+        return generateDailyData(filteredTransactions)
       default:
-        return generateDailyData(filteredStaff);
+        return generateDailyData(filteredTransactions)
     }
   }
   
   // Generate hourly data for today or yesterday
-  const generateHourlyData = (staff: Staff[], filter: 'today' | 'yesterday'): ChartDataPoint[] => {
-    const date = filter === 'today' ? new Date() : new Date(Date.now() - 86400000);
-    const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+  const generateHourlyData = (transactions: Transaction[], filter: 'day'): ChartDataPoint[] => {
+    const date = filter === 'day' ? new Date() : new Date(Date.now() - 86400000)
+    const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
     
     // Create 24 data points (one per hour)
     return Array.from({ length: 24 }, (_, hour) => {
-      // Filter staff registered during this hour
-      const registrationsInHour = staff.filter(s => {
-        const regDate = new Date(s.regDate);
-        return regDate.getHours() === hour;
-      }).length;
-      
-      // Base revenue + boost based on registrations
-      const baseValue = Math.floor(150000 + Math.random() * 100000);
-      const boost = registrationsInHour * 30000;
+      // Filter transactions made during this hour
+      const transactionsInHour = transactions.filter(t => {
+        // Extract hour from time string (format: "HH:MM:SS")
+        const timeHour = parseInt(t.time.split(':')[0]);
+        return timeHour === hour;
+      });
+
+      // Calculate actual revenue from transactions
+      const hourlyRevenue = transactionsInHour.reduce((total, t) => {
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       // Format hour for display
       const hourFormatted = hour === 0 ? '12 AM' : 
@@ -89,123 +95,118 @@ const RevenueGrowthChart = () => {
       
       return {
         label: hour.toString(),
-        value: baseValue + boost,
+        value: hourlyRevenue,
         displayLabel: hourFormatted,
         displayTime: dateStr
       }
-    });
+    })
   }
   
   // Generate daily data for week view
-  const generateDailyData = (staff: Staff[]): ChartDataPoint[] => {
+  const generateDailyData = (transactions: Transaction[]): ChartDataPoint[] => {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
-    // Group staff by day of the week
-    const groupedByDay = staff.reduce((acc, staffMember) => {
-      const date = new Date(staffMember.regDate);
+    // Group transactions by day of the week
+    const groupedByDay = transactions.reduce((acc, transaction) => {
+      const date = new Date(transaction.date)
       const day = daysOfWeek[date.getDay()];
       
       if (!acc[day]) {
         acc[day] = [];
       }
       
-      acc[day].push(staffMember);
+      acc[day].push(transaction)
       return acc;
-    }, {} as Record<string, Staff[]>);
+    }, {} as Record<string, Transaction[]>)
     
     // Generate data for each day
     return daysOfWeek.map(day => {
-      const dayStaff = groupedByDay[day] || [];
+      const dayTransactions = groupedByDay[day] || [];
       
-      // Base value + boost based on registrations
-      const baseValue = Math.floor(200000 + Math.random() * 150000);
-      const boost = dayStaff.length * 10000;
+      // Calculate actual revenue from transactions
+      const dailyRevenue = dayTransactions.reduce((total, t) => {
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       return {
         label: day,
-        value: baseValue + boost,
+        value: dailyRevenue,
         displayLabel: day
       }
-    });
+    })
   }
   
   // Generate monthly data for annual view
-  const generateMonthlyData = (staff: Staff[]): ChartDataPoint[] => {
+  const generateMonthlyData = (transactions: Transaction[]): ChartDataPoint[] => {
     const months = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     
-    const now = new Date();
-    const currentMonth = now.getMonth();
+    const now = new Date()
+    const currentMonth = now.getMonth()
     
     // Create an array of the last 12 months in order
     const lastTwelveMonths = Array.from({ length: 12 }, (_, i) => {
       const monthIndex = (currentMonth - i + 12) % 12;
       return months[monthIndex];
-    }).reverse();
+    }).reverse()
     
-    // Group staff by month
-    const groupedByMonth = staff.reduce((acc, staffMember) => {
-      const date = new Date(staffMember.regDate);
+    // Group transactions by month
+    const groupedByMonth = transactions.reduce((acc, transaction) => {
+      const date = new Date(transaction.date)
       const month = months[date.getMonth()];
       
       if (!acc[month]) {
         acc[month] = [];
       }
       
-      acc[month].push(staffMember);
+      acc[month].push(transaction)
       return acc;
-    }, {} as Record<string, Staff[]>);
+    }, {} as Record<string, Transaction[]>)
     
     // Generate data for each month
     return lastTwelveMonths.map(month => {
-      const monthStaff = groupedByMonth[month] || [];
+      const monthTransactions = groupedByMonth[month] || [];
       
-      // Base value + boost based on registrations
-      const baseValue = Math.floor(250000 + Math.random() * 200000);
-      const boost = monthStaff.length * 5000;
+      // Calculate actual revenue from transactions
+      const monthlyRevenue = monthTransactions.reduce((total, t) => {
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       return {
         label: month.substring(0, 3), // Short month name for display
-        value: baseValue + boost,
+        value: monthlyRevenue,
         displayLabel: month
       }
-    });
+    })
   }
   
-  // Filter staff by time period
-  const filterStaffByTime = (staff: Staff[], filter: TimeFilterType): Staff[] => {
-    const now = new Date();
-    let filterDate = new Date();
+  // Filter transactions by time period
+  const filterTransactionsByTime = (transactions: Transaction[], filter: DateFilter): Transaction[] => {
+    const now = new Date()
+    let filterDate = new Date()
     
     switch (filter) {
-      case 'today':
-        filterDate.setHours(0, 0, 0, 0);
+      case 'day':
+        filterDate.setHours(0, 0, 0, 0)
         break;
-      case 'yesterday':
-        filterDate.setDate(now.getDate() - 1);
-        filterDate.setHours(0, 0, 0, 0);
+      case 'week':
+        filterDate.setDate(now.getDate() - 7)
         break;
-      case 'lastWeek':
-        filterDate.setDate(now.getDate() - 7);
-        break;
-      case 'lastMonth':
-        filterDate.setMonth(now.getMonth() - 1);
-        break;
-      case 'annual':
-        filterDate.setFullYear(now.getFullYear() - 1);
+      case 'month':
+        filterDate.setMonth(now.getMonth() - 1)
         break;
     }
     
-    return staff.filter(s => new Date(s.regDate) >= filterDate);
+    return transactions.filter(t => new Date(t.date) >= filterDate)
   }
   
   // Update chart data when filter changes
   useEffect(() => {
-    const data = generateChartData(timeFilter);
-    setChartData(data);
-  }, [timeFilter]);
+    const data = generateChartData(timeFilter)
+    setChartData(data)
+  }, [timeFilter, transactions])
   
   // Custom tooltip formatter
   const customTooltip = ({ active, payload }: CustomTooltipProps) => {
@@ -219,7 +220,7 @@ const RevenueGrowthChart = () => {
           </p>
           <p className="text-green-600 font-medium">{`Revenue: $${(payload?.[0]?.value ?? 0).toLocaleString()}`}</p>
         </div>
-      );
+      )
     }
     return null;
   }
@@ -227,11 +228,9 @@ const RevenueGrowthChart = () => {
   // Get chart title based on filter
   const getChartTitle = () => {
     switch(timeFilter) {
-      case 'today': return 'Today\'s Revenue (Hourly)';
-      case 'yesterday': return 'Yesterday\'s Revenue (Hourly)';
-      case 'lastWeek': return 'Weekly Revenue (Daily)';
-      case 'lastMonth': return 'Monthly Revenue (Daily)';
-      case 'annual': return 'Annual Revenue (Monthly)';
+      case 'day': return 'Today\'s Revenue (Hourly)';
+      case 'week': return 'Weekly Revenue (Daily)';
+      case 'month': return 'Monthly Revenue (Daily)';
       default: return 'Revenue Growth Chart';
     }
   }
@@ -240,23 +239,7 @@ const RevenueGrowthChart = () => {
     <div className="w-full shadow-sm rounded-lg bg-white p-6">
       <div className="flex justify-between gap-6 items-center mb-8">
         <h2 className="text-lg font-medium text-gray-800">{getChartTitle()}</h2>
-        <div className="relative">
-          <Select 
-            defaultValue="lastWeek"
-            onValueChange={(value: string) => setTimeFilter(value as TimeFilterType)}
-          >
-            <SelectTrigger className="bg-white border border-gray-300 rounded">
-              <SelectValue placeholder="Last Week" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="yesterday">Yesterday</SelectItem>
-              <SelectItem value="lastWeek">Last Week</SelectItem>
-              <SelectItem value="lastMonth">Last Month</SelectItem>
-              <SelectItem value="annual">Annual</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <TimeFrameSelect setTimeFilter={setTimeFilter} timeFilter={timeFilter} />
       </div>
 
       <div className="mt-6">
@@ -285,7 +268,7 @@ const RevenueGrowthChart = () => {
                 padding={{ left: 10, right: 10 }}
                 tickFormatter={(value, index) => {
                   // Format x-axis labels based on filter type
-                  if (timeFilter === 'today' || timeFilter === 'yesterday') {
+                  if (timeFilter === 'day') {
                     // For hourly view, show only selected hours
                     return parseInt(value) % 3 === 0 ? chartData[index].displayLabel : '';
                   }

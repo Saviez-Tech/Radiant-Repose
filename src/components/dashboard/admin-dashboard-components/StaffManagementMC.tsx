@@ -4,30 +4,69 @@ import AddNewStaffBtn from "@/components/buttons/AddNewStaffBtn";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { Pagination } from "../Pagination";
-import { sampleStaffData } from "@/components-data/sample-data";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import DestructiveActionPrompt from "@/components/modals/DestructiveActionPrompt";
 import { useRouter } from "next/navigation";
 import DestructiveActionPromptSuccess from "@/components/modals/DestructiveActionPromptSuccess";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setStaffToEdit } from "@/lib/redux/slices/editStaffSlice";
+import { staffStatusHandler } from "@/actions/staff.server";
+import toast from "react-hot-toast";
+import { revalidatePathHandler } from "@/actions/revalidatePathHandler";
 
 
 export default function StaffManagementMC({ data }: { data: Staff[] }) {
 
-    const [selectedFilter, setSelectedFilter] = useState('all')
+    const selectedFilter = 'all'
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(7)
 
-    const [showConfirmModal,setShowConfirmModal] = useState(false)
+    const [deactivatingUser,setDeactivatingUser] = useState(false)
+
     const [showSuccessModal,setShowSuccessModal] = useState(false)
+    const [showConfirmModal,setShowConfirmModal] = useState<{ show: boolean, staffID: string | null}>({
+        show: false,
+        staffID: null
+    })
 
     const router = useRouter()
+    const dispatch = useAppDispatch()
 
     const onConfirmDeactivateAccount = async() => {
-        setShowConfirmModal(false)
+
+        setDeactivatingUser(true)
+
+        if (!showConfirmModal.staffID) {
+            setShowConfirmModal({ show: false, staffID: null })
+            return;
+        }
+
+        let success = false;
+        let error : string | undefined;
+
+        if(paginatedStaff.find(v => v.id === showConfirmModal.staffID)?.status === "Active"){
+            success = (await staffStatusHandler(showConfirmModal.staffID,"disable")).success;
+            error = (await staffStatusHandler(showConfirmModal.staffID,"disable")).error;
+
+            success &&  toast.success(`Staff #${showConfirmModal.staffID} is disabled`)
+            await revalidatePathHandler("/admin/staff-management")
+        }else if (paginatedStaff.find(v => v.id === showConfirmModal.staffID)?.status === "Inactive"){
+            success = (await staffStatusHandler(showConfirmModal.staffID,"enable")).success;
+            error = (await staffStatusHandler(showConfirmModal.staffID,"enable")).error;
+
+            success &&  toast.success(`Staff #${showConfirmModal.staffID} is enabled`)
+            await revalidatePathHandler("/admin/staff-management")
+        }
+
+        if (error){
+            toast.error(error)
+        }
+        setDeactivatingUser(false)
+        setShowConfirmModal({ show: false, staffID: null })
     }
     
     const onCancelAction = async () => {
-        setShowConfirmModal(false)
+        setShowConfirmModal({ show: false, staffID: null })
     }
 
     // Apply filter function
@@ -122,7 +161,10 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
                                     <td className="p-4 text-center">
                                         <div className="flex justify-center space-x-2">
                                             <button 
-                                                onClick={() => router.push("/staff-management/edit-staff")}
+                                                onClick={() => {
+                                                    dispatch(setStaffToEdit(staff))
+                                                    router.push("/admin/staff-management/edit-staff")
+                                                }}
                                                 className="w-7 h-7 bg-primary-yellow text-primary-base_color1 rounded-full flex items-center justify-center 
                                                         hover:bg-yellow-400 active:scale-95 transition duration-200"
                                             >
@@ -130,7 +172,10 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
                                             </button>
 
                                             <button 
-                                                onClick={() => setShowConfirmModal(true)}
+                                                onClick={() => setShowConfirmModal({
+                                                    show: true,
+                                                    staffID: staff.id
+                                                })}
                                                 className="w-7 h-7 bg-red-500 rounded-full flex items-center justify-center 
                                                         hover:bg-red-600 active:scale-95 transition duration-200"
                                             >
@@ -152,7 +197,7 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
             </div>
             
             <Pagination
-                totalItems={sampleStaffData.length}
+                totalItems={data.length}
                 currentPage={currentPage}
                 rowsPerPage={rowsPerPage}
                 onPageChange={handlePageChange}
@@ -160,10 +205,11 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
             />
 
             <DestructiveActionPrompt 
-               description="Deactivate this account"
+               description={paginatedStaff.find(v => v.id === showConfirmModal.staffID)?.status === "Active" ? "Deactivate this account" : "Activate this account"}
                onCancel={onCancelAction}
+               processing={deactivatingUser}
                onConfirm={onConfirmDeactivateAccount}
-               open={showConfirmModal}
+               open={showConfirmModal.show}
             />
 
             <DestructiveActionPromptSuccess onClose={() => setShowSuccessModal(false)} open={showSuccessModal}>

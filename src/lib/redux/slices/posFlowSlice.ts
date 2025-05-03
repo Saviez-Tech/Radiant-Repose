@@ -1,11 +1,10 @@
-import { fetchProductByBarcodeAction } from "@/actions";
-import { demoCartProducts } from "@/components-data/sample-data";
+import { fetchProductByBarcodeAction } from "@/actions/product.server";
 import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 
 type InitialState = {
-  barCode: string | null;
+  barcode: string | null;
   barCodeFromManualInput: string | null;
   selectedItems: Product[];
   scannedItems: ScannedProduct[];
@@ -15,10 +14,10 @@ type InitialState = {
 }
 
 const initialState: InitialState = {
-  barCode: null,
+  barcode: null,
   barCodeFromManualInput: null,
   selectedItems: [],
-  scannedItems: demoCartProducts,
+  scannedItems: [],
   isLoading: false,
   orderNumber: null,
   error: null
@@ -70,7 +69,7 @@ const posFlowSlice = createSlice({
   reducers: {
     // Barcode management
     setBarCode: (state, { payload }: PayloadAction<string>) => {
-      state.barCode = payload;
+      state.barcode = payload;
       // Clear error when barcode is being inputted
       state.error = null;
     },
@@ -82,7 +81,7 @@ const posFlowSlice = createSlice({
     },
     
     removeBarCode: (state) => {
-      state.barCode = null;
+      state.barcode = null;
     },
     
     removeBarCodeFromManualInput: (state) => {
@@ -97,16 +96,16 @@ const posFlowSlice = createSlice({
     // Selected items management
     selectItem: (state, { payload }: PayloadAction<Product>) => {
       // Check if item is already selected to avoid duplicates
-      const existingIndex = state.selectedItems.findIndex(item => item.barCode === payload.barCode)
+      const existingIndex = state.selectedItems.findIndex(item => item.barcode === payload.barcode)
       if (existingIndex === -1) {
         state.selectedItems.push(payload)
       }
     },
     
     deselectItem: (state, { payload }: PayloadAction<string>) => {
-      // Remove item with matching barCode
+      // Remove item with matching barcode
       state.selectedItems = state.selectedItems.filter(
-        item => item.barCode !== payload
+        item => item.barcode !== payload
       )
     },
     
@@ -117,7 +116,7 @@ const posFlowSlice = createSlice({
     // Scanned items management
     addScannedItem: (state, { payload }: PayloadAction<ScannedProduct>) => {
       // Check if item is already in scanned items
-      const existingIndex = state.scannedItems.findIndex(item => item.barCode === payload.barCode)
+      const existingIndex = state.scannedItems.findIndex(item => item.barcode === payload.barcode)
       
       if (existingIndex !== -1) {
         // If exists, increment quantity and update total price
@@ -125,12 +124,12 @@ const posFlowSlice = createSlice({
         state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1)
       } else {
         // If new, add it to scanned items
-        state.scannedItems.push(payload)
+        state.scannedItems.push({...payload, quantity: 1 })
       }
     },
     
     incrementItemQuantity: (state, { payload }: PayloadAction<string>) => {
-      const existingIndex = state.scannedItems.findIndex(item => item.barCode === payload)
+      const existingIndex = state.scannedItems.findIndex(item => item.barcode === payload)
       if (existingIndex !== -1) {
         const existingItem = state.scannedItems[existingIndex];
         state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1)
@@ -138,7 +137,7 @@ const posFlowSlice = createSlice({
     },
     
     decrementItemQuantity: (state, { payload }: PayloadAction<string>) => {
-      const existingIndex = state.scannedItems.findIndex(item => item.barCode === payload)
+      const existingIndex = state.scannedItems.findIndex(item => item.barcode === payload)
       if (existingIndex !== -1) {
         const existingItem = state.scannedItems[existingIndex];
         if (existingItem.quantity > 1) {
@@ -146,16 +145,16 @@ const posFlowSlice = createSlice({
         } else {
           // Remove item if quantity would go below 1
           state.scannedItems = state.scannedItems.filter(
-            item => item.barCode !== payload
+            item => item.barcode !== payload
           )
         }
       }
     },
     
     removeScannedItem: (state, { payload }: PayloadAction<string>) => {
-      // Remove scanned item with matching barCode
+      // Remove scanned item with matching barcode
       state.scannedItems = state.scannedItems.filter(
-        item => item.barCode !== payload
+        item => item.barcode !== payload
       )
     },
 
@@ -193,7 +192,7 @@ const posFlowSlice = createSlice({
         // Check if the product already exists in scanned items
         const existingIndex = action.payload
           ? state.scannedItems.findIndex(
-              item => item.barCode === action.payload?.barCode
+              item => item.barcode === action.payload?.barcode
             )
           : -1;
         
@@ -206,7 +205,7 @@ const posFlowSlice = createSlice({
           state.scannedItems.push(action.payload)
         }
         
-        state.barCode = null;
+        state.barcode = null;
         state.error = null;
       })
       

@@ -149,7 +149,7 @@ export default function CustomerMonitorCart() {
           
           <div className="flex justify-between py-1 bg-gray-50 px-2 rounded-md">
             <span className="font-medium text-sm">Total</span>
-            <span className="font-medium text-sm">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems, 200, 50), true)}</span>
+            <span className="font-medium text-sm">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems,0,0), true)}</span>
           </div>
         </div>
       </div>
