@@ -1,4 +1,4 @@
-export const blogData: BlogPost[] = [
+const blogData: BlogPost[] = [
     {
       id: "1",
       title: "How to Stay on Track Without Stress",
