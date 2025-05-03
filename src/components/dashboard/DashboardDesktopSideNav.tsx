@@ -24,7 +24,7 @@ function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
     }
 
     return (
-        <nav className="hidden w-[250px] h-full text-primary-dark_slate font-medium bg-primary-light_peach text-sm p-4 py-7 lg:flex justify-between flex-col gap-20">
+        <nav className="w-[250px] h-full text-primary-dark_slate font-medium bg-primary-light_peach text-sm p-4 py-7 flex justify-between flex-col gap-20">
             <div>
                 <Logo src={LogoSrc} width={170} />
 

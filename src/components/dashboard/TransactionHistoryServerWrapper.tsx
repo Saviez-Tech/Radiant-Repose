@@ -3,6 +3,7 @@ import TransactionHistoryClientContainer from "./TransactionHistoryClientContain
 import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { redirect } from "next/navigation";
+import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
 
 const handleFetchTransactionHistory = async(userID: string ) => {
 
@@ -58,6 +59,6 @@ export default async function TransactionHistoryServerWrapper({ userID }:{ userI
     }
     
     return (
-        <TransactionHistoryClientContainer data={data}  />
+      <TransactionHistoryClientContainer data={transformSaleRecordsToTransactions(data)}  />
     )
 }

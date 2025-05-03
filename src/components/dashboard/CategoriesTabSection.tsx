@@ -17,31 +17,29 @@ export default function CategoriesTabSection() {
     
     const handleTabClick = useCallback((segment: string) => {
         if (segment) {
-            dispatch(setActiveTab(segment));
+            dispatch(setActiveTab(segment))
         }
-    }, [dispatch]);
+    }, [dispatch])
     
     const handleSearchChange = useCallback((value: string) => {
-        dispatch(setSearchValue(value));
+        dispatch(setSearchValue(value))
         
         if (pathName !== "/pos/categories/item-barcode-lookup") {
-            // Use setTimeout to ensure this happens after the render cycle
             setTimeout(() => {
-                router.push("/pos/categories/item-barcode-lookup");
-            }, 0);
+                router.push("/pos/categories/item-barcode-lookup")
+            }, 0)
         }
-    }, [pathName, router, dispatch]);
+    }, [pathName, router, dispatch])
     
     const handleClearSearch = useCallback(() => {
-        dispatch(removeSearchValue());
-        // Use setTimeout to ensure this happens after the render cycle
+        dispatch(removeSearchValue())
         setTimeout(() => {
-            router.back();
-        }, 0);
-    }, [dispatch, router]);
+            router.back()
+        }, 0)
+    }, [dispatch, router])
     
     return (
-       <div className="flex gap-5 mt-4">
+       <div className="flex flex-wrap lg:flex-nowrap gap-5 mt-4">
             <div
                 className="flex flex-wrap gap-3"
                 >

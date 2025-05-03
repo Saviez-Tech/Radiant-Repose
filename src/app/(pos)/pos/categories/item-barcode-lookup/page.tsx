@@ -61,7 +61,7 @@ export default function ItemBarCodeManualLookupPage() {
             router.push("/pos/categories")
         }
         const debounce = setTimeout(() => {
-          if (searchValue?.trim() !== "" && (searchValue && searchValue?.trim().length > 4)) {
+          if (searchValue?.trim() !== "" && (searchValue && searchValue?.trim().length > 3)) {
             handleFetchProductByBarcode()
           }
         }, 500)

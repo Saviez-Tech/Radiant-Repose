@@ -6,25 +6,40 @@ import { dm_mono } from "@/fonts";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 
-// This Is The Product Card Used For The Manual Barcode Lookup Page
-export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { product: ScannedProduct, handleItemRemove: (barcode: string) => void, isSelected: boolean, setIsSelected: Dispatch<SetStateAction<Product[]>> }) {
+// This Is The Product Card Used For The Manual Porduct Lookup Page
+export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { 
+  product: ScannedProduct, 
+  handleItemRemove: (barcode: string) => void, 
+  isSelected: boolean, 
+  setIsSelected: Dispatch<SetStateAction<Product[]>> 
+}) {
+  const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
+
+  const handleCardClick = () => {
+    if (isOutOfStock) return;
+    
+    setIsSelected((prev) => {
+      const isSelected = prev.some((v) => v.barcode === product.barcode)
+      if (isSelected) {
+        // Remove it
+        return prev.filter((v) => v.barcode !== product.barcode)
+      } else {
+        // Add it
+        return [...prev, product]
+      }
+    })
+  };
 
   return (
     <div  
-      tabIndex={0}
-      onClick={() =>
-        setIsSelected((prev) => {
-          const isSelected = prev.some((v) => v.barcode === product.barcode)
-          if (isSelected) {
-            // Remove it
-            return prev.filter((v) => v.barcode !== product.barcode)
-          } else {
-            // Add it
-            return [...prev, product]
-          }
-        })
-      }
-      className={`${isSelected ? "ring-2 ring-red-500" : ""} relative cursor-pointer max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none`}>
+      tabIndex={isOutOfStock ? -1 : 0}
+      onClick={handleCardClick}
+      className={`
+        ${isSelected ? "ring-2 ring-red-500" : ""} 
+        ${isOutOfStock ? "opacity-60 grayscale" : "cursor-pointer"} 
+        relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
+      `}
+    >
       <div className="relative">
         <div className="relative h-40 flex-shrink-0">
           {
@@ -41,9 +56,25 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
           }
         </div>
        
-        <button onClick={() => handleItemRemove(product.barcode)} className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}>
-          <X size={16} />
-        </button>
+        {!isOutOfStock && (
+          <button 
+            onClick={(e) => {
+              e.stopPropagation()
+              handleItemRemove(product.barcode)
+            }} 
+            className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
+          >
+            <X size={16} />
+          </button>
+        )}
+
+        {isOutOfStock && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
+            <div className="bg-red-500 text-white px-3 py-1 rounded-md font-medium transform rotate-45 text-sm">
+              Out of Stock
+            </div>
+          </div>
+        )}
       </div>
      
       <div className="p-2">
@@ -53,10 +84,16 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
             <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2 h-8">{product.description}</p>
           </div>
           <div className="flex gap-1">
-            <button disabled={true} className="bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
+            <button 
+              disabled={true} 
+              className="bg-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center"
+            >
               <span className="text-xs">+</span>
             </button>
-            <button disabled={true} className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1">
+            <button 
+              disabled={true} 
+              className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed text-primary-base_color1"
+            >
               <span className="text-xs">-</span>
             </button>
           </div>
@@ -70,7 +107,9 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
         </div>
        
         <div className="flex justify-between items-center mt-1">
-          <span className="text-xs text-gray-500">{product.stock_quantity} Pieces left</span>
+          <span className={`text-xs ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
+            {isOutOfStock ? "Out of stock" : `${product.stock_quantity} Pieces left`}
+          </span>
         </div>
       </div>
     </div>

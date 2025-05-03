@@ -7,7 +7,7 @@ import { formatDate } from "date-fns";
 import { calculateCartItemTotal } from "@/lib/helperFns/calculateTotal";
 import Logo from "../layout-components/Logo";
 
-const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
+const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
   const { name, price, quantity } = item;
   
   return (
@@ -17,9 +17,9 @@ const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
           <h3 className="text-xs font-semibold truncate pb-1">{name}</h3>
           <span className="text-xs">{quantity}x</span>
         </div>
-        <p className={`${dm_mono.className} text-xs`}>Price: {formatNaira(price, false)}</p>
+        <p className={`${dm_mono.className} text-xs`}>Price: {formatNaira(price || 0, false)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price, quantity), false)}</span>
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price || 0, quantity || 0), false)}</span>
         </div>
       </div>
     </div>
@@ -28,7 +28,7 @@ const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
 
 interface ReceiptProps {
   orderNumber: string;
-  scannedItems: ScannedProduct[];
+  scannedItems: Partial<ScannedProduct>[];
   date: string;
   discount?: number;
   amountPaid?: number;
