@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-
   
 export async function LoginHandler(email: string, password: string) {
   try {
