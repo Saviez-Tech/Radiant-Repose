@@ -15,14 +15,7 @@ export default function AboutSection() {
           </p>
           <div className="relative max-md:hidden z-[2]">
             <div className="w-[135%] aspect-[650/274] py-12 px-8 absolute bg-left-top top-0 left-0 md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 max-md:hidden">
-                {services.map((service, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <div className="w-2 h-2 bg-primary-yellow rounded-full mt-2" />
-                    <p className="text-sm text-gray-700">{service}</p>
-                  </div>
-                ))}
-              </div>
+              
             </div>
           </div>
         </div>
@@ -38,14 +31,7 @@ export default function AboutSection() {
           />
 
           <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  aspect-[326/457] py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 max-md:hidden">
-              {services.map((service, idx) => (
-                <div key={idx} className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-primary-yellow rounded-full mt-2" />
-                  <p className="text-sm text-gray-700">{service}</p>
-                </div>
-              ))}
-            </div>
+           
           </div>
         </div>
       </div>
@@ -53,15 +39,4 @@ export default function AboutSection() {
   );
 }
 
-const services = [
-  "Spa Appointments & Treatments",
-  "Pharmacy & Prescription Services",
-  "Luxury Skincare & Beauty Store",
-  "Health & Wellness Consultations",
-  "Personalized Wellness Plans",
-  "Beauty and Wellness Content",
-  "Store Locator and Booking System",
-  "Spa Gift Cards and Packages",
-  "Holistic Therapy Sessions",
-  "Self-Care Subscription Boxes",
-];
+

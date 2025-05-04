@@ -2,10 +2,10 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "designed: cart and services page"
+git commit -m "designed: cart,services page, updated index page with responsive design"
 
 ECHO "________________Committed________________"
 
-git push origin master
+git push origin main
 
 ECHO "________________Pushed________________" 

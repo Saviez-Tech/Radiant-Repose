@@ -25,11 +25,11 @@ export default function ConsultationSection() {
               <input
                 type="email"
                 placeholder="Enter email address here"
-                className="w-full px-4 py-3 rounded-lg text-sm  focus:outline-none focus:ring-2 focus:ring-primary-darkRed"
+                className="w-full px-4 py-3 rounded-lg md:text-sm text-xs  focus:outline-none focus:ring-2 focus:ring-primary-darkRed"
               />
               <button
                 type="submit"
-                className="bg-primary-darkRed text-white px-5 py-2 rounded-lg  hover:bg-primary-darkRed/90 transition right-2 absolute"
+                className="bg-primary-darkRed text-white max-md:text-xs md:px-5 px-2 py-2 rounded-lg  hover:bg-primary-darkRed/90 transition right-2 absolute"
               >
                 Continue
               </button>

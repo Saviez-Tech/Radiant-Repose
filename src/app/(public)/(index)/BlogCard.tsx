@@ -23,12 +23,12 @@ export default function BlogCard({
   role,
 }: BlogCardProps) {
   return (
-    <div className="bg-white aspect-[293/415] w-full rounded-xl overflow-hidden shadow-md">
+    <div className="bg-white  w-full rounded-xl overflow-hidden shadow-md">
       <div className="relative h-56 w-full">
         <Image src={imageUrl} alt={title} fill className="object-cover" />
       </div>
 
-      <div className="px-5 py-2 text-left space-y-2 md:space-y-4">
+      <div className="px-5 py-2 text-left space-y-2 md:space-y-4 relative">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             <div className="relative w-7 h-7 rounded-full overflow-hidden">
@@ -45,7 +45,7 @@ export default function BlogCard({
             </div>
           </div>
 
-          <span className="text-white px-2 py-1.5  bg-primary-yellow text-xs font-semibold whitespace-nowrap">
+          <span className="text-white px-2 py-1.5  bg-primary-yellow text-xs font-semibold whitespace-nowrap absolute -top-4 right-0">
             {date}
           </span>
         </div>

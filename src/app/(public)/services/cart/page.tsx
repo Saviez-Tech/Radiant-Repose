@@ -13,6 +13,15 @@ export default function Page() {
           </Link>
         </div>
         <Table />
+        <div className="flex flex-col justify-center items-center gap-2 py-14">
+          <p className="font-semibold text-lg">PROCEED TO</p>
+          <Link
+            href="/services/checkout"
+            className="px-8 py-3 bg-primary-darkRed text-white rounded-3xl flex items-center max-md:text-sm gap-2 w-fit hover:bg-red-700 transition"
+          >
+            Checkout
+          </Link>
+        </div>
       </div>
     </Scalffold>
   );
