@@ -15,10 +15,9 @@ interface TransactionFilterProps {
 export default function TransactionFilter({ selectedFilter, setSelectedFilter }: TransactionFilterProps) {
         
     const filterOptions: FilterOption[] = [
-      { label: 'Today', value: 'today' },
-      { label: 'Yesterday', value: 'yesterday' },
-      { label: 'Last Week', value: 'lastWeek' },
-      { label: 'Last Month', value: 'lastMonth' },
+      { label: 'Today', value: 'day' },
+      { label: 'Week', value: 'week' },
+      { label: 'Month', value: 'month' },
     ]
   
     const handleFilterChange = (value: string) => {

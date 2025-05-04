@@ -14,9 +14,9 @@ export default function Layout({ children }: LayoutProps) {
         <AdminDashboardSideNav />
       </div>
 
-      <div className="flex-grow relative lg:overflow-y-auto w-full px-4 lg:px-0 lg:pt-28">
+      <div className="flex-grow relative lg:overflow-y-auto w-full lg:pt-28">
         <AdminDashboardHeaderSection />
-        <div className="lg:px-8">
+        <div className="px-4 md:px-8">
           {children}
         </div>
       </div>

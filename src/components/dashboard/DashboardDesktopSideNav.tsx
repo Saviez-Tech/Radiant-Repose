@@ -1,14 +1,14 @@
 "use client"
 
 import Link from "next/link";
-import LogoSrc from "../../public-assets/Logo/Logo1.svg"
+import LogoSrc from "../../public-assets/logo/Logo1.svg"
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../layout-components/Logo";
 import { ReceiptIcon } from "../Svg";
 import AuthUserDetails from "../layout-components/AuthUserDetails";
-import { useAppSelector } from "@/lib/redux/hooks";
+
 
 
 function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
@@ -24,7 +24,7 @@ function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
     }
 
     return (
-        <nav className="hidden w-[250px] h-full text-primary-dark_slate font-medium bg-primary-light_peach text-sm p-4 py-7 lg:flex justify-between flex-col gap-20">
+        <nav className="w-[250px] h-full text-primary-dark_slate font-medium bg-primary-light_peach text-sm p-4 py-7 flex justify-between flex-col gap-20">
             <div>
                 <Logo src={LogoSrc} width={170} />
 

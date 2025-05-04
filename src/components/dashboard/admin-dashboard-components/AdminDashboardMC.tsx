@@ -12,10 +12,7 @@ import AdminDashboardTransactionHistory from "./AdminDashboardTransactionHistory
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
 import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
-import { useRouter } from "next/navigation";
-import { revalidatePathHandler } from "@/actions/revalidatePathHandler";
-
-
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export default function AdminDashboardMC({ data }:{  data: {
     categorySales: SalesSummaryData;
@@ -26,9 +23,11 @@ export default function AdminDashboardMC({ data }:{  data: {
 
     const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
     const [timeFilter, setTimeFilter] = useState<DateFilter>(data?.filter || 'month')
-
+    const [isLoading, setIsLoading] = useState(false)
+    
     const router = useRouter()
-    const [isLoading,setIsLoading] = useState(false)
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
 
     const statMeta: Record<keyof StatData, { label: string; icon: ReactNode }> = {
         total_goods_sold: { label: "Total Goods", icon: <Icon icon="octicon:tracked-by-closed-completed-16" width="24" height="24" className="size-7" /> },
@@ -46,25 +45,31 @@ export default function AdminDashboardMC({ data }:{  data: {
     )
 
     const transactions = data?.sales ? transformSaleRecordsToTransactions(data?.sales) : []
-    const handlePageRefresh = async() => {
+    
+    const handlePageRefresh = () => {
         setIsLoading(true)
-        await revalidatePathHandler("/admin/dashboard")
-        router.push(`/admin/dashboard?filter=${timeFilter}`)
-        setIsLoading(false)
+        const newUrl = `${pathname}?filter=${timeFilter}`
+        router.push(newUrl)
     }
 
     useEffect(() => {
-        if (timeFilter !== data?.filter){
+        setIsLoading(false)
+    }, [searchParams])
+
+    useEffect(() => {
+        if (timeFilter !== data?.filter && !isLoading){
             handlePageRefresh()
         }
-    },[timeFilter])
+    }, [timeFilter, data?.filter])
 
+    if (isLoading) {
+        return <AdminDashboardSkeleton />
+    }
 
     return (
         data?.categorySales &&
         data.sales &&
-        data.totalGoodsSold &&
-        !isLoading ?
+        data.totalGoodsSold ?
         <main className="gap-9 overflow-x-auto px-1">
             <div className="flex justify-between mt-6 mb-3 items-center px-1 gap-y-3">
                 <h2 className="text-primary-deepBlack font-medium text-lg hidden md:block">Total Luxury Sales</h2>

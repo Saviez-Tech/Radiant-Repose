@@ -1,24 +1,27 @@
 "use client"
 
-import { Dispatch, SetStateAction, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useRef } from 'react';
 import html2canvas from 'html2canvas';
 import Receipt from '@/components/dashboard/Receipt';
 import toast from 'react-hot-toast';
-import { Modal, Box, Button, Typography } from '@mui/material';
-import { Printer, Save } from 'lucide-react';
+import { Modal, Box } from '@mui/material';
+import { Printer, Save, X } from 'lucide-react';
+import { formatNaira } from './helperFns/formatNumber';
+import { useAppDispatch } from './redux/hooks';
+import { clearScannedItems } from './redux/slices/posFlowSlice';
 
 interface ReceiptPrinterProps {
-    orderNumber: string;
-    scannedItems: ScannedProduct[];
-    date: string;
-    discount?: number;
-    amountPaid?: number;
-    customerName?: string;
-    cashierName?: string;
-    total: number,
-    subTotal: number,
-    print: boolean,
-    setPrint: Dispatch<SetStateAction<boolean>>
+  orderNumber: string;
+  scannedItems: Partial<ScannedProduct>[];
+  date: string;
+  discount?: number;
+  amountPaid?: number;
+  customerName?: string;
+  cashierName?: string;
+  total: number,
+  subTotal: number,
+  print: boolean,
+  setPrint: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ReceiptPrinter({ 
@@ -34,11 +37,12 @@ export default function ReceiptPrinter({
   print,
   cashierName = "" 
 }: ReceiptPrinterProps) {
-  const receiptRef = useRef(null);
+  const receiptRef = useRef(null)
+  const dispatch = useAppDispatch()
 
   const handleClose = () => {
-    setPrint(false);
-  };
+    setPrint(false)
+  }
 
   const printReceiptAsImage = async () => {
     if (!receiptRef.current) return;
@@ -47,62 +51,86 @@ export default function ReceiptPrinter({
       const canvas = await html2canvas(receiptRef.current, {
         scale: 2,
         useCORS: true,
-        backgroundColor: '#FFFFFF'
-      });
+        backgroundColor: '#FFFFFF',
+        logging: false, 
+        allowTaint: true,
+      })
 
-      const image = canvas.toDataURL('image/png');
+      const image = canvas.toDataURL('image/png', 1.0)
       
-      // New window for printing
-      const printWindow = window.open('', '_blank');
-      if (!printWindow) {
-        toast.error('Please allow popups to print receipt');
-        return;
-      }
+      // Create a hidden iframe for more reliable printing
+      const printFrame = document.createElement('iframe')
+      printFrame.style.position = 'fixed';
+      printFrame.style.right = '0';
+      printFrame.style.bottom = '0';
+      printFrame.style.width = '0';
+      printFrame.style.height = '0';
+      printFrame.style.border = '0';
+      document.body.appendChild(printFrame)
+      
+      // Write content to the iframe
+      const frameDoc = printFrame.contentWindow?.document;
+      frameDoc?.open()
 
-      // Adding image to the new window and printing
-      printWindow.document.write(`
-        <html>
-          <head>
-            <title>Receipt #${orderNumber}</title>
-            <style>
-              body {
-                margin: 0;
-                display: flex;
-                justify-content: center;
-              }
-              img {
-                max-width: 100%;
-                height: auto;
-              }
-              @media print {
-                body {
-                  width: 80mm; /* Typical thermal receipt width */
-                  margin: 0 auto;
+      if (frameDoc){
+        frameDoc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <title>Receipt #${orderNumber}</title>
+              <style>
+                @page {
+                  size: 80mm auto; /* Set receipt width */
+                  margin: 0mm;
                 }
-              }
-            </style>
-          </head>
-          <body>
-            <img src="${image}" alt="Receipt" />
-            <script>
-              // Auto print when loaded
-              window.onload = function() {
-                setTimeout(function() {
-                  window.print();
-                  setTimeout(function() { window.close(); }, 500);
-                }, 300);
-              };
-            </script>
-          </body>
-        </html>
-      `);
-      printWindow.document.close();
+                body {
+                  margin: 0;
+                  padding: 0;
+                  display: flex;
+                  justify-content: center;
+                  background-color: white;
+                }
+                img {
+                  width: 100%;
+                  max-width: 80mm;
+                  height: auto;
+                }
+                @media print {
+                  body {
+                    width: 80mm; /* Typical thermal receipt width */
+                  }
+                }
+              </style>
+            </head>
+            <body>
+              <img src="${image}" alt="Receipt" />
+            </body>
+          </html>
+        `)
+        frameDoc?.close()
+      }
+      
+      // Wait for iframe to fully load before printing
+      printFrame.onload = function() {
+        try {
+          printFrame?.contentWindow?.focus()
+          printFrame?.contentWindow?.print()
+          
+          // Remove the iframe after printing but don't close the modal
+          setTimeout(() => {
+            document.body.removeChild(printFrame)
+            dispatch(clearScannedItems())
+            toast.success('Receipt printed successfully')
+          }, 1000)
+        } catch (err) {
+          console.error('Printing failed:', err)
+          toast.error('Printing failed. Please try again.')
+          document.body.removeChild(printFrame)
+        }
+      }
     } catch (error) {
-      console.error('Error generating receipt image:', error);
-      toast.error('Failed to generate receipt. Please try again.');
-    }
-    finally {
-      setPrint(false);
+      console.error('Error generating receipt image:', error)
+      toast.error('Failed to generate receipt. Please try again.')
     }
   };
 
@@ -114,30 +142,31 @@ export default function ReceiptPrinter({
       const canvas = await html2canvas(receiptRef.current, {
         scale: 2,
         useCORS: true,
-        backgroundColor: '#FFFFFF'
-      });
+        backgroundColor: '#FFFFFF',
+        logging: false,
+        allowTaint: true,
+      })
       
       // Create a download link
-      const link = document.createElement('a');
+      const link = document.createElement('a')
       link.download = `Receipt-${orderNumber}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      toast.success('Receipt saved successfully');
+      link.href = canvas.toDataURL('image/png', 1.0)
+      link.click()
+      toast.success('Receipt saved successfully')
+      dispatch(clearScannedItems())
     } catch (error) {
-      console.error('Error saving receipt image:', error);
-      toast.error('Failed to save receipt. Please try again.');
-    }
-    finally {
-      setPrint(false);
+      console.error('Error saving receipt image:', error)
+      toast.error('Failed to save receipt. Please try again.')
     }
   }
 
   return (
     <Modal
-      open={true}
+      open={print}
       onClose={handleClose}
       aria-labelledby="receipt-modal-title"
       aria-describedby="receipt-modal-description"
+      disableEscapeKeyDown
     >
       <Box sx={{
         position: 'absolute',
@@ -148,21 +177,36 @@ export default function ReceiptPrinter({
         maxHeight: '90vh',
         bgcolor: 'background.paper',
         boxShadow: 24,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
         p: 4,
         borderRadius: 2,
-        overflow: 'auto'
+        overflow: 'auto',
       }}>
-        <Typography id="receipt-modal-title" variant="h6" component="h2" sx={{ mb: 2 }}>
-          Receipt #{orderNumber}
-        </Typography>
+        {/* Close button - only way to close the modal */}
+        <button 
+          onClick={handleClose}
+          className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+          aria-label="Close"
+        >
+          <X size={20} />
+        </button>
         
-        <div ref={receiptRef} className="bg-white">
+        <h2 
+          id="receipt-modal-title" 
+          className='text-center font-medium'
+        >
+          Receipt #{orderNumber}
+        </h2>
+        
+        <div ref={receiptRef} className="bg-white border-2 mt-2 border-dotted border-gray-400 w-full flex justify-center flex-col items-center">
           <Receipt
             date={date}
             orderNumber={orderNumber}
             scannedItems={scannedItems}
-            subTotal={subTotal}
-            total={total}
+            subTotal={formatNaira(subTotal,true,true)}
+            total={formatNaira(total,true,true)}
             amountPaid={amountPaid}
             cashierName={cashierName}
             customerName={customerName}
@@ -170,36 +214,23 @@ export default function ReceiptPrinter({
           />
         </div>
 
-        {/* Print and Save buttons */}
-        <Box sx={{ 
-          mt: 4, 
-          display: 'flex', 
-          gap: 2,
-          justifyContent: 'center' 
-        }}>
-          <Button
-            variant="contained"
-            startIcon={<Printer />}
+        <div className="flex justify-center gap-4 mt-6 w-full">
+          <button
             onClick={printReceiptAsImage}
-            sx={{ 
-              bgcolor: 'success.main',
-              '&:hover': { bgcolor: 'success.dark' }
-            }}
+            className="flex items-center gap-2 bg-green-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-green-700 active:bg-green-800 transition-colors duration-200 shadow-sm"
           >
-            Print Receipt
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<Save />}
+            <Printer size={16} />
+            Print
+          </button>
+          <button
             onClick={saveReceiptAsImage}
-            sx={{ 
-              bgcolor: 'primary.main',
-              '&:hover': { bgcolor: 'primary.dark' }
-            }}
+            style={{ background: "#2563eb" }}
+            className="flex items-center gap-2 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-sm"
           >
-            Save as Image
-          </Button>
-        </Box>
+            <Save size={16} />
+            Save
+          </button>
+        </div>
       </Box>
     </Modal>
   )

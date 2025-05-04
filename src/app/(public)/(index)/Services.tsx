@@ -1,6 +1,4 @@
-import { FaAdjust } from "react-icons/fa";
 import ServiceCard from "./ServiceCard";
-import { ClassNames } from "@emotion/react";
 
 export default function ServicesSection() {
   return (
@@ -9,13 +7,13 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="md:text-3xl text-xl font-bold text-white">
-              Still skeptical? <br /> Here's why you should choose us.
+              Still skeptical? <br /> Here&apos;s why you should choose us.
             </h2>
           </div>
           <div className="md:text-right text-sm">
             <p className="text-white/90">
               Ready to experience true luxury and care? With Radiant Repose,
-              it's within your reach!
+              it&apos;s within your reach!
             </p>
           </div>
         </div>
@@ -28,8 +26,10 @@ export default function ServicesSection() {
         </div>
       </div>
     </section>
-  );
+  )
 }
+
+
 const services = [
   {
     title: "Spa session",
@@ -52,4 +52,4 @@ const services = [
     className: "bg-white",
     img: "/icons/phamacy.svg",
   },
-];
+]

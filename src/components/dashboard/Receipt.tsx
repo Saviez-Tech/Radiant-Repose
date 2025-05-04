@@ -7,19 +7,19 @@ import { formatDate } from "date-fns";
 import { calculateCartItemTotal } from "@/lib/helperFns/calculateTotal";
 import Logo from "../layout-components/Logo";
 
-const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
+const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
   const { name, price, quantity } = item;
   
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h3 className="text-xs font-semibold truncate">{name}</h3>
+          <h3 className="text-xs font-semibold truncate pb-1">{name}</h3>
           <span className="text-xs">{quantity}x</span>
         </div>
-        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price, false)}</p>
+        <p className={`${dm_mono.className} text-xs`}>Price: {formatNaira(price || 0, false)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price, quantity), false)}</span>
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price || 0, quantity || 0), false)}</span>
         </div>
       </div>
     </div>
@@ -28,14 +28,14 @@ const ReceiptItem = ({ item }: { item: ScannedProduct }) => {
 
 interface ReceiptProps {
   orderNumber: string;
-  scannedItems: ScannedProduct[];
+  scannedItems: Partial<ScannedProduct>[];
   date: string;
   discount?: number;
   amountPaid?: number;
   customerName?: string;
   cashierName?: string;
-  total: number,
-  subTotal: number
+  total: string;
+  subTotal: string;
 }
 
 export default function Receipt({ 
@@ -43,7 +43,6 @@ export default function Receipt({
   scannedItems, 
   date, 
   discount = 0,
-  amountPaid = 0,
   customerName = "",
   total,
   subTotal,
@@ -77,11 +76,6 @@ export default function Receipt({
         <div className="flex justify-between py-2">
           <span className="">Discount</span>
           <span className="">{discount ? formatNaira(discount, true) : '--'}</span>
-        </div>
-        
-        <div className="flex justify-between py-2">
-          <span className="">Amount Paid</span>
-          <span className="">{amountPaid ? formatNaira(amountPaid, true) : '--'}</span>
         </div>
         
         <div className="flex justify-between py-2">

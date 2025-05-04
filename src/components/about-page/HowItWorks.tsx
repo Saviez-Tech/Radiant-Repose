@@ -11,7 +11,7 @@ export default function HowItWorks(){
                     <h2 className="text-3xl font-semibold text-primary-deepBlack mb-4">How Radiant Repose works</h2>
                     <p className="text-primary-deepBlack max-w-3xl mx-auto">
                     In order to serve you better,<br />
-                    here's a detailed breakdown on how we integrate pharmacy, beauty, and luxury
+                    here&apos;s a detailed breakdown on how we integrate pharmacy, beauty, and luxury
                     </p>
                 </div>
 

@@ -10,7 +10,7 @@ export async function getUserSession(){
         const cleanedToken = auth_token?.replace(/\s+/g, '') || '';
         return cleanedToken;
     }
-    catch(e){
+    catch{
         return null;
     }
 }
@@ -22,7 +22,7 @@ export async function getUserSessionID(){
         const { id } = cookieValue ? await JSON.parse(cookieValue) : "";
         return id;
     }
-    catch(e){
+    catch{
         return null;
     }
 }

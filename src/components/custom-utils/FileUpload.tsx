@@ -2,15 +2,14 @@ import { ProductFormValues } from "@/schemas/addProduct.schema";
 import { useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { cn } from "@/lib/utils";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { HiMiniCamera } from "react-icons/hi2";
 import ErrorPara from "./ErrorPara";
-import toast from "react-hot-toast";
 
 type FormFileUploadFieldProps = {
   label: string;
   name: keyof ProductFormValues;
-  control: any;
+  control: Control<any>;
   error?: string;
   className?: string;
   disabled?: boolean
@@ -45,9 +44,8 @@ export default function FileUpload({
           <div
             onClick={handleContainerClick}
             className={cn(
-              "w-full border border-dashed rounded-md py-2.5 pe-3 flex items-center justify-center gap-2 hover:border-gray-400 transition-colors",
-              error ? "border-red-500" : "border-gray-300",
-              disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
+              "w-full border border-dashed rounded-md py-2.5 pe-3 flex items-center justify-center gap-2 cursor-pointer hover:border-gray-400 transition-colors",
+              error ? "border-red-500" : "border-gray-300"
             )}
           >
             <div className="flex border border-[#5B5B5B66] gap-2 p-1 rounded-md">
@@ -62,14 +60,9 @@ export default function FileUpload({
                   ref(instance)
                 }}
                 onChange={(e) => {
-                  const file = e.target.files?.[0];
+                  console.log(value)
+                  const file = e.target.files?.[0]
                   if (file) {
-                    if (file.size > 2 * 1024 * 1024) {
-                      toast.error("Image size should not exceed 2MB.")
-                      e.target.value = "";
-                      setFileName("")
-                      return;
-                    }
                     setFileName(file.name)
                     onChange(file)
                   }

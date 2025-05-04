@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { ProductFormValues } from "@/schemas/addProduct.schema";
 import ErrorPara from "./ErrorPara";
 import { StaffFormValues } from "@/schemas/addStaff.schema";
@@ -12,7 +12,11 @@ type FormSelectFieldProps = {
    name: (keyof ProductFormValues | keyof StaffFormValues | string);
   placeholder?: string;
   options: { value: string; label: string }[];
+<<<<<<< HEAD
   control?: any;
+=======
+  control: Control<any,any>;
+>>>>>>> 3be884f8127a07cb321a1d9a1d2efda9821ed40c
   error?: string;
   className?: string;
   disabled?: boolean

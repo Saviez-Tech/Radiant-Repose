@@ -8,7 +8,7 @@ import { StaffFormValues } from "@/schemas/addStaff.schema";
 
 type FormInputFieldProps = {
   label: string;
-  name: keyof ProductFormValues | keyof StaffFormValues;
+  name: keyof StaffFormValues | keyof ProductFormValues;
   placeholder: string;
   register: any;
   error?: string;
@@ -16,7 +16,7 @@ type FormInputFieldProps = {
   prefix?: React.ReactNode;
   className?: string;
   disabled?: boolean
-};
+}
 
 export default function AppInput({ 
   label, 

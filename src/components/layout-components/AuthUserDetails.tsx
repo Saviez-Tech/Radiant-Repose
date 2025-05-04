@@ -63,9 +63,13 @@ export default function AuthUserDetails() {
           <DropdownMenuTrigger className="focus:outline-none focus:ring-2 focus:ring-darkbg-primary-darkRed-400">
             <Icon icon="radix-icons:caret-sort" width="30" height="30" aria-label="open" />
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="text-primary-dark_slate py-3">
+          <DropdownMenuContent
+            sideOffset={5}
+            align="start"
+            forceMount
+            className="text-primary-dark_slate z-[9999] py-3">
             <DropdownMenuItem className="text-xs border-b pb-2">
-              <span>{emailOrUsername}</span>
+              <span>{name || emailOrUsername}</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleLogout} className="cursor-pointer text-primary-darkRed font-medium bg-red-50/50">
               <Icon icon="solar:logout-2-outline" width="40" height="40" aria-hidden="true" className="text-primary-darkRed block" />

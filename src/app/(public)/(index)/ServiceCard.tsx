@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ReactNode } from "react";
 export type ServiceCardProps = {
     title: string;
     description: string;

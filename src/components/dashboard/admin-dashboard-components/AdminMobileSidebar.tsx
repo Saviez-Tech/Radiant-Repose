@@ -23,7 +23,6 @@ export default function AdminMobileSidebar() {
     const { isOpen } = useAppSelector(store => store.mobileNav)
     const [showModal, setShowModal] = useState(false)
 
-    // Control modal visibility based on isOpen state
     useEffect(() => {
         if (isOpen) {
             setShowModal(true)
@@ -79,6 +78,8 @@ export default function AdminMobileSidebar() {
                 bgcolor: 'rgba(0, 0, 0, 0.5)',
                 backdropFilter: 'blur(3px)'
             }}
+            disableEnforceFocus
+            disableAutoFocus
         >
             <AnimatePresence
                 onExitComplete={() => {
@@ -115,12 +116,22 @@ export default function AdminMobileSidebar() {
                                                 {isActive && <Icon icon="basil:caret-right-outline" width="26" height="26" className="absolute top-0 bottom-0 my-auto -right-1" />}
                                             </DropdownMenuTrigger>
 
-                                            <DropdownMenuContent>
+                                            <DropdownMenuContent 
+                                                className="z-[9999]" 
+                                                sideOffset={5}
+                                                align="start"
+                                                forceMount
+                                            >
                                                 {
                                                     productManagementSections.map(({ href: categoryHref, label: categoryLabel },i) => {
                                                         return (
                                                             <React.Fragment key={categoryHref}>
-                                                                <DropdownMenuItem onClick={() => router.push(`${href}/${categoryHref}`)}>
+                                                                <DropdownMenuItem 
+                                                                    onClick={() => {
+                                                                        router.push(`${href}/${categoryHref}`);
+                                                                        dispatch(closeMobileNav());
+                                                                    }}
+                                                                >
                                                                     {categoryLabel}
                                                                 </DropdownMenuItem>
                                                                 {

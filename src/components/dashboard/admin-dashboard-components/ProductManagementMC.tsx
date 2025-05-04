@@ -26,7 +26,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     // Then apply additional filters based on selectedFilter and selectedProductType
     const filteredProducts = useMemo(() => {
         // Start with products already filtered by category
-        let products = categoryFilteredProducts;
+        const products = categoryFilteredProducts;
         
         switch (selectedFilter) {
             case 'all':

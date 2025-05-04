@@ -4,10 +4,10 @@ import ProductForm from "@/components/dashboard/admin-dashboard-components/Produ
 // to get the product details and then passing it to the ProductForm component as defaultValues.
 export default async function Page({ params }:{ params: Promise<{productID: string }>}){
 
-    const { productID } = (await (params));
+    const { productID } = (await (params))
 
     return (
-        <main className="w-full pt-10 app-container">
+        <main className="w-full pt-10">
             <h1 className="text-xl font-medium text-primary-dark_gray my-4">Edit Product</h1>
             <ProductForm 
                 productID={productID}

@@ -1,10 +1,8 @@
 "use client"
 
 import LogoSrc from "../../../../public-assets/logo/Logo1.svg";
-
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { LoginAccountFormData, loginSchema } from "@/schemas/login.schema";
 import Logo from "@/components/layout-components/Logo";
@@ -14,14 +12,16 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice";
 import ErrorPara from "@/components/custom-utils/ErrorPara";
+import { useState } from "react";
 
 export default function Login(){
+    const [loginError, setLoginError] = useState<string | null>(null);
 
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-      } = useForm<LoginAccountFormData>({
+    } = useForm<LoginAccountFormData>({
         resolver: zodResolver(loginSchema),
     })
 
@@ -30,34 +30,51 @@ export default function Login(){
     const searchParams = useSearchParams()
     const redirectPath = searchParams.get("redirect")
 
-    const handleFormSubmit : SubmitHandler<LoginAccountFormData> = async(data) => {
-        try{
-            const { group, id, username, name } = await LoginHandler(data.phoneOrEmail, data.password)
-            dispatch(setAuthUser({ emailOrUsername: username, id, group, name }))
+    const handleFormSubmit: SubmitHandler<LoginAccountFormData> = async(data) => {
+        setLoginError(null); // Clear previous errors
+        
+        try {
+            const result = await LoginHandler(data.phoneOrEmail, data.password);
+            
+            if (result) {
+                const { group, id, username, name } = result;
+                dispatch(setAuthUser({ emailOrUsername: username, id, group, name }));
+                
+                toast.success("Login Successful");
+                
+                if (redirectPath && redirectPath.length > 2) {
+                    if (redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator") {
+                        router.push("/admin");
+                        return;
+                    } else if (redirectPath.startsWith("/pos") && group.toLowerCase() === "worker") {
+                        router.push("/pos");
+                        return;
+                    }
+                }
 
-            toast.success("Login Successful")
-            if (redirectPath && redirectPath.length > 2){
-                redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator" ? router.push("/admin") : 
-                redirectPath.startsWith("/pos")  && group.toLowerCase() === "worker" ? router.push("/pos") : null;
-                return;
+                if (group.toLowerCase() === "administrator") {
+                    router.push("/admin");
+                } else {
+                    router.push("/pos");
+                }
             }
-
-            group.toLowerCase() === "administrator" ? router.push("/admin") : router.push("/pos")  
-        }
-        catch(err){
+        } catch (err) {
+            console.error("Login error in component:", err);
+            
             if (err instanceof Error) {
-                toast.error(err.message)
+                setLoginError(err.message);
+                toast.error(err.message);
             } else {
-                toast.error("An unexpected error occurred")
+                setLoginError("An unexpected error occurred");
+                toast.error("An unexpected error occurred");
             }
         }
     }
     
-
     return(
         <main className="">
             <div className="glob-px text-primary-light_black pb-12 md:basis-1/2 md:px-10">
-                <div className="flex justify-between gap-4 items-center py-10">
+                <div className="flex flex-col md:flex-row justify-between gap-y-8 gap-x-4 items-center py-10">
                     <Logo src={LogoSrc} className="w-48" />
                     <div>
                         <h2 className="font-medium text-base text-primary-deepBlack"><span className="font-semibold">Radiant Repose</span> Point of Sales System</h2>
@@ -68,6 +85,12 @@ export default function Login(){
                 <div className="flex flex-col justify-center mt-8 max-w-md mx-auto">
                     <h1 className="font-bold text-xl mt-4 text-center text-primary-darkRed mb-1 md:text-2xl">Welcome Back!</h1>
                     <p className="text-sm font-medium md:text-base text-center">Enter your details to continue</p>
+
+                    {loginError && (
+                        <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md">
+                            {loginError}
+                        </div>
+                    )}
 
                     <form className="mt-9" onSubmit={handleSubmit(handleFormSubmit)}>
                         <div className="mb-5">

@@ -1,11 +1,11 @@
-import { fetchProductByBarcodeAction } from "@/actions/product.server";
+import { fetchProductAction } from "@/actions/product.server";
 import { generateOrderNumber } from "@/lib/helperFns/generateOrderNumber";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 
 type InitialState = {
   barcode: string | null;
-  barCodeFromManualInput: string | null;
+  searchValue: string | null;
   selectedItems: Product[];
   scannedItems: ScannedProduct[];
   isLoading: boolean;
@@ -15,7 +15,7 @@ type InitialState = {
 
 const initialState: InitialState = {
   barcode: null,
-  barCodeFromManualInput: null,
+  searchValue: null,
   selectedItems: [],
   scannedItems: [],
   isLoading: false,
@@ -28,10 +28,10 @@ export const fetchProductsByBarcode = createAsyncThunk(
   async (barcode: string, { rejectWithValue }) => {
 
     try {      
-      const { product, errorMessage, status } = await fetchProductByBarcodeAction(barcode)
+      const { products, errorMessage, status } = await fetchProductAction(barcode)
       
-      if (product) {
-        return product;
+      if (products?.length) {
+        return products;
       }
       else if (errorMessage) {
         return rejectWithValue({
@@ -44,7 +44,7 @@ export const fetchProductsByBarcode = createAsyncThunk(
         message: "Unknown error occurred",
         status: 500
       })
-    } catch (error) {
+    } catch{
       return rejectWithValue({
         message: "Failed to process request",
         status: 500
@@ -74,8 +74,8 @@ const posFlowSlice = createSlice({
       state.error = null;
     },
 
-    setBarCodeFromManualInput: (state, { payload }: PayloadAction<string>) => {
-      state.barCodeFromManualInput = payload;
+    setSearchValue: (state, { payload }: PayloadAction<string>) => {
+      state.searchValue = payload;
       // Clear error when barcode is being inputted
       state.error = null;
     },
@@ -84,8 +84,8 @@ const posFlowSlice = createSlice({
       state.barcode = null;
     },
     
-    removeBarCodeFromManualInput: (state) => {
-      state.barCodeFromManualInput = null;
+    removeSearchValue: (state) => {
+      state.searchValue = null;
     },
     
     // Product list management
@@ -189,21 +189,29 @@ const posFlowSlice = createSlice({
       .addCase(fetchProductsByBarcode.fulfilled, (state, action) => {
         state.isLoading = false;
         
-        // Check if the product already exists in scanned items
-        const existingIndex = action.payload
-          ? state.scannedItems.findIndex(
-              item => item.barcode === action.payload?.barcode
-            )
-          : -1;
-        
-        if (existingIndex !== -1) {
-          // If exists, increment quantity and update total price
-          const existingItem = state.scannedItems[existingIndex];
-          state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1)
-        } else {
-          // If new, add it to scanned items
-          state.scannedItems.push(action.payload)
+        if (!action.payload || !Array.isArray(action.payload) || action.payload.length === 0) {
+          state.error = "No products found for this barcode";
+          state.barcode = null;
+          return;
         }
+        
+        action.payload?.forEach(product => {
+          if (!product) return;
+          
+          // Check if the product already exists in scanned items
+          const existingIndex = state.scannedItems.findIndex(
+            item => item.barcode === product.barcode
+          )
+          
+          if (existingIndex !== -1) {
+            // If exists, increment quantity and update total price
+            const existingItem = state.scannedItems[existingIndex]
+            state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1);
+          } else {
+            // If new, add it to scanned items
+            state.scannedItems.push(product)
+          }
+        })
         
         state.barcode = null;
         state.error = null;
@@ -225,10 +233,10 @@ export const {
   deselectItem,
   clearSelectedItems,
   manageOrderNumber,
-  removeBarCodeFromManualInput,
+  removeSearchValue,
   addScannedItem,
   incrementItemQuantity,
-  setBarCodeFromManualInput,
+  setSearchValue,
   decrementItemQuantity,
   removeScannedItem,
   clearScannedItems,

@@ -15,15 +15,15 @@ export default async function Layout({ children }: LayoutProps) {
 
   const sessionUserID = await getUserSessionID()
   return (
-    <div className="flex lg:min-h-screen bg-gray-50/80 px-4 md:px-7 lg:px-0">
+    <div className="flex md:min-h-screen bg-gray-50/80  md:px-0">
       <div className="flex-grow">
         <DashboardDesktopSideNav sessionUserID={sessionUserID} />
       </div>
 
-      <div className="flex-grow relative lg:overflow-y-auto w-full lg:pt-28 px-1">
+      <div className="flex-grow relative md:overflow-y-auto w-full md:pt-28 px-1">
         <DashboardAreaHeader />
-        <main className="px-8 w-full flex gap-12 justify-between  items-stretch">
-          <div className="flex-1">
+        <main className="px-6 w-full flex gap-12 justify-between items-stretch">
+          <div className="flex-1 max-w-full">
             <div className="pt-5">
               <h2 className="font-semibold text-primary-deepBlack">Categories</h2>
               <CategoriesTabSection />

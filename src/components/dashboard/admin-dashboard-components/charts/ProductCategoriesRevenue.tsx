@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { TrendingUp } from 'lucide-react';
 import { dm_sans } from '@/fonts';
 import { MoneySend } from '@/components/Svg';
 import { formatNaira } from '@/lib/helperFns/formatNumber';

@@ -120,7 +120,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.time}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.date}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.amount}</td>
-                              <td className="p-4 text-center text-xs text-gray-600">{transaction.subtotal}</td>
+                              <td className="p-4 text-center text-xs text-gray-600">0</td>
                           </tr>
                       ))
                   ) : (
