@@ -27,7 +27,7 @@ export default function Table() {
             </div>
           </div>
         </div>
-        <div className="bg-white ">
+        <div className="bg-white max-md:space-y-4 ">
           {cartItems.map((item) => (
             <TableRow key={item.id} {...item} />
           ))}
