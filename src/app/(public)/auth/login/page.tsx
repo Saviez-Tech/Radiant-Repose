@@ -15,7 +15,7 @@ import ErrorPara from "@/components/custom-utils/ErrorPara";
 import { useState } from "react";
 
 export default function Login(){
-    const [loginError, setLoginError] = useState<string | null>(null);
+    const [loginError, setLoginError] = useState<string | null>(null)
 
     const {
         register,
@@ -31,42 +31,48 @@ export default function Login(){
     const redirectPath = searchParams.get("redirect")
 
     const handleFormSubmit: SubmitHandler<LoginAccountFormData> = async(data) => {
-        setLoginError(null); // Clear previous errors
+        setLoginError(null)
         
         try {
-            const result = await LoginHandler(data.phoneOrEmail, data.password);
+            const result = await LoginHandler(data.phoneOrEmail, data.password)
             
-            if (result) {
-                const { group, id, username, name } = result;
-                dispatch(setAuthUser({ emailOrUsername: username, id, group, name }));
+            if (!result.success) {
+                setLoginError(result.error || "Login failed")
+                toast.error(result.error || "Login failed")
+                return;
+            }
+            
+            if (result.user) {
+                const { group, id, username, name } = result.user;
+                dispatch(setAuthUser({ emailOrUsername: username, id, group, name }))
                 
-                toast.success("Login Successful");
+                toast.success("Login Successful")
                 
                 if (redirectPath && redirectPath.length > 2) {
                     if (redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator") {
-                        router.push("/admin");
+                        router.push("/admin")
                         return;
                     } else if (redirectPath.startsWith("/pos") && group.toLowerCase() === "worker") {
-                        router.push("/pos");
+                        router.push("/pos")
                         return;
                     }
                 }
 
                 if (group.toLowerCase() === "administrator") {
-                    router.push("/admin");
+                    router.push("/admin")
                 } else {
-                    router.push("/pos");
+                    router.push("/pos")
                 }
             }
         } catch (err) {
-            console.error("Login error in component:", err);
+            console.error("Login error in component:", err)
             
             if (err instanceof Error) {
-                setLoginError(err.message);
-                toast.error(err.message);
+                setLoginError(err.message)
+                toast.error(err.message)
             } else {
-                setLoginError("An unexpected error occurred");
-                toast.error("An unexpected error occurred");
+                setLoginError("An unexpected error occurred")
+                toast.error("An unexpected error occurred")
             }
         }
     }

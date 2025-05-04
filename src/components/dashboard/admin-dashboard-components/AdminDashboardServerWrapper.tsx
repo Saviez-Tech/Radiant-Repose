@@ -2,21 +2,12 @@ import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import createAxiosInstance from "@/lib/axios";
 import AdminDashboardMC from "./AdminDashboardMC";
-import { validateDate } from "@/lib/helperFns/formatDate";
+import { dateToString } from "@/lib/helperFns/formatDate";
 
 
 export const revalidate = 1800 ;
 
-const validateFilter = (filter: string | undefined) => {
-  if (!filter) return "day";
-
-  const validFilters = ['month','week', 'day']
-  return validFilters.includes(filter) 
-    ? (filter) 
-    : 'day';
-}
-
-export async function fetchDashboardData(filter?: string, date?: string): Promise<{
+export async function fetchDashboardData(filter?: string): Promise<{
   success: boolean;
   data?: {
     categorySales: SalesSummaryData;
@@ -25,8 +16,6 @@ export async function fetchDashboardData(filter?: string, date?: string): Promis
   };
   errorMessage?: string;
 }> {
-  const validatedFilter = validateFilter(filter)
-  const validatedDate = validateDate(date)
   
   try {
     const axiosInstance = await createAxiosInstance()
@@ -34,9 +23,9 @@ export async function fetchDashboardData(filter?: string, date?: string): Promis
     
     // Fetch all data concurrently for better performance
     const [categorySalesRes, salesRes, totalGoodsSoldRes] = await Promise.all([
-      axiosInstance.get(`${baseUrl}/api/admin/category-sales-report/?filter=${validatedFilter}`),
-      axiosInstance.get(`${baseUrl}/api/admin/sales/?date=${validatedDate}`),
-      axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=${validatedFilter}`)
+      axiosInstance.get(`${baseUrl}/api/admin/category-sales-report/?filter=${filter}`),
+      axiosInstance.get(`${baseUrl}/api/admin/sales/?date=${filter}`),
+      axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=${filter}`)
     ])
 
     return {
@@ -75,8 +64,8 @@ export async function fetchDashboardData(filter?: string, date?: string): Promis
 
 
 
-export default async function AdminDashboardServerWrapper({ date, filter = "month" }:{ filter: DateFilter, date: string }) {
-    const { success, data, errorMessage } = await fetchDashboardData(filter,date)
+export default async function AdminDashboardServerWrapper({ filter = dateToString(new Date())}:{ filter: string }) {
+    const { success, data, errorMessage } = await fetchDashboardData(filter)
     
     if (!success) {
       return (

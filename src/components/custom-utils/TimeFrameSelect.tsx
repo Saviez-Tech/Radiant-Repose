@@ -1,30 +1,143 @@
 "use client"
-
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { useState, useEffect } from "react";
+import { format, isToday, isYesterday, parse, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { Dispatch, SetStateAction } from "react";
+import { poppins } from "@/fonts";
 
+// Import UI components for select dropdown
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
+// Import utility functions for date handling
+const stringToDate = (dateStr: string): Date => {
+  try {
+    return parse(dateStr, 'yyyy-M-d', new Date())
+  } catch (e) {
+    return new Date()
+  }
+}
 
-export default function TimeFrameSelect({ timeFilter, setTimeFilter }: { timeFilter: DateFilter, setTimeFilter: Dispatch<SetStateAction<DateFilter>>}){
-    return (
-        <Select 
-            value={timeFilter}
-            onValueChange={(value: string) => setTimeFilter(value as DateFilter)}
-            >
-            <SelectTrigger className="w-fit bg-white border border-gray-300 rounded">
-                <SelectValue placeholder="Select Filter" />
-            </SelectTrigger>
-            <SelectContent>
-                <SelectItem value="day">Today</SelectItem>
-                <SelectItem value="week">Week</SelectItem>
-                <SelectItem value="month">Month</SelectItem>
-            </SelectContent>
+const dateToString = (date: Date): string => {
+  return format(date, 'yyyy-M-d')
+}
+
+type TimeFrameType = | 'week' | 'month' | 'custom';
+
+export default function TimeFrameSelect({
+  timeFilter,
+  setTimeFilter,
+  setCustomDateRange
+}: {
+  timeFilter: string,
+  setTimeFilter: Dispatch<SetStateAction<string>>,
+  customDateRange?: { from: Date; to?: Date },
+  setCustomDateRange?: Dispatch<SetStateAction<{ from: Date; to?: Date }>>,
+}) {
+    
+  // State for selected timeframe type (week, month)
+  const [timeFrameType, setTimeFrameType] = useState<TimeFrameType>((timeFilter === "week" || timeFilter === "month") ? timeFilter : "custom")
+  
+  // Initialize date from the timeFilter string
+  const [date, setDate] = useState<Date>(() => {
+    return stringToDate(timeFilter)
+  });
+
+  const [disabledDatePicker,setDisabledDatePicker] = useState((timeFilter === "week" || timeFilter === "month") ? true : false)
+
+  // For client-side rendering only
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+ 
+  // Get formatted display text with special handling for today and yesterday
+  const getDisplayText = () => {
+    if (timeFilter !== "week" && timeFilter !== "month"){
+        const selectedDate = stringToDate(timeFilter)
+    
+        const formattedDate = format(selectedDate, "MMM d, yyyy")
+    
+        let specialText = "";
+        if (isToday(selectedDate)) {
+        specialText = " (Today)";
+        } else if (isYesterday(selectedDate)) {
+        specialText = " (Yesterday)";
+        }
+    
+        return formattedDate + specialText;
+    }
+    else {
+        return timeFilter;
+    }
+  }
+ 
+  // Handle date selection
+  const handleDateChange = (newDate: Date | null) => {
+    if (newDate) {
+      setDate(newDate)
+     
+      // Update customDateRange if setter is provided
+      if (setCustomDateRange) {
+        setCustomDateRange({ from: newDate })
+      }
+     
+      // Set timeFilter in the required 'yyyy-M-d' format
+      const formattedDateString = dateToString(newDate)
+      setTimeFilter(formattedDateString)
+    }
+  }
+
+  // Handle time frame type change
+  const handleTimeFrameTypeChange = (value: string) => {
+    setTimeFrameType(value as TimeFrameType)
+
+    setDisabledDatePicker((value === "week" || value === "month") ? true : false)
+    
+    // Update date range based on the new time frame type
+    if (value === 'week') {
+      setTimeFilter(value);
+    } else if (value === 'month') {
+      setTimeFilter(value);
+    }
+  }
+ 
+  // Update date when timeFilter changes externally
+  useEffect(() => {
+    setDate((timeFilter === "week" || timeFilter === "month") ? new Date() : stringToDate(timeFilter));
+  }, [timeFilter]);
+
+  if (!mounted) {
+    return <div className="flex items-center gap-4">
+      <div className="h-10 w-32 rounded-md border border-input px-3 py-2 text-sm">Loading...</div>
+      <div className="h-10 w-44 rounded-md border border-input px-3 py-2 text-sm">Loading...</div>
+    </div>;
+  }
+ 
+  return (
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <div className="flex flex-col gap-4">
+        <Select value={timeFrameType} onValueChange={handleTimeFrameTypeChange}>
+          <SelectTrigger className="w-32">
+            <SelectValue placeholder="Select timeframe" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="week">Week</SelectItem>
+            <SelectItem value="month">Month</SelectItem>
+            <SelectItem value="custom">Custom</SelectItem>
+          </SelectContent>
         </Select>
-    )
+        
+        <DatePicker
+          value={date}
+          onChange={handleDateChange}
+          className={`${poppins.className}`}
+          format="MMM d, yyyy"
+          disabled={disabledDatePicker}
+          label={getDisplayText()}
+        />
+      </div>
+    </LocalizationProvider>
+  );
 }

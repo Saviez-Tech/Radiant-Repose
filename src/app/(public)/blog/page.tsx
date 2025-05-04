@@ -103,7 +103,7 @@ export default function Page(){
                     </div>
                 </div>
 
-                <div className="py-14 grid xs:grid-cols-1 grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 md:gap-y-8 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+                <div className="py-14 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 md:gap-y-8 lg:grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
                     {
                         blogData.map((v,i) => (
                             <BlogCard blogData={v} key={i} />
