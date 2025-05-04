@@ -1,7 +1,6 @@
 interface IAuthUser {
     id: string | null;
     emailOrUsername: string | null;
-    name: string | null,
     group: "Administrator" | "Worker" | null;
 }
 
@@ -12,21 +11,27 @@ enum ProductType {
     PERFUMES = "perfumes"
 }
 
-type Product = {
+export type Product = {
     id: string;
     name: string;
     price: number;
     image_url: string;
     description?: string;
     stock_quantity: number;
-    barcode: string;
-    section: "luxury-collection" | "spa-section" | "pharmacy";
-    category: ProductType;
-    branch: number
+    barcode?: string;
+    category?: "luxury-collection" | "spa-section" | "pharmacy";
+    productType: ProductType;
+    branch?: number
 }
 
 interface ScannedProduct extends Product {
     quantity: number;
+    piecesLeft: number;
+    barCode: string;
+    category: "luxury-collection" | "spa-section" | "pharmacy";
+}
+
+interface ScannedProduct extends Product {
     totalPrice: number;
 }
 
@@ -93,6 +98,7 @@ interface Transaction {
     price: number;
     date: string;
     time: string;
+    date: string;
     amount: string;
     staff: Staff;
     subtotal: string;
