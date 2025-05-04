@@ -3,13 +3,13 @@ import Image from "next/image";
 export default function AboutSection() {
   return (
     <section className=" bg-[#FFAE001A]/10 md:py-12">
-      <div className="app-container grid gap-4 md:gap-8 md:grid-cols-2">
-        <div className="md:space-y-8 space-y-4 ">
-          <h2 className=" md:text-[38px]  text-[22px] font-semibold">
+      <div className="app-container grid gap-2 md:gap-8 md:grid-cols-2">
+        <div className="lg:space-y-8 md:space-y-4 space-y-2 ">
+          <h2 className=" lg:text-[38px] md:text-[22px]  text-[16px] font-semibold">
             We are only known for Excellence & Competence
           </h2>
           <p className=" md:text-xl text-base text-primary-deepBlack">
-            <span className="font-semibold">Radiant Repose</span> is home to one
+            <span className="font-semibold text-base">Radiant Repose</span> is home to one
             of the finest wellness and luxury self-care destinations in Nigeria.
             Our Excellence in these services speaks for us.
           </p>
@@ -37,7 +37,7 @@ export default function AboutSection() {
             height={1000}
           />
 
-          <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  aspect-[326/457] py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
+          <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  lg:aspect-[326/457] md:py-6  lg:py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 max-md:hidden">
               {services.map((service, idx) => (
                 <div key={idx} className="flex items-start gap-2">
