@@ -37,7 +37,7 @@ export default function AboutSection() {
             height={1000}
           />
 
-          <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  lg:aspect-[326/457] md:py-6  lg:py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
+          <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  aspect-[326/457] py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-8 max-md:hidden">
               {services.map((service, idx) => (
                 <div key={idx} className="flex items-start gap-2">

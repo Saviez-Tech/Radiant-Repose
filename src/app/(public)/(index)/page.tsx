@@ -9,7 +9,7 @@ import ServicesSection from "./Services";
 export default function Page() {
   return (
     <main>
-      <div className="flex relative flex-col pb-40"> 
+      <div className="flex relative flex-col "> 
         <Hero />
           <ServicesSection />
           <AboutSection />
