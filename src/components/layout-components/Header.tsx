@@ -5,9 +5,37 @@ import LogoSrc from "../../public-assets/logo/Logo1.svg"
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { closeMobileNav, toggleMobileNav } from "@/lib/redux/slices/mobileNavSlice";
+import { useEffect } from "react";
+import { Menu } from "lucide-react";
+import UseWindowSize from "../custom-utils/UseWindowSize";
+import { mobileNavItems } from "@/components-data/mobile-nav-data";
+import MobileSidebarNav from "../nav/MobileSideNav";
 
 export default function Header(){
-    const pathName = usePathname();
+
+    const pathName = usePathname()
+    const { width } = UseWindowSize()
+    const { isOpen } = useAppSelector(store => store.mobileNav)
+    const dispatch = useAppDispatch()
+    
+    useEffect(() => {
+      if (width >= 1024 && isOpen) {
+        dispatch(closeMobileNav())
+      }
+    }, [width, isOpen])
+
+    const handleToggleMobileNav = () => {
+      dispatch(toggleMobileNav())
+    }
+
+
+    useEffect(() => {
+        if (width >= 1024 && isOpen) {
+            dispatch(closeMobileNav())
+        }
+    },[pathName])
     
     const navItems = [
         { name: "Home", path: "/" },
@@ -17,7 +45,9 @@ export default function Header(){
         { name: "FAQs", path: "/faqs" },
         { name: "Blog", path: "/blog" },
         { name: "Contact Us", path: "/contact-us" }
-    ];
+    ]
+
+
     
     return(
         !pathName.startsWith("/auth") && 
@@ -44,6 +74,17 @@ export default function Header(){
                         ))}
                     </ul>
                 </nav>
+
+                <MobileSidebarNav navItems={mobileNavItems} />
+                <button 
+                    className="lg:hidden"
+                    onClick={handleToggleMobileNav}
+                    aria-label="Toggle mobile navigation"
+                    aria-expanded={isOpen ? "true" : "false"}
+                    aria-controls="homepage-mobile-nav"
+                >
+                    <Menu className="text-primary-deepBlack" size={35} />
+                </button>
             </div>
         </div>
     )

@@ -1,5 +1,4 @@
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import { Product } from "@/types";
 import Image from "next/image";
 
 export default function ProductCard({ productType, image_url, name, price, description, stock_quantity, }:Product) {

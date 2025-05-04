@@ -36,7 +36,6 @@ function RevenueGrowthChart({
 }) {
   
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
-  const [customDateRange, setCustomDateRange] = useState<{ from: Date; to?: Date } | undefined>(undefined)
   
   // Function to determine which type of chart to generate based on the date filter
   const generateChartData = (dateFilter: string): ChartDataPoint[] => {
@@ -255,7 +254,6 @@ function RevenueGrowthChart({
         <TimeFrameSelect 
           setTimeFilter={setTimeFilter} 
           timeFilter={timeFilter} 
-          customDateRange={customDateRange}
         />
       </div>
 

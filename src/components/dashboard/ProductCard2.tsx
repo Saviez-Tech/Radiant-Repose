@@ -60,7 +60,7 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
           <button 
             onClick={(e) => {
               e.stopPropagation()
-              handleItemRemove(product.barcode)
+              handleItemRemove(product.barcode!)
             }} 
             className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
           >

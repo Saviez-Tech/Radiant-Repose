@@ -2,6 +2,7 @@ interface IAuthUser {
     id: string | null;
     emailOrUsername: string | null;
     group: "Administrator" | "Worker" | null;
+    name: string | null
 }
 
 enum ProductType {

@@ -30,7 +30,7 @@ export function transformSaleRecordsToTransactions(
     // Create a transaction from the updated sale record structure
     const legacyTransaction: Transaction = {
       id: String(sale.id),
-      barcode: sale.product.barcode,
+      barcode: sale.product.barcode || "",
       name: sale.product.name,
       image_url: sale.product.image_url,
       quantity: sale.quantity,

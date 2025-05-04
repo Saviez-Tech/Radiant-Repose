@@ -41,7 +41,7 @@ export const validateDate = (dateStr: string | undefined): string => {
 export const stringToDate = (dateStr: string): Date => {
   try {
     return parse(dateStr, 'yyyy-M-d', new Date())
-  } catch (e) {
+  } catch{
     return new Date()
   }
 }

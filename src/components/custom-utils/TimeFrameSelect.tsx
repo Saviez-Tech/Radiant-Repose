@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
-import { format, isToday, isYesterday, parse, startOfWeek, endOfWeek, startOfMonth, endOfMonth } from "date-fns";
+import { format, isToday, isYesterday, parse } from "date-fns";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 const stringToDate = (dateStr: string): Date => {
   try {
     return parse(dateStr, 'yyyy-M-d', new Date())
-  } catch (e) {
+  } catch {
     return new Date()
   }
 }
@@ -35,7 +35,7 @@ export default function TimeFrameSelect({
   customDateRange?: { from: Date; to?: Date },
   setCustomDateRange?: Dispatch<SetStateAction<{ from: Date; to?: Date }>>,
 }) {
-    
+
   // State for selected timeframe type (week, month)
   const [timeFrameType, setTimeFrameType] = useState<TimeFrameType>((timeFilter === "week" || timeFilter === "month") ? timeFilter : "custom")
   

@@ -14,7 +14,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
   const handleCardClick = () => {
     if (isOutOfStock) return; 
     if (isSelected){
-      dispatch(deselectItem(product.barcode))
+      dispatch(deselectItem(product.barCode!))
     }else{
       dispatch(selectItem(product))
     }
@@ -50,7 +50,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
           <button 
             onClick={(e) => {
               e.stopPropagation();
-              dispatch(removeScannedItem(product.barcode));
+              dispatch(removeScannedItem(product.barcode!))
             }} 
             className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
           >
@@ -78,7 +78,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  dispatch(incrementItemQuantity(product.barcode));
+                  dispatch(incrementItemQuantity(product.barcode!));
                 }} 
                 className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center"
               >
@@ -87,7 +87,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  dispatch(decrementItemQuantity(product.barcode));
+                  dispatch(decrementItemQuantity(product.barcode!));
                 }} 
                 className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1"
               >
