@@ -14,11 +14,7 @@ export default function Footer() {
         pathName.startsWith("/auth") || 
         pathName.startsWith("/pos") || 
         pathName.startsWith("/cart-monitor") || 
-<<<<<<< HEAD
-        pathName.startsWith("/admin") ? null :
-=======
         pathName.startsWith("/admin")  ? null :
->>>>>>> 3be884f8127a07cb321a1d9a1d2efda9821ed40c
         <footer className="bg-primary-darkRed text-primary-base_color1 pt-12 glob-px">
             <div className="text-center md:text-left md:flex gap-10 justify-between">
                 <div>

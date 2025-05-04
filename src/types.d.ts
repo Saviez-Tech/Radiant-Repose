@@ -35,9 +35,6 @@ interface ScannedProduct extends Product {
     totalPrice: number;
 }
 
-<<<<<<< HEAD
-interface Transaction extends Product {
-=======
 type Branch = {
     id: number,
     name: string,
@@ -100,13 +97,9 @@ interface Transaction {
     quantity: number;
     price: number;
     date: string;
->>>>>>> 3be884f8127a07cb321a1d9a1d2efda9821ed40c
     time: string;
     date: string;
     amount: string;
-<<<<<<< HEAD
-    balance: string;
-=======
     staff: Staff;
     subtotal: string;
     discount: string;
@@ -128,5 +121,4 @@ type SalePayload = {
 type AppPageError = {
   error: Error & { digest?: string },
   reset: () => void
->>>>>>> 3be884f8127a07cb321a1d9a1d2efda9821ed40c
 }
