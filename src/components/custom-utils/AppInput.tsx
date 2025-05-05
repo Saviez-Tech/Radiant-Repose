@@ -1,38 +1,59 @@
 import { useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { cn } from "@/lib/utils";
-import { ProductFormValues } from "@/schemas/addProduct.schema";
+
 import { Label } from "../ui/label";
 import ErrorPara from "./ErrorPara";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { StaffFormValues } from "@/schemas/addStaff.schema";
+
+import type { ProductFormValues } from "@/schemas/addProduct.schema";
+import type { StaffFormValues } from "@/schemas/addStaff.schema";
+import type { PaymentFormValues } from "@/schemas/paymentFormSchema";
 
 type FormInputFieldProps = {
   label: string;
-  name: keyof StaffFormValues | keyof ProductFormValues;
+  name:
+    | keyof StaffFormValues
+    | keyof ProductFormValues
+    | keyof PaymentFormValues
+    | string;
   placeholder: string;
   register: any;
   error?: string;
   type?: string;
   prefix?: React.ReactNode;
   className?: string;
-  disabled?: boolean
-}
+  disabled?: boolean;
+  variant?: "solid" | "transparent";
+  textarea?: boolean;
+  rows?: number;
+};
 
-export default function AppInput({ 
-  label, 
-  name, 
-  placeholder, 
-  register, 
-  error, 
-  type = "text", 
+export default function AppInput({
+  label,
+  name,
+  placeholder,
+  register,
+  error,
+  type = "text",
   prefix,
   disabled,
-  className
+  className,
+  variant = "solid",
+  textarea = false,
+  rows = 4,
 }: FormInputFieldProps) {
-
   const [eyeOpen, setEyeOpen] = useState(false);
   const isPassword = type === "password";
   const inputType = isPassword ? (eyeOpen ? "text" : "password") : type;
+
+  const baseStyles = cn(
+    "rounded-md max-w-full w-full text-sm py-3 disabled:cursor-not-allowed h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400",
+    prefix ? "pl-8" : "",
+    variant === "transparent"
+      ? "bg-transparent border-[1px]"
+      : "bg-white border border-gray-300",
+    error && "border-red-500 focus:ring-red-500"
+  );
 
   return (
     <div className={cn("space-y-1", className)}>
@@ -45,20 +66,39 @@ export default function AppInput({
             {prefix}
           </div>
         )}
-        <input
-          type={inputType}
-          id={name as string}
-          placeholder={placeholder}
-          disabled={disabled}
-          className={cn(
-            "border border-gray-300 rounded-md max-w-full w-full text-sm py-3 disabled:cursor-not-allowed h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400", 
-            prefix ? "pl-8" : "",
-            error ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-          )}
-          {...register(name)}
-        />
 
-        {isPassword && (
+        {textarea ? (
+          <textarea
+            id={name as string}
+            placeholder={placeholder}
+            disabled={disabled}
+            rows={rows}
+            className={cn(
+              baseStyles,
+              "resize-none h-auto py-2", // overrides height for textarea
+            )}
+            style={{
+              borderColor:
+                variant === "transparent" && !error ? "#ACACAC" : undefined,
+            }}
+            {...register(name)}
+          />
+        ) : (
+          <input
+            type={inputType}
+            id={name as string}
+            placeholder={placeholder}
+            disabled={disabled}
+            className={baseStyles}
+            style={{
+              borderColor:
+                variant === "transparent" && !error ? "#ACACAC" : undefined,
+            }}
+            {...register(name)}
+          />
+        )}
+
+        {isPassword && !textarea && (
           <button
             type="button"
             onClick={() => setEyeOpen(!eyeOpen)}

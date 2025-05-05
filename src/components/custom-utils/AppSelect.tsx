@@ -12,7 +12,7 @@ type FormSelectFieldProps = {
    name: (keyof ProductFormValues | keyof StaffFormValues | string);
   placeholder?: string;
   options: { value: string; label: string }[];
-  control: Control<any,any>;
+  control?: Control<any,any>;
   error?: string;
   className?: string;
   disabled?: boolean
