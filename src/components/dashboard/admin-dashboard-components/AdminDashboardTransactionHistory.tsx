@@ -5,11 +5,11 @@ import { Pagination } from "./../Pagination";
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 
-export default function AdminDashboardTransactionHistory({ transactions, timeFilter }: { transactions: Transaction[], timeFilter: DateFilter, setTimeFilter: Dispatch<SetStateAction<DateFilter>>  }) {
+export default function AdminDashboardTransactionHistory({ transactions, timeFilter }: { transactions: Transaction[], timeFilter: string, setTimeFilter: Dispatch<SetStateAction<string>>  }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
-  const applyDateFilter = (transactions: Transaction[], filter: DateFilter) => {
+  const applyDateFilter = (transactions: Transaction[], filter: string) => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     

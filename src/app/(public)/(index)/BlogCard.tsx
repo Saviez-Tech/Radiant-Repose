@@ -28,7 +28,7 @@ export default function BlogCard({
         <Image src={imageUrl} alt={title} fill className="object-cover" />
       </div>
 
-      <div className="px-5 py-2 text-left space-y-2 md:space-y-4 relative">
+      <div className="px-5 pt-2 pb-3 text-left space-y-2 md:space-y-4 relative">
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-2">
             <div className="relative w-7 h-7 rounded-full overflow-hidden">
@@ -55,7 +55,7 @@ export default function BlogCard({
 
         <Link
           href="#"
-          className="btn-gradient px-2 md:px-4 py-1 md:py-3 flex items-center max-md:text-sm gap-2 w-fit hover:bg-red-700 transition"
+          className="btn-gradient px-2 text-sm md:px-4 py-1 md:py-3 flex items-center max-md:text-sm gap-2 w-fit hover:bg-red-700 transition"
         >
           Read more
           <LucideArrowRight />

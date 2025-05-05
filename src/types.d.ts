@@ -2,6 +2,7 @@ interface IAuthUser {
     id: string | null;
     emailOrUsername: string | null;
     group: "Administrator" | "Worker" | null;
+    name: string | null
 }
 
 enum ProductType {
@@ -11,7 +12,7 @@ enum ProductType {
     PERFUMES = "perfumes"
 }
 
-export type Product = {
+type Product = {
     id: string;
     name: string;
     price: number;
@@ -42,7 +43,7 @@ type Branch = {
     contact_number: string
 }
 
-type DateFilter = "day" | "week" | "month";
+type DateFilter = "day" | "week" | "month" | "custom";
 
 interface Staff {
     id: string;

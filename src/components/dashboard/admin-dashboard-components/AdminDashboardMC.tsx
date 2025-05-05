@@ -13,16 +13,17 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
 import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import { validateDate } from "@/lib/helperFns/formatDate";
 
 export default function AdminDashboardMC({ data }:{  data: {
     categorySales: SalesSummaryData;
     sales: SalesRecordList;
     totalGoodsSold: StatData;
-    filter: DateFilter
+    filter: string
   } | undefined }){
 
     const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
-    const [timeFilter, setTimeFilter] = useState<DateFilter>(data?.filter || 'month')
+    const [timeFilter, setTimeFilter] = useState<string>(data?.filter || validateDate(new Date().toISOString()))
     const [isLoading, setIsLoading] = useState(false)
     
     const router = useRouter()

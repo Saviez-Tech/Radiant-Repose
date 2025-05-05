@@ -4,11 +4,11 @@ import { Suspense } from "react";
 
 export default async function Page({ searchParams }:{ searchParams: Promise<{ [key: string]: string | string[] | undefined }> }){
 
-    const { filter, date } = (await (searchParams))
+    const { filter } = (await (searchParams))
 
     return (
         <Suspense fallback={<AdminDashboardSkeleton />}>
-            <AdminDashboardServerWrapper filter={filter as DateFilter} date={date as string} />
+            <AdminDashboardServerWrapper filter={filter as string} />
         </Suspense>
     )
 }

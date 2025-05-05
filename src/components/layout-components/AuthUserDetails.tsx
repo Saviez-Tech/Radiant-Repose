@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react/dist/iconify.js"
 import AuthUserDetailsSkeletonLoader from "../loaders/AuthUserDetailsSkeletonLoader"
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks"
 import { useEffect, useState } from "react"
-import logoutHandler from "@/actions/auth.server"
+import { logoutHandler } from "@/actions/auth.server"
 import toast from "react-hot-toast"
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice"
 import { usePathname, useRouter } from "next/navigation"
@@ -27,7 +27,7 @@ export default function AuthUserDetails() {
 
 
   const handleLogout = async() => {
-    const { success, data, errorMessage } = await logoutHandler()
+    const { success, data, error } = await logoutHandler()
 
     if (success){
       toast.success(data || "Logout Successful")
@@ -40,7 +40,7 @@ export default function AuthUserDetails() {
 
       router.push(`/auth/login?redirect=${pathName}`)
     }else {
-      toast.error(errorMessage || "Failed To Logout")
+      toast.error(error || "Failed To Logout")
     }
   }
   

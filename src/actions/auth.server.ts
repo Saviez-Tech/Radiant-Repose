@@ -2,7 +2,6 @@
 
 import { cookies } from "next/headers";
 
-  
 export async function LoginHandler(email: string, password: string) {
   try {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -17,7 +16,6 @@ export async function LoginHandler(email: string, password: string) {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ username: email, password }),
-      // Add cache: 'no-store' to prevent caching issues
       cache: 'no-store'
     })
 
@@ -30,49 +28,62 @@ export async function LoginHandler(email: string, password: string) {
       data = JSON.parse(responseText)
     } catch {
       console.error("Failed to parse response as JSON:", responseText)
-      throw new Error("Invalid response from server")
+      // Return error object instead of throwing
+      return { 
+        success: false, 
+        error: "Invalid response from server" 
+      }
     }
     
     if (!response.ok) {
       console.error("Login failed with status:", response.status)
       
-      // Handle API error response
-      const errorMessage = data?.message || 
-        (response.status === 401 || response.status === 404
-          ? "Invalid credentials. Please try again."
-          : "Failed to login. Please check your network or try again later.")
-          
-      throw new Error(errorMessage)
+      // Return error object instead of throwing
+      return { 
+        success: false, 
+        error: data?.message || 
+          (response.status === 401 || response.status === 404
+            ? "Invalid credentials. Please try again."
+            : "Failed to login. Please check your network or try again later.")
+      }
     }
     
     const { id, username, group, auth_token, full_name } = data
     
     if (!auth_token) {
-      throw new Error("Authentication token not received from server.")
+      // Return error object instead of throwing
+      return { 
+        success: false, 
+        error: "Authentication token not received from server." 
+      }
     }
     
     const userData = JSON.stringify({ id, username, group, auth_token, name: full_name })
     
-   // Set auth token in cookies for 24 hours
+    // Set auth token in cookies for 24 hours
     const cookieStore = await cookies()
-      cookieStore.set("user_session", userData, {
+    cookieStore.set("user_session", userData, {
       maxAge: 60 * 60 * 24 
     }) 
     
-    return { id, username, group, success: true, name: full_name }
+    return { 
+      success: true, 
+      user: { id, username, group, name: full_name } 
+    }
   } catch (error) {
     console.error("Login error:", error)
 
-    if (error instanceof Error) {
-      throw error;
+    // Return error object instead of throwing
+    return { 
+      success: false, 
+      error: error instanceof Error ? error.message : "An unexpected error occurred."
     }
-    throw new Error("An unexpected error occurred.")
   }
 }
 
-export default async function logoutHandler(){
+export async function logoutHandler(){
   try {
-    const cookieStore = await cookies()
+    const cookieStore =  await cookies()
     cookieStore.set("user_session","",{ maxAge: 0 })
     cookieStore.delete("auth_token")
 
@@ -81,7 +92,7 @@ export default async function logoutHandler(){
   catch{
     return {
       success: false,
-      errorMessage: "Logout Failed"
+      error: "Logout Failed"
     }
   }
 }

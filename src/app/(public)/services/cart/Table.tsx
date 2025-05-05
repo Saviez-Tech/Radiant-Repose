@@ -1,6 +1,5 @@
-import Link from "next/link";
 import TableRow from "./TableRow";
-import { demoCartProducts, dummyProducts } from "@/components-data/sample-data";
+import { dummyProducts } from "@/components-data/sample-data";
 import OrderSummary from "./OrderSummary";
 
 export default function Table() {

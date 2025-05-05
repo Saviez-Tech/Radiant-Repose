@@ -98,13 +98,13 @@ export default function ProductCard3({ product }: { product: Product }) {
                 <DollarSquare />
                 <span className={`${dm_mono.className} text-primary-dark_gray text-[9px] md:text-xs font-light ml-1`}>{formatNaira(product.price,false,true)}</span>
             </div>
-            <p className="text-primary-dark_gray text-right text-[11px] capitalize truncate"><span className="font-semibold">Category:</span> {product.category.split("-").join(" ")}</p>
+            <p className="text-primary-dark_gray text-right text-[11px] capitalize truncate"><span className="font-semibold">Category:</span> {product.category?.split("-").join(" ")}</p>
         </div>
        
         <div className="flex justify-between items-center overflow-hidden gap-2 pb-1 mt-auto">
           <span className="text-[9px] md:text-[11px] text-gray-500 bg-gray-100 p-1 rounded">{product.stock_quantity} Pieces left</span>
           <div className="max-w-full">
-            <BarcodeGenerator barCode={product.barcode} />
+            <BarcodeGenerator barCode={product.barcode!} />
           </div>
         </div>
       </div>

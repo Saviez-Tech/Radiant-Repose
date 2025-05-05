@@ -1,6 +1,7 @@
 "use client";
+
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import { Product } from "@/types";
+import Image from "next/image";
 import { useState } from "react";
 import { LuMinus, LuPlus } from "react-icons/lu";
 
@@ -22,7 +23,9 @@ export default function TableRow({
       <div className="flex flex-1 items-center  md:w-[55%]">
         <div className="p-2 text- font-medium text-gray-900 flex-1 ">
           <div className="flex">
-            <img
+            <Image
+              width={100}
+              height={100}
               src={image_url}
               alt="hand bag"
               className="md:w-16 md:h-16 h-14 w-14 object-cover  rounded-xl"
