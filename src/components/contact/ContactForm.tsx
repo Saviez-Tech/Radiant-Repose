@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";
 import { ArrowRight } from "lucide-react";
+import { te } from "date-fns/locale";
 
 export default function ContactForm() {
   const {
@@ -59,5 +60,6 @@ const formfileds = [
         label: "Message",
         name: "message",
         placeholder: "Enter message",
+        textarea: true
     },
 ]
