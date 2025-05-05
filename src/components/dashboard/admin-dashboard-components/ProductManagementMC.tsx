@@ -35,7 +35,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
                 return products.filter(product => product.stock_quantity < 10)
             case 'product-types':
                 if (selectedProductType) {
-                    return products.filter(product => product.category.toLocaleLowerCase() === selectedProductType.toLocaleLowerCase())
+                    return products.filter(product => product.category?.toLocaleLowerCase() === selectedProductType.toLocaleLowerCase())
                 }
                 return products;
             default:
