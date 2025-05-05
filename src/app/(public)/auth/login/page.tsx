@@ -12,10 +12,8 @@ import toast from "react-hot-toast";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice";
 import ErrorPara from "@/components/custom-utils/ErrorPara";
-import { useState } from "react";
 
 export default function Login(){
-    const [loginError, setLoginError] = useState<string | null>(null)
 
     const {
         register,
@@ -31,19 +29,17 @@ export default function Login(){
     const redirectPath = searchParams.get("redirect")
 
     const handleFormSubmit: SubmitHandler<LoginAccountFormData> = async(data) => {
-        setLoginError(null)
         
         try {
             const result = await LoginHandler(data.phoneOrEmail, data.password)
             
             if (!result.success) {
-                setLoginError(result.error || "Login failed")
                 toast.error(result.error || "Login failed")
                 return;
             }
             
-            if (result.user) {
-                const { group, id, username, name } = result.user;
+            if (result.id) {
+                const { group, id, username, name } = result;
                 dispatch(setAuthUser({ emailOrUsername: username, id, group, name }))
                 
                 toast.success("Login Successful")
@@ -68,10 +64,8 @@ export default function Login(){
             console.error("Login error in component:", err)
             
             if (err instanceof Error) {
-                setLoginError(err.message)
                 toast.error(err.message)
             } else {
-                setLoginError("An unexpected error occurred")
                 toast.error("An unexpected error occurred")
             }
         }
@@ -91,13 +85,6 @@ export default function Login(){
                 <div className="flex flex-col justify-center mt-8 max-w-md mx-auto">
                     <h1 className="font-bold text-xl mt-4 text-center text-primary-darkRed mb-1 md:text-2xl">Welcome Back!</h1>
                     <p className="text-sm font-medium md:text-base text-center">Enter your details to continue</p>
-
-                    {loginError && (
-                        <div className="mt-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-md">
-                            {loginError}
-                        </div>
-                    )}
-
                     <form className="mt-9" onSubmit={handleSubmit(handleFormSubmit)}>
                         <div className="mb-5">
                             <label htmlFor="phoneOrEmail" className="text-sm font-medium mb-2 block md:text-base">Email or Phone Number</label>

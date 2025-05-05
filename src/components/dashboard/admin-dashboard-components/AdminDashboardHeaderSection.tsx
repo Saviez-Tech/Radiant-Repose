@@ -24,7 +24,7 @@ export default function AdminDashboardHeaderSection(){
             </header>
 
             {/* This is Header for Mobile Devices */}
-            <header className="pt-6 flex lg:hidden border-b  justify-center items-center lg:pe-8 lg:ps-1 lg:absolute lg:mx-auto lg:h-24 lg:border-b-2 lg:border-b-gray-200/70 lg:py-4 lg:top-0 lg:left-0 lg:w-full lg:justify-between">
+            <header className="pt-6 px-4 md:px-8 flex lg:hidden border-b  justify-center items-center lg:pe-8 lg:ps-1 lg:absolute lg:mx-auto lg:h-24 lg:border-b-2 lg:border-b-gray-200/70 lg:py-4 lg:top-0 lg:left-0 lg:w-full lg:justify-between">
                 <div className="flex items-center justify-between flex-wrap w-full lg:hidden pb-8">
                     <Logo src={LogoSrc} width={90} height={90} className="w-36" />
 

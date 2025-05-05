@@ -4,6 +4,7 @@ import categoryTabReducer from "./slices/categoryTabSlice"
 import authUserReducer from "./slices/authUserSlice"
 import mobileNavReducer from "./slices/mobileNavSlice"
 import editStaffReducer from "./slices/editStaffSlice"
+import editProductReducer from "./slices/editProductSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -12,7 +13,8 @@ export const makeStore = () => {
       categoryTab: categoryTabReducer,
       authUser: authUserReducer,
       mobileNav: mobileNavReducer,
-      editStaff: editStaffReducer
+      editStaff: editStaffReducer,
+      editProduct: editProductReducer
     }
   })
 }

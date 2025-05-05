@@ -1,27 +1,30 @@
 "use client";
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import AppInput from "../custom-utils/AppInput";
 import { Copy } from "lucide-react";
 
 export default function Payment() {
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [formData, setFormData] = useState({
-    cardNumber: "",
-    expirationDate: "",
-    cvv: "",
-    bankTransferConfirmed: false,
-  });
-  const [isFormValid, setIsFormValid] = useState(false);
+  // const [formData, setFormData] = useState({
+  //   cardNumber: "",
+  //   expirationDate: "",
+  //   cvv: "",
+  //   bankTransferConfirmed: false,
+  // })
 
-  // Update form data when input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  // const [isFormValid, setIsFormValid] = useState(false)
+  const isFormValid = false;
+
+  // // Update form data when input changes
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: value,
+  //   }));
+  // };
 
   return (
     <div className="flex flex-col">

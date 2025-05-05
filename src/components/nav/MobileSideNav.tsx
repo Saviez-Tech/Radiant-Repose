@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { Modal as MuiModal } from "@mui/material";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import Logo from "@/components/layout-components/Logo";
 import LogoSrc from "../../public-assets/logo/Logo1.svg"
 import React, { useEffect, useState } from "react";
@@ -15,7 +14,6 @@ import { mobileNavItems } from "@/components-data/mobile-nav-data";
 
 export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileNavItems }) {
     const pathName = usePathname()
-    const router = useRouter()
     const dispatch = useAppDispatch()
     const { isOpen } = useAppSelector(store => store.mobileNav)
     const [showModal, setShowModal] = useState(false)
@@ -93,35 +91,13 @@ export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileN
                             <ul className="flex mt-8 flex-col gap-2">
                                 {navItems.map((item) => (
                                     item.hasDropdown ? (
-                                        <DropdownMenu key={item.name}>
-                                            <DropdownMenuTrigger 
-                                                className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : ""} relative flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors`}
-                                            >
-                                                <span>{item.name}</span>
-                                                <Icon icon="cuida:caret-down-outline" width="20" height="20" />
-                                            </DropdownMenuTrigger>
-
-                                            <DropdownMenuContent 
-                                                className="z-[9999] w-full" 
-                                                sideOffset={5}
-                                                align="start"
-                                                forceMount
-                                            >
-                                                {item.dropdownItems && item.dropdownItems.map((dropdownItem, i) => (
-                                                    <React.Fragment key={dropdownItem.name}>
-                                                        <DropdownMenuItem 
-                                                            onClick={() => {
-                                                                router.push(dropdownItem.path)
-                                                                dispatch(closeMobileNav())
-                                                            }}
-                                                        >
-                                                            {dropdownItem.name}
-                                                        </DropdownMenuItem>
-                                                        {i < item.dropdownItems.length - 1 && <DropdownMenuSeparator />}
-                                                    </React.Fragment>
-                                                ))}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
+                                        <li 
+                                            key={item.name}
+                                            className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : ""} relative flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors`}
+                                        >
+                                            <span>{item.name}</span>
+                                            <Icon icon="cuida:caret-down-outline" width="20" height="20" />
+                                        </li>
                                     ) : (
                                         <li key={item.name} className="block">
                                             <Link
@@ -135,20 +111,6 @@ export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileN
                                     )
                                 ))}
                             </ul>
-                        </div>
-
-                        <div className="mt-auto pt-6 border-t border-gray-200">
-                            <div className="flex items-center gap-3 px-4 py-2">
-                                <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-                                    <Icon icon="heroicons:user" width="16" height="16" />
-                                </div>
-                                <div>
-                                    <Link href="/auth/login" className="block cursor-pointer">
-                                        <p className="text-sm font-medium">Account</p>
-                                        <p className="text-xs text-gray-500">Sign in or register</p>
-                                    </Link>
-                                </div>
-                            </div>
                         </div>
                     </motion.nav>
                 )}

@@ -78,8 +78,8 @@ export default function AdminDashboardMC({ data }:{  data: {
                 <ExportDataBtn />
             </div>
 
-            <div className="flex mt-8 justify-between items-center md:hidden">
-                <h2 className="text-primary-deepBlack font-medium text-base block">Total Luxury Sales</h2>
+            <div className="flex mt-8 justify-between flex-wrap gap-y-6 items-center md:hidden">
+                <h2 className="text-primary-deepBlack font-medium block text-lg">Total Luxury Sales</h2>
                 <TimeFrameSelect timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
             </div>
 
