@@ -20,8 +20,8 @@ type Product = {
     description?: string;
     stock_quantity: number;
     barcode?: string;
-    category?: "luxury-collection" | "spa-section" | "pharmacy";
-    productType: ProductType;
+    category?: "luxury-collection" | "spa-section" | "pharmacy" | string;
+    productType: ProductType | string;
     branch?: number
 }
 

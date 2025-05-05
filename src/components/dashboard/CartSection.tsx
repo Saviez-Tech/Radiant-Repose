@@ -30,7 +30,7 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
       <div className="flex-grow">
         <div className="flex justify-between">
           <h3 className="text-xs font-semibold truncate">{name}</h3>
-          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barcode))}>
+          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barcode || ""))}>
             <X size={16} />
           </button>
         </div>
@@ -38,11 +38,11 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
           <div className="flex items-center gap-4">
-            <button onClick={() => dispatch(decrementItemQuantity(barcode))} className="text-gray-500">
+            <button onClick={() => dispatch(decrementItemQuantity(barcode!))} className="text-gray-500">
               <Minus size={13} />
             </button>
             <span className="text-xs">{quantity}</span>
-            <button onClick={() => dispatch(incrementItemQuantity(barcode))} className="text-gray-500">
+            <button onClick={() => dispatch(incrementItemQuantity(barcode!))} className="text-gray-500">
               <Plus size={13} />
             </button>
           </div>

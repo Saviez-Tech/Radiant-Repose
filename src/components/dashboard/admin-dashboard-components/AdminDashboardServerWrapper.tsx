@@ -23,9 +23,9 @@ export async function fetchDashboardData(filter?: string): Promise<{
     
     // Fetch all data concurrently for better performance
     const [categorySalesRes, salesRes, totalGoodsSoldRes] = await Promise.all([
-      axiosInstance.get(`${baseUrl}/api/admin/category-sales-report/?filter=${filter}`),
+      axiosInstance.get(`${baseUrl}/api/admin/category-sales-report/?filter=week`),
       axiosInstance.get(`${baseUrl}/api/admin/sales/?date=${filter}`),
-      axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=${filter}`)
+      axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=week`)
     ])
 
     return {

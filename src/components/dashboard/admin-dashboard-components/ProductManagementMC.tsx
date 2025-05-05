@@ -5,7 +5,9 @@ import ProductCategoryFilter from "./ProductCategoryFilter";
 import ProductCard3 from "../ProductCard3";
 import AddNewProductBtn from "@/components/buttons/AddNewProductBtn";
 import { ProductType } from "@/enums";
-
+import AdminProductManagementMCSearch from "./AdminProductManagementMCSearch";
+import { fetchProductAction } from "@/actions/product.server";
+import SpinnerLoader from "@/components/loaders/SpinnerLoader";
 
 
 export default function ProductManagementMC({ data, section }: { data: Product[], section: string }) {
@@ -13,9 +15,11 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [rowsPerPage, setRowsPerPage] = useState(7)
-
+    const [searchValue, setSearchValue] = useState("")
+    const [searchedProducts, setSearchedProducts] = useState<Product[] | null>(null)
+    const [isSearching, setIsSearching] = useState(false)
+    const [searchError, setSearchError] = useState<string | null>(null)
     
-    // First filter by section from props (If There's no API query to fetch based on category)
     const categoryFilteredProducts = useMemo(() => {
         if (section) {
             return data;
@@ -23,10 +27,55 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         return data.filter(product => product.category === section)
     }, [data, section])
     
+    // Handle search functionality
+    const handleSearch = async (value: string) => {
+        setSearchValue(value)
+        
+        if (!value.trim()) {
+            // Clear search results when input is empty
+            setSearchedProducts(null)
+            setSearchError(null)
+            return;
+        }
+        
+        setIsSearching(true)
+        setSearchError(null)
+
+        const { errorMessage, products } = await fetchProductAction(searchValue)
+
+        if(products && products.length > 0){
+            setSearchedProducts(products)
+        }else{
+            setSearchedProducts([])
+            setSearchError("No products found matching your search")
+        }
+
+        if (errorMessage){
+            setSearchError("Error searching products. Please try again.")
+            setSearchedProducts([])
+        }
+
+        setIsSearching(false)
+    }
+    
+    // Determine which products to display based on search state
+    const productsToFilter = useMemo(() => {
+        if (searchValue && searchedProducts !== null) {
+            return searchedProducts;
+        }
+        return categoryFilteredProducts;
+    }, [searchValue, searchedProducts, categoryFilteredProducts])
+    
     // Then apply additional filters based on selectedFilter and selectedProductType
+    // Only if we're not showing search results
     const filteredProducts = useMemo(() => {
+        // If we have search results or error, don't apply additional filters
+        if (searchValue && searchedProducts !== null) {
+            return searchedProducts;
+        }
+        
         // Start with products already filtered by category
-        const products = categoryFilteredProducts;
+        const products = productsToFilter;
         
         switch (selectedFilter) {
             case 'all':
@@ -41,7 +90,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
             default:
                 return products;
         }
-    }, [categoryFilteredProducts, selectedFilter, selectedProductType])
+    }, [productsToFilter, selectedFilter, selectedProductType, searchValue, searchedProducts])
    
     // Calculate pagination
     const paginatedProductsData = useMemo(() => {
@@ -51,10 +100,10 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         )
     }, [filteredProducts, currentPage, rowsPerPage])
     
-    // Reset pagination when filter changes
+    // Reset pagination when filter changes or search changes
     useEffect(() => {
         setCurrentPage(1)
-    }, [selectedFilter, selectedProductType, section])
+    }, [selectedFilter, selectedProductType, section, searchValue])
    
     // Handle page change
     const handlePageChange = (page: number) => {
@@ -67,7 +116,6 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         setCurrentPage(1)
     }
 
-
     if (!data.length){
         return (
             <div className="h-screen flex gap-10 flex-col justify-center items-center text-center py-8 text-gray-500">
@@ -79,28 +127,50 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     
     return (
         <div className="w-full py-10">
-           <div className="mb-16 flex justify-between items-center gap-4 flex-wrap">
-                <ProductCategoryFilter
-                    selectedFilter={selectedFilter}
-                    setSelectedFilter={setSelectedFilter}
-                    setSelectedProductType={setSelectedProductType}
-                    selectedProductType={selectedProductType}
+            {/* Search Input Section */}
+            <div className="mb-6">
+                <AdminProductManagementMCSearch 
+                    onSearch={handleSearch}
+                    placeholder="Search for products by name, category, SKU..."
+                    debounceTime={500}
+                    className="shadow-sm"
                 />
+            </div>
+            
+            {/* Filter and Add Product Section */}
+            <div className={`mb-16 flex ${!searchValue && !isSearching ? "justify-between" : "justify-end"} items-center gap-4 flex-wrap`}>
+                {!searchValue && !isSearching && (
+                    <ProductCategoryFilter
+                        selectedFilter={selectedFilter}
+                        setSelectedFilter={setSelectedFilter}
+                        setSelectedProductType={setSelectedProductType}
+                        selectedProductType={selectedProductType}
+                    />
+                )}
                 <AddNewProductBtn />
-           </div>
+            </div>
            
+            {/* Search Status Indicator */}
+            {isSearching && (
+                <div className="py-16">
+                    <SpinnerLoader />
+                </div>
+            )}
+           
+            {/* Products Grid */}
             <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
-                {paginatedProductsData.length > 0 ? (
+                {!isSearching && paginatedProductsData.length > 0 ? (
                     paginatedProductsData.map((product, index) => (
                         <ProductCard3 key={product.id || index} product={product} />
                     ))
                 ) : (
                     <div className="col-span-full text-center py-8 text-gray-500">
-                        No products match the selected filters
+                        {searchValue ? "No products match your search" : "No products match the selected filters"}
                     </div>
                 )}
             </div>
            
+            {/* Pagination */}
             <Pagination
                 totalItems={filteredProducts.length}
                 currentPage={currentPage}

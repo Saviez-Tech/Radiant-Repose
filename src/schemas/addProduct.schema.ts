@@ -10,8 +10,8 @@ export const productFormSchema = z.object({
   unitPrice: z.string().min(1, "Unit price is required"),
   quantityInStock: z.string().min(1, "Quantity is required"),
   description: z.string().min(1, "Description is required"),
-  image: z.instanceof(File),
-});
+  image: z.instanceof(File).optional(),
+})
 
 export type ProductFormValues = z.infer<typeof productFormSchema>;
 

@@ -12,6 +12,8 @@ import { revalidatePathHandler } from "@/actions/revalidatePathHandler";
 import { deleteProductHandler } from "@/actions/product.server";
 import Image from "next/image";
 import { useState } from "react";
+import { useAppDispatch } from "@/lib/redux/hooks";
+import { setProductToEdit } from "@/lib/redux/slices/editProductSlice";
 
 
 export default function ProductCard3({ product }: { product: Product }) {
@@ -19,6 +21,8 @@ export default function ProductCard3({ product }: { product: Product }) {
   const router = useRouter()
 
   const [processing,setProcessing] = useState(false)
+
+  const dispatch = useAppDispatch()
 
   const [showSuccessModal,setShowSuccessModal] = useState(false)
   const [showConfirmModal,setShowConfirmModal] = useState<{ show: boolean, productID: string | null}>({
@@ -30,15 +34,15 @@ export default function ProductCard3({ product }: { product: Product }) {
     setProcessing(true)
 
     if (!showConfirmModal.productID) {
-        setShowConfirmModal({ show: false, productID: null })
-        return;
+      setShowConfirmModal({ show: false, productID: null })
+      return;
     }
 
     const { success, error } = await deleteProductHandler(showConfirmModal.productID)
 
     if (success){
-        await revalidatePathHandler("/admin/product-management/luxury-collection")
-        toast.success("Product Deleted Successfully")
+      await revalidatePathHandler("/admin/product-management/luxury-collection")
+      toast.success("Product Deleted Successfully")
     }
 
     if (error){
@@ -80,6 +84,7 @@ export default function ProductCard3({ product }: { product: Product }) {
           <div className="flex gap-1 flex-shrink-0">
             <button aria-label="edit" onClick={(e) => {
               e.stopPropagation()
+              dispatch(setProductToEdit(product))
               router.push(`/admin/product-management/edit-product/${product.id}`)
             }} className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
                 <Icon icon="iconamoon:edit-light" width="24" height="24" />

@@ -1,6 +1,5 @@
 "use client";
 import AppInput from "../custom-utils/AppInput";
-import AppSelect from "../custom-utils/AppSelect";
 import Payment from "./Payment";
 
 export default function DelivaryAddress() {

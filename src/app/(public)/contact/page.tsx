@@ -4,7 +4,6 @@ import Hero from "@/components/contact/Hero";
 import Map from "@/components/contact/Map";
 import Scalffold from "@/components/custom-utils/Scalffold";
 import SearchInput from "@/components/custom-utils/SearchInput";
-import { Search } from "lucide-react";
 
 export default function Page() {
   return (

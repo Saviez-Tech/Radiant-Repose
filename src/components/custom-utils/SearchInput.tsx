@@ -1,5 +1,4 @@
 import { Search } from "lucide-react";
-import { FiSearch } from "react-icons/fi";
 
 type SearchInputProps = {
   placeholder: string;

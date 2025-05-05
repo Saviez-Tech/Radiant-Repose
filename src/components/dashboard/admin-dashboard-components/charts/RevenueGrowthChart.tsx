@@ -245,16 +245,18 @@ function RevenueGrowthChart({
         return "Revenue Growth Chart";
       }
     }
-  };
+  }
 
   return (
     <div className="w-full shadow-sm rounded-lg bg-white p-6">
-      <div className="flex justify-between gap-6 items-center mb-8">
+      <div className="flex justify-between flex-wrap gap-6 items-center mb-8">
         <h2 className="text-lg font-medium text-gray-800">{getChartTitle()}</h2>
-        <TimeFrameSelect 
-          setTimeFilter={setTimeFilter} 
-          timeFilter={timeFilter} 
-        />
+        <div className='hidden lg:blockM'>
+          <TimeFrameSelect 
+            setTimeFilter={setTimeFilter} 
+            timeFilter={timeFilter} 
+          />
+        </div>
       </div>
 
       <div className="mt-6">

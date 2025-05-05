@@ -13,8 +13,12 @@ import AppSelect from "@/components/custom-utils/AppSelect";
 import FileUpload from "@/components/custom-utils/FileUpload";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useAppSelector } from "@/lib/redux/hooks";
 
-export default function ProductForm({ defaultValues, formActionType, productID }: { productID?: string, defaultValues?: ProductFormValues, formActionType: "add" | "edit" }) {
+export default function ProductForm({ formActionType, productID }: { productID?: string, formActionType: "add" | "edit" }) {
+
+
+  const { productToEdit } = useAppSelector(store => store.editProduct)
 
   const {
     register,
@@ -25,8 +29,20 @@ export default function ProductForm({ defaultValues, formActionType, productID }
     resolver: formActionType === "edit" 
       ? zodResolver(editProductFormSchema)
       : zodResolver(productFormSchema),
-    defaultValues,
+    defaultValues: {
+      barcode: productToEdit?.barcode || "",
+      description: productToEdit?.description || "",
+      id: productToEdit?.id || "",
+      image: undefined,
+      productName: productToEdit?.name || "",
+      unitPrice: productToEdit?.price.toString() || "",
+      productSection: productToEdit?.category || "",
+      category: productToEdit?.productType || "",
+      quantityInStock: productToEdit?.stock_quantity.toString() || "",
+    },
   })
+
+
   const router = useRouter()
 
   const productSectionOptions = [
