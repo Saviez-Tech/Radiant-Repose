@@ -1,7 +1,24 @@
+import CustomerDetails from "@/components/cheechout-page/CustomerDetails";
+import DelivaryAddress from "@/components/cheechout-page/DelivaryAddress";
+import OrderSummary from "@/components/cheechout-page/OrderSummary";
+import Payment from "@/components/cheechout-page/Payment";
+import Scalffold from "@/components/custom-utils/Scalffold";
+
 export default function Page() {
-    return (
-        <div>
-            
+  return (
+    <Scalffold>
+      <div className="flex app-container flex-col  py-6">
+        <div className="grid md:grid-cols-2 gap-[65px]">
+          <div>
+            <OrderSummary />
+            <CustomerDetails />
+            <DelivaryAddress />
+          </div>
+          <div>
+            <Payment />
+          </div>
         </div>
-    );
+      </div>
+    </Scalffold>
+  );
 }
