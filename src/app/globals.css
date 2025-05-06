@@ -91,3 +91,7 @@
     @apply bg-neutral-100 w-full border border-gray-300 outline-primary-darkRed text-gray-800 py-2.5 pe-3 rounded-md read-only:opacity-70 read-only:[&not[type="file"]]:pointer-events-none;
   }
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}

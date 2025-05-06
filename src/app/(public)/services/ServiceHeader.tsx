@@ -2,7 +2,8 @@
 
 import NormalSelect from "@/components/custom-utils/NormalSelect";
 import Link from "next/link";
-import ProductTypeCard from "./ProductTypeCard";
+import ProductTypeFilter from "./ProductTypeFilter";
+import ServicePopOver from "./ServicePopOver";
 
 export default function ServiceHeader() {
   const locations = [
@@ -16,10 +17,10 @@ export default function ServiceHeader() {
 
   return (
     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <div className="flex  gap-4">
+      <div className="flex max-md:items-end gap-4">
         <NormalSelect options={locations} />
-        <div className="flex items-center bg-white rounded-lg p-2 shadow-sm">
-          <button className="text-xl max-md:w-fit">
+        <ServicePopOver>
+          <button className="flex items-center bg-white rounded-lg p-2 shadow-sm text-2xl max-md:w-fit">
             <svg
               width="1em"
               height="1em"
@@ -33,13 +34,13 @@ export default function ServiceHeader() {
               />
             </svg>
           </button>
-        </div>
+        </ServicePopOver>
       </div>
       <div className="flex max-md:flex-col md:items-center gap-2 md:gap-4">
-        <h2 className="text-primary-dark_slate font-semibold">
-          Categories
-        </h2>
-        <ProductTypeCard /><p className="text-primary-dark_slate">|</p>
+        <h2 className="text-primary-dark_slate font-semibold">Categories</h2>
+        <div className="flex items-center gap-2 flex-1">
+        <ProductTypeFilter />
+        <p className="text-primary-dark_slate">|</p>
         <Link
           href="/services/cart"
           className="flex items-center gap-2 bg-[#EFE1D2] font-semibold text-lg rounded-md "
@@ -60,6 +61,7 @@ export default function ServiceHeader() {
             </svg>
           </span>
         </Link>
+        </div>
       </div>
     </div>
   );

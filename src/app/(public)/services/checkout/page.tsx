@@ -1,5 +1,5 @@
 import CustomerDetails from "@/components/cheechout-page/CustomerDetails";
-import DelivaryAddress from "@/components/cheechout-page/DelivaryAddress";
+import DeliveryAddress from "@/components/cheechout-page/DeliveryAddress";
 import OrderSummary from "@/components/cheechout-page/OrderSummary";
 import Payment from "@/components/cheechout-page/Payment";
 import Scalffold from "@/components/custom-utils/Scalffold";
@@ -12,7 +12,7 @@ export default function Page() {
           <div>
             <OrderSummary />
             <CustomerDetails />
-            <DelivaryAddress />
+            <DeliveryAddress />
           </div>
           <div>
             <Payment />

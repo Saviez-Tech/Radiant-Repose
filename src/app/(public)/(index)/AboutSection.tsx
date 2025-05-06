@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function AboutSection() {
   return (
-    <section className=" bg-[#FFAE001A]/10 md:py-12">
+    <section className=" bg-[#FFAE001A]/10 md:py-12 md:mb-12 xl:mb-0 ">
       <div className="app-container grid gap-2 md:gap-8 md:grid-cols-2">
         <div className="lg:space-y-8 md:space-y-4 space-y-2 ">
           <h2 className=" lg:text-[38px] md:text-[22px]  text-[16px] font-semibold">

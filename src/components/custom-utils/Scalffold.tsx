@@ -5,6 +5,13 @@ export default function Scalffold({ children }: { children: ReactNode }) {
   return (
     <section className="space-for-header relative w-full overflow-x-clip bg-gradient-to-br from-[white] to-[#e8cab9]">
       <Image
+        src="/images/bg-blend.png"
+        alt="Logo"
+        width={1440}
+        height={1890}
+        className=" absolute right-0 top-0 object-cover h-full"
+      />
+      <Image
         src="/images/logo2.png"
         alt="Logo"
         width={750}
