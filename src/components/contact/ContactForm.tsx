@@ -2,6 +2,7 @@
 import { useForm } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";
 import { ArrowRight } from "lucide-react";
+import { te } from "date-fns/locale";
 
 interface ContactFormData {
   fullName: string;
