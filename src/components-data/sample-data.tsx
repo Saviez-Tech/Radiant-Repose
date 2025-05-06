@@ -1,5 +1,6 @@
 import { ProductType } from "@/enums";
 
+
 export const dummyProducts:Product[] = [
   {
     productType: ProductType.BAGS,
