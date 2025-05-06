@@ -95,7 +95,7 @@ export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileN
                                             key={item.name}
                                             className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : ""} relative flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors`}
                                         >
-                                            <span>{item.name}</span>
+                                            <Link href={item.path}>{item.name}</Link>
                                             <Icon icon="cuida:caret-down-outline" width="20" height="20" />
                                         </li>
                                     ) : (

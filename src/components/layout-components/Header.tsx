@@ -40,7 +40,7 @@ export default function Header(){
     const navItems = [
         { name: "Home", path: "/" },
         { name: "About Us", path: "/about-us" },
-        { name: "Our Services", path: "/services", hasDropdown: true },
+        { name: "Our Services", path: "/services", hasDropdown: false },
         { name: "Location", path: "/location" },
         { name: "FAQs", path: "/faqs" },
         { name: "Blog", path: "/blog" },
