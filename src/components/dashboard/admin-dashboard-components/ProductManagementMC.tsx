@@ -18,7 +18,6 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     const [searchValue, setSearchValue] = useState("")
     const [searchedProducts, setSearchedProducts] = useState<Product[] | null>(null)
     const [isSearching, setIsSearching] = useState(false)
-    const [searchError, setSearchError] = useState<string | null>(null)
     
     const categoryFilteredProducts = useMemo(() => {
         if (section) {
@@ -34,12 +33,10 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         if (!value.trim()) {
             // Clear search results when input is empty
             setSearchedProducts(null)
-            setSearchError(null)
             return;
         }
         
         setIsSearching(true)
-        setSearchError(null)
 
         const { errorMessage, products } = await fetchProductAction(searchValue)
 
@@ -47,11 +44,9 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
             setSearchedProducts(products)
         }else{
             setSearchedProducts([])
-            setSearchError("No products found matching your search")
         }
 
         if (errorMessage){
-            setSearchError("Error searching products. Please try again.")
             setSearchedProducts([])
         }
 

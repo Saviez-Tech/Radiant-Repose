@@ -12,20 +12,6 @@ import {
   TooltipProps
 } from 'recharts';
 import TimeFrameSelect from '@/components/custom-utils/TimeFrameSelect';
-import { 
-  startOfToday, 
-  startOfWeek, 
-  startOfMonth, 
-  startOfYear,
-  format, 
-  parse, 
-  isToday, 
-  isThisWeek, 
-  isThisMonth, 
-  isThisYear,
-  getMonth,
-  parseISO
-} from 'date-fns';
 
 
 interface ChartDataPoint {
@@ -35,85 +21,35 @@ interface ChartDataPoint {
   displayTime?: string;
 }
 
+
 // Using the recharts native tooltip types
 type CustomTooltipProps = TooltipProps<number, string>;
 
-function RevenueGrowthChart({ 
-  transactions, 
-  timeFilter, 
-  setTimeFilter 
-}: { 
-  transactions: Transaction[], 
-  timeFilter: string, 
-  setTimeFilter: Dispatch<SetStateAction<string>> 
-}) {
+function RevenueGrowthChart({ transactions, timeFilter, setTimeFilter }:{ transactions: Transaction[], timeFilter: string, setTimeFilter: Dispatch<SetStateAction<string>> }) {
   
   const [chartData, setChartData] = useState<ChartDataPoint[]>([])
   
-  // Function to determine which type of chart to generate based on the date filter
-  const generateChartData = (dateFilter: string): ChartDataPoint[] => {
-    // Check if it's one of our predefined filters by comparing to formatted dates
-    const todayStr = format(startOfToday(), 'yyyy-M-d')
-    const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
-    const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
-    const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
+  // Function to generate chart data based on transaction dates and the selected filter
+  const generateChartData = (filter: string): ChartDataPoint[] => {
+    const filteredTransactions = filterTransactionsByTime(transactions, filter)
     
-    // Filter transactions based on the date
-    const filteredTransactions = filterTransactionsByDate(transactions, dateFilter)
-    
-    // Determine what type of chart data to generate
-    if (dateFilter === todayStr) {
-      return generateHourlyData(filteredTransactions)
-    } else if (dateFilter === weekStartStr) {
-      return generateDailyData(filteredTransactions)
-    } else if (dateFilter === monthStartStr) {
-      return generateWeeklyData(filteredTransactions)
-    } else if (dateFilter === yearStartStr) {
-      return generateMonthlyData(filteredTransactions)
-    } else {
-      // For custom date, default to daily view
-      return generateHourlyData(filteredTransactions)
+    switch (filter) {
+      case 'day':
+        return generateHourlyData(filteredTransactions, 'day')
+      case 'week':
+        return generateDailyData(filteredTransactions)
+      case 'month':
+        return generateWeeklyData(filteredTransactions)
+      case 'year':
+        return generateMonthlyData(filteredTransactions)
+      default:
+        return generateDailyData(filteredTransactions)
     }
   }
   
-  // Filter transactions based on a date string (yyyy-M-d)
-  const filterTransactionsByDate = (transactions: Transaction[], dateFilter: string): Transaction[] => {
-    try {
-      
-      // Determine how to filter based on if the date matches predefined filters
-      const todayStr = format(startOfToday(), 'yyyy-M-d')
-      const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
-      const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
-      const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
-      
-      if (dateFilter === todayStr) {
-        // Filter for today
-        return transactions.filter(t => isToday(new Date(t.date)))
-      } else if (dateFilter === weekStartStr) {
-        // Filter for this week
-        return transactions.filter(t => isThisWeek(new Date(t.date)))
-      } else if (dateFilter === monthStartStr) {
-        // Filter for this month
-        return transactions.filter(t => isThisMonth(new Date(t.date)))
-      } else if (dateFilter === yearStartStr) {
-        // Filter for this year
-        return transactions.filter(t => isThisYear(new Date(t.date)))
-      } else {
-        // For custom date - show transactions from that specific day
-        return transactions.filter(t => {
-          const transactionDate = new Date(t.date)
-          return format(transactionDate, 'yyyy-M-d') === dateFilter;
-        })
-      }
-    } catch {
-      // If there's any error parsing, return all transactions
-      return transactions;
-    }
-  };
-  
-  // Generate hourly data for today's view
-  const generateHourlyData = (transactions: Transaction[]): ChartDataPoint[] => {
-    const date = new Date()
+  // Generate hourly data for today or yesterday
+  const generateHourlyData = (transactions: Transaction[], filter: 'day'): ChartDataPoint[] => {
+    const date = filter === 'day' ? new Date() : new Date(Date.now() - 86400000)
     const dateStr = date.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
     
     // Create 24 data points (one per hour)
@@ -121,14 +57,14 @@ function RevenueGrowthChart({
       // Filter transactions made during this hour
       const transactionsInHour = transactions.filter(t => {
         // Extract hour from time string (format: "HH:MM:SS")
-        const timeHour = parseInt(t.time.split(':')[0])
+        const timeHour = parseInt(t.time.split(':')[0]);
         return timeHour === hour;
-      })
+      });
 
       // Calculate actual revenue from transactions
       const hourlyRevenue = transactionsInHour.reduce((total, t) => {
-        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''))
-      }, 0)
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       // Format hour for display
       const hourFormatted = hour === 0 ? '12 AM' : 
@@ -141,11 +77,11 @@ function RevenueGrowthChart({
         value: hourlyRevenue,
         displayLabel: hourFormatted,
         displayTime: dateStr
-      };
+      }
     })
-  };
+  }
   
-  // Generate daily data for week view or custom date
+  // Generate daily data for week view
   const generateDailyData = (transactions: Transaction[]): ChartDataPoint[] => {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     
@@ -168,16 +104,16 @@ function RevenueGrowthChart({
       
       // Calculate actual revenue from transactions
       const dailyRevenue = dayTransactions.reduce((total, t) => {
-        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''))
-      }, 0)
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       return {
-        label: day,
+        label: day.substring(0, 3), // Short day name for x-axis
         value: dailyRevenue,
-        displayLabel: day
-      };
+        displayLabel: day // Full day name for tooltip
+      }
     })
-  };
+  }
   
   // Generate weekly data for month view
   const generateWeeklyData = (transactions: Transaction[]): ChartDataPoint[] => {
@@ -205,7 +141,7 @@ function RevenueGrowthChart({
       
       // Calculate revenue for this week
       const weeklyRevenue = weekTransactions.reduce((total, t) => {
-        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''))
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
       }, 0)
       
       // Format date range for tooltip
@@ -220,49 +156,77 @@ function RevenueGrowthChart({
     }
     
     return weeklyData;
-  };
+  }
   
-  // Generate monthly data for year view
+  // Generate monthly data for annual view
   const generateMonthlyData = (transactions: Transaction[]): ChartDataPoint[] => {
     const months = [
       'January', 'February', 'March', 'April', 'May', 'June',
       'July', 'August', 'September', 'October', 'November', 'December'
     ];
     
-    // Group transactions by month
-    const groupedByMonth = transactions.reduce((acc, transaction) => {
-      const date = new Date(transaction.date)
-      const monthIndex = getMonth(date)
-      const month = months[monthIndex]
-      
-      if (!acc[month]) {
-        acc[month] = [];
-      }
-      
-      acc[month].push(transaction)
-      return acc;
-    }, {} as Record<string, Transaction[]>)
+    const now = new Date()
+    const currentMonth = now.getMonth()
+    const currentYear = now.getFullYear()
     
-    // Generate data for each month
-    return months.map(month => {
-      const monthTransactions = groupedByMonth[month] || [];
+    // Create an array of the last 12 months in order
+    const lastTwelveMonths = Array.from({ length: 12 }, (_, i) => {
+      const monthIndex = (currentMonth - i + 12) % 12;
+      const yearOffset = monthIndex > currentMonth ? -1 : 0;
+      const year = currentYear + yearOffset;
+      return { month: months[monthIndex], monthIndex, year };
+    }).reverse();
+    
+    // Group transactions by month and year
+    return lastTwelveMonths.map(({ month, monthIndex, year }) => {
+      // Filter transactions for this month
+      const monthTransactions = transactions.filter(t => {
+        const date = new Date(t.date);
+        return date.getMonth() === monthIndex && date.getFullYear() === year;
+      });
       
       // Calculate actual revenue from transactions
       const monthlyRevenue = monthTransactions.reduce((total, t) => {
-        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''))
-      }, 0)
-      
-      // Get abbreviated month name for display
-      const shortMonth = month.substring(0, 3)
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''));
+      }, 0);
       
       return {
-        label: month,
+        label: month.substring(0, 3), // Short month name for x-axis
         value: monthlyRevenue,
-        displayLabel: shortMonth,
-        displayTime: month
-      };
-    })
-  };
+        displayLabel: month, // Full month name for tooltip
+        displayTime: `${year}`
+      }
+    });
+  }
+  
+  // Filter transactions by time period
+  const filterTransactionsByTime = (transactions: Transaction[], filter: string): Transaction[] => {
+    const now = new Date()
+    let filterDate = new Date()
+    
+    switch (filter) {
+      case 'day':
+        // Just today
+        filterDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
+        break;
+      case 'week':
+        // Last 7 days
+        filterDate.setDate(now.getDate() - 7)
+        break;
+      case 'month':
+        // Last 30 days
+        filterDate.setDate(now.getDate() - 30)
+        break;
+      case 'year':
+        // Last 12 months
+        filterDate.setFullYear(now.getFullYear() - 1)
+        break;
+      default:
+        filterDate.setDate(now.getDate() - 7) // Default to week
+    }
+    
+    return transactions.filter(t => new Date(t.date) >= filterDate)
+  }
   
   // Update chart data when filter changes
   useEffect(() => {
@@ -280,7 +244,7 @@ function RevenueGrowthChart({
             {data.displayLabel}
             {data.displayTime ? ` (${data.displayTime})` : ''}
           </p>
-          <p className="text-green-600 font-medium">{`Revenue: N${(payload?.[0]?.value ?? 0).toLocaleString()}`}</p>
+          <p className="text-green-600 font-medium">{`Revenue: $${(payload?.[0]?.value ?? 0).toLocaleString()}`}</p>
         </div>
       )
     }
@@ -289,26 +253,12 @@ function RevenueGrowthChart({
 
   // Get chart title based on filter
   const getChartTitle = () => {
-    const todayStr = format(startOfToday(), 'yyyy-M-d')
-    const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
-    const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
-    const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
-    
-    if (timeFilter === todayStr) {
-      return "Today's Revenue (Hourly)";
-    } else if (timeFilter === weekStartStr) {
-      return "Weekly Revenue (Daily)";
-    } else if (timeFilter === monthStartStr) {
-      return "Monthly Revenue (Weekly)";
-    } else if (timeFilter === yearStartStr) {
-      return "Yearly Revenue (Monthly)";
-    } else {
-      try {
-        const date = parse(timeFilter, 'yyyy-M-d', new Date())
-        return `Revenue for ${format(date, 'MMMM d, yyyy')}`;
-      } catch {
-        return "Revenue Growth Chart";
-      }
+    switch(timeFilter) {
+      case 'day': return 'Today\'s Revenue (Hourly)';
+      case 'week': return 'Weekly Revenue (Daily)';
+      case 'month': return 'Monthly Revenue (Weekly)';
+      case 'year': return 'Yearly Revenue (Monthly)';
+      default: return 'Revenue Growth Chart';
     }
   }
 
@@ -343,7 +293,7 @@ function RevenueGrowthChart({
                 stroke="#E5E7EB"
               />
               <XAxis 
-                dataKey="displayLabel" 
+                dataKey="label" 
                 axisLine={false}
                 tickLine={false}
                 tick={{ fill: '#6B7280', fontSize: 12 }}

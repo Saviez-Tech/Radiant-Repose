@@ -6,13 +6,12 @@ import { ArrowRight } from "lucide-react";
 export default function FAQForm() {
   const {
     register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+    // handleSubmit,
+  } = useForm()
 
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+  // const onSubmit : SubmitErrorHandler<TYPE> = (data) => {
+  //   console.log(data);
+  // }
 
   return (
     <div className="flex flex-col w-full bg-white p-6  ">
@@ -22,7 +21,7 @@ export default function FAQForm() {
       <p className="text-primary-deepBlack md:text-base text-sm">
         Still have pending questions? Reach out to us.
       </p>
-      <form action=" flex flex-col gap-[24px]">
+      <form className="flex flex-col gap-[24px]">
         <div className="grid md:grid-cols-2 gap-[24px] w-full">
           {formFields.map((field) => (
             <AppInput

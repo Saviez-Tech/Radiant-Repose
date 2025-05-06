@@ -100,6 +100,8 @@ export default function TimeFrameSelect({
       setTimeFilter(value)
     } else if (value === 'month') {
       setTimeFilter(value)
+    }else if (value === 'year') {
+      setTimeFilter(value)
     }
   }
  

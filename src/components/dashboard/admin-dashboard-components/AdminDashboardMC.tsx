@@ -22,9 +22,11 @@ export default function AdminDashboardMC({ data }:{  data: {
     filter: string
   } | undefined }){
 
-    const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
-    const [timeFilter, setTimeFilter] = useState<string>(data?.filter || validateDate(new Date().toISOString()))
-    const [isLoading, setIsLoading] = useState(false)
+      
+      const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
+      const [timeFilter, setTimeFilter] = useState<string>(data?.filter || validateDate(new Date().toISOString()))
+      const [isLoading, setIsLoading] = useState(false)
+      console.log(timeFilter)
     
     const router = useRouter()
     const pathname = usePathname()

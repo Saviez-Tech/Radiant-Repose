@@ -7,7 +7,6 @@ import toast from 'react-hot-toast';
 import { Modal, Box } from '@mui/material';
 import { Printer, Save, X } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
-import { useAppDispatch } from './redux/hooks';
 
 interface ReceiptPrinterProps {
   orderNumber: string;

@@ -10,7 +10,7 @@ import SpinnerLoader from '@/components/loaders/SpinnerLoader';
 export default function Scanner() {
     const [barcode, setBarcode] = useState<string>('')
     const [isScanning, setIsScanning] = useState<boolean>(false)
-    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const inputRef = useRef<HTMLInputElement>(null)
     const scanTimeout = useRef<NodeJS.Timeout | null>(null)
     const dispatch = useAppDispatch()
@@ -60,7 +60,7 @@ export default function Scanner() {
         if (barcode && barcode.length > 5) {
             handleScan()
         }
-    }, [barcode]) // handleScan accesses barcode from state directly
+    }, [barcode])
 
     // Effect to focus the input field when component mounts
     useEffect(() => {
@@ -132,7 +132,7 @@ export default function Scanner() {
     }, [isScanning, barcode])
 
     return (
-        <div className="relative">
+        <>
             <input
                 ref={inputRef}
                 type="text"
@@ -141,12 +141,13 @@ export default function Scanner() {
                 onChange={(e) => setBarcode(e.target.value)}
                 autoFocus
             />
-            
             {isLoading && (
-                <div className="py-16 absolute h-full left-0 right-0 m-auto w-full bg-primary-base_color1 z-10">
-                    <SpinnerLoader />
+                <div className="absolute overflow-hidden h-full bottom-0 top-0 my-auto bg-white right-0 left-0 mx-auto flex justify-center items-center">
+                    <div className="w-full h-full inset-0 z-50 overflow-hidden">
+                        <SpinnerLoader className='mt-52' />
+                    </div>
                 </div>
             )}
-        </div>
+        </>
     )
 }

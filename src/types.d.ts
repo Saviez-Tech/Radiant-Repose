@@ -43,7 +43,7 @@ type Branch = {
     contact_number: string
 }
 
-type DateFilter = "day" | "week" | "month" | "custom";
+type DateFilter = "year" | "week" | "month" | "custom";
 
 interface Staff {
     id: string;
