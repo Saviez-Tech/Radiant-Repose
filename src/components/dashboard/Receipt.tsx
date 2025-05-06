@@ -11,13 +11,13 @@ const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
   const { name, price, quantity } = item;
   
   return (
-    <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
+    <div className="flex items-center py-3 border-b border-gray-100 text-[#000000]">
       <div className="flex-grow">
         <div className="flex justify-between">
           <h3 className="text-xs font-semibold truncate pb-1">{name}</h3>
-          <span className="text-xs">{quantity}x</span>
+          <span className="text-xs font-semibold">{quantity}x</span>
         </div>
-        <p className={`${dm_mono.className} text-xs`}>Price: {formatNaira(price || 0, false)}</p>
+        <p className={`${dm_mono.className} text-xs font-medium`}>Price: {formatNaira(price || 0, false)}</p>
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price || 0, quantity || 0), false)}</span>
         </div>
@@ -50,15 +50,15 @@ export default function Receipt({
 }: ReceiptProps) {
     
   return (
-    <div className="w-[270px] pt-6 flex flex-col bg-white">
+    <div className="w-[270px] pt-6 flex flex-col bg-white print:w-full">
       <div className="flex justify-center mb-4">
         <Logo src={logoSrc} width={100} height={100} />
       </div>
       
       <div className="text-center mb-4">
-        <h2 className="text-sm font-medium text-[#111719]">Receipt #{orderNumber}</h2>
-        <p className="text-xs text-gray-500">{formatDate(date,'MMM d, yyyy')}</p>
-        {customerName && <p className="text-xs text-gray-500">Customer: {customerName}</p>}
+        <h2 className="text-sm font-semibold text-[#000000] print:text-black">Receipt #{orderNumber}</h2>
+        <p className="text-xs font-medium text-[#000000] print:text-black">{formatDate(date,'MMM d, yyyy')}</p>
+        {customerName && <p className="text-xs font-medium text-[#000000] print:text-black">Customer: {customerName}</p>}
       </div>
       
       <div className="space-y-0">
@@ -67,34 +67,34 @@ export default function Receipt({
         ))}
       </div>
 
-      <div className={`${dm_mono.className} mb-6 mt-8 text-[#1F1F1F] text-xs`}>
+      <div className={`${dm_mono.className} mb-6 mt-8 text-[#000000] print:text-black text-xs`}>
         <div className="flex justify-between py-2">
-          <span className="">Subtotal</span>
-          <span className="">{subTotal}</span>
+          <span className="font-medium">Subtotal</span>
+          <span className="font-medium">{subTotal}</span>
         </div>
         
         <div className="flex justify-between py-2">
-          <span className="">Discount</span>
-          <span className="">{discount ? formatNaira(discount, true) : '--'}</span>
+          <span className="font-medium">Discount</span>
+          <span className="font-medium">{discount ? formatNaira(discount, true) : '--'}</span>
         </div>
         
         <div className="flex justify-between py-2">
-          <span className="">Balance</span>
-          <span className="">--</span>
+          <span className="font-medium">Balance</span>
+          <span className="font-medium">--</span>
         </div>
         
-        <div className="border-t-2 border-dotted border-gray-500 my-2"></div>
+        <div className="border-t-2 border-dotted border-gray-900 my-2"></div>
         
         <div className="flex justify-between py-2">
-          <span className="font-medium text-base">Total</span>
-          <span className="font-medium text-base">{total}</span>
+          <span className="font-semibold text-base">Total</span>
+          <span className="font-semibold text-base">{total}</span>
         </div>
       </div>
 
-      {/* Footer section */}
-      <div className="text-center text-xs text-gray-500 mt-4 mb-6">
+      <div className="text-center text-xs font-medium text-[#000000] print:text-black mt-4 mb-6">
         {cashierName && <p className="mb-1">Served by: {cashierName}</p>}
-        <p>Thank you for your purchase!</p>
+        <p className="font-semibold">Thank you for your purchase!</p>
+        <p className="mt-2">**Customer Copy**</p>
       </div>
     </div>
   )

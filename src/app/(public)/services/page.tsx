@@ -12,7 +12,7 @@ export default function Page() {
           <Suspense>
             <ServiceHeader />
           </Suspense>
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 grid-cols-2  gap-4 py-5">
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 grid-cols-2  gap-4 py-10">
             {
               products.map((product, index) => (
                 <ProductCard key={index} {...product} />

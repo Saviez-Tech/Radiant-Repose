@@ -8,7 +8,7 @@ export default function ProductTypeCard() {
           <button
             key={cat}
             onClick={() => setActiveTab(cat)}
-            className={`px-4 py-2 rounded-[35px] text-sm font-medium whitespace-nowrap ${
+            className={`px-4 py-2 rounded-[35px] text-xs font-medium whitespace-nowrap ${
               activeTab === cat
                 ? "bg-primary-darkRed text-white"
                 : "bg-[#EFE1D2] text-primary-dark_slate/40"

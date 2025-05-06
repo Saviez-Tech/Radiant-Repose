@@ -8,7 +8,6 @@ import { Modal, Box } from '@mui/material';
 import { Printer, Save, X } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
 import { useAppDispatch } from './redux/hooks';
-import { clearScannedItems } from './redux/slices/posFlowSlice';
 
 interface ReceiptPrinterProps {
   orderNumber: string;
@@ -20,6 +19,7 @@ interface ReceiptPrinterProps {
   cashierName?: string;
   total: number,
   subTotal: number,
+  handleClose: () => void;
   print: boolean,
   setPrint: Dispatch<SetStateAction<boolean>>
 }
@@ -33,114 +33,120 @@ export default function ReceiptPrinter({
   customerName = "",
   total,
   subTotal,
-  setPrint,
+  handleClose,
   print,
   cashierName = "" 
 }: ReceiptPrinterProps) {
-  const receiptRef = useRef(null)
-  const dispatch = useAppDispatch()
+  const receiptRef = useRef<HTMLDivElement>(null)
 
-  const handleClose = () => {
-    setPrint(false)
-  }
 
-  const printReceiptAsImage = async () => {
+  // Improved direct printing function
+  const printReceipt = () => {
     if (!receiptRef.current) return;
 
     try {
-      const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: '#FFFFFF',
-        logging: false, 
-        allowTaint: true,
-      })
-
-      const image = canvas.toDataURL('image/png', 1.0)
+      // Create a new window for printing
+      const printWindow = window.open('', '_blank', 'width=800,height=600')
       
-      // Create a hidden iframe for more reliable printing
-      const printFrame = document.createElement('iframe')
-      printFrame.style.position = 'fixed';
-      printFrame.style.right = '0';
-      printFrame.style.bottom = '0';
-      printFrame.style.width = '0';
-      printFrame.style.height = '0';
-      printFrame.style.border = '0';
-      document.body.appendChild(printFrame)
-      
-      // Write content to the iframe
-      const frameDoc = printFrame.contentWindow?.document;
-      frameDoc?.open()
+      if (!printWindow) {
+        toast.error('Please allow pop-ups to print the receipt')
+        return;
+      }
 
-      if (frameDoc){
-        frameDoc.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <title>Receipt #${orderNumber}</title>
-              <style>
-                @page {
-                  size: 80mm auto; /* Set receipt width */
-                  margin: 0mm;
-                }
+      // Get the styles from the current document
+      const styles = Array.from(document.styleSheets)
+        .map(styleSheet => {
+          try {
+            return Array.from(styleSheet.cssRules)
+              .map(rule => rule.cssText)
+              .join('\n')
+          } catch{
+            return '';
+          }
+        })
+        .filter(Boolean)
+        .join('\n')
+
+      // Clone the receipt content
+      const receiptContent = receiptRef.current.cloneNode(true) as HTMLElement;
+      
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <title>Receipt #${orderNumber}</title>
+            <!-- Import Poppins from Google Fonts -->
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+            <style>
+              ${styles}
+              @page {
+                size: 80mm auto;
+                margin: 1mm;
+              }
+              body {
+                margin: 0;
+                padding: 0;
+                background-color: white;
+                font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+              }
+              .receipt-container {
+                width: 76mm;
+                margin: 0 auto;
+              }
+              @media print {
                 body {
-                  margin: 0;
-                  padding: 0;
-                  display: flex;
-                  justify-content: center;
-                  background-color: white;
+                  width: 76mm;
                 }
-                img {
-                  width: 100%;
-                  max-width: 80mm;
-                  height: auto;
+                .receipt-container {
+                  page-break-inside: avoid;
                 }
-                @media print {
-                  body {
-                    width: 80mm; /* Typical thermal receipt width */
-                  }
+                /* Make text darker for better printing */
+                * {
+                  color: #000000af !important;
+                  -webkit-print-color-adjust: exact;
+                  print-color-adjust: exact;
                 }
-              </style>
-            </head>
-            <body>
-              <img src="${image}" alt="Receipt" />
-            </body>
-          </html>
-        `)
-        frameDoc?.close()
-      }
+                .text-gray-500 {
+                  color: #000 !important;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="receipt-container">
+              ${receiptContent.innerHTML}
+            </div>
+            <script>
+              // Automatically print when loaded
+              window.onload = function() {
+                setTimeout(function() {
+                  window.print()
+                  setTimeout(function() {
+                    window.close()
+                  }, 500)
+                }, 500)
+              };
+            </script>
+          </body>
+        </html>
+      `)
       
-      // Wait for iframe to fully load before printing
-      printFrame.onload = function() {
-        try {
-          printFrame?.contentWindow?.focus()
-          printFrame?.contentWindow?.print()
-          
-          // Remove the iframe after printing but don't close the modal
-          setTimeout(() => {
-            document.body.removeChild(printFrame)
-            dispatch(clearScannedItems())
-            toast.success('Receipt printed successfully')
-          }, 1000)
-        } catch (err) {
-          console.error('Printing failed:', err)
-          toast.error('Printing failed. Please try again.')
-          document.body.removeChild(printFrame)
-        }
-      }
+      printWindow.document.close()
+      
+      toast.success('Sending to printer...')
+      
     } catch (error) {
-      console.error('Error generating receipt image:', error)
-      toast.error('Failed to generate receipt. Please try again.')
+      console.error('Error printing receipt:', error)
+      toast.error('Failed to print receipt. Please try again.')
     }
   };
 
-  // Function to save the receipt as an image file
   const saveReceiptAsImage = async () => {
     if (!receiptRef.current) return;
     
     try {
       const canvas = await html2canvas(receiptRef.current, {
-        scale: 2,
+        scale: 3,
         useCORS: true,
         backgroundColor: '#FFFFFF',
         logging: false,
@@ -153,12 +159,11 @@ export default function ReceiptPrinter({
       link.href = canvas.toDataURL('image/png', 1.0)
       link.click()
       toast.success('Receipt saved successfully')
-      dispatch(clearScannedItems())
     } catch (error) {
       console.error('Error saving receipt image:', error)
       toast.error('Failed to save receipt. Please try again.')
     }
-  }
+  };
 
   return (
     <Modal
@@ -205,8 +210,8 @@ export default function ReceiptPrinter({
             date={date}
             orderNumber={orderNumber}
             scannedItems={scannedItems}
-            subTotal={formatNaira(subTotal,true,true)}
-            total={formatNaira(total,true,true)}
+            subTotal={formatNaira(subTotal, true, true)}
+            total={formatNaira(total, true, true)}
             amountPaid={amountPaid}
             cashierName={cashierName}
             customerName={customerName}
@@ -216,7 +221,7 @@ export default function ReceiptPrinter({
 
         <div className="flex justify-center gap-4 mt-6 w-full">
           <button
-            onClick={printReceiptAsImage}
+            onClick={printReceipt}
             className="flex items-center gap-2 bg-green-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-green-700 active:bg-green-800 transition-colors duration-200 shadow-sm"
           >
             <Printer size={16} />

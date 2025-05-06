@@ -99,11 +99,11 @@ export default function ProductCard3({ product }: { product: Product }) {
         </div>
        
         <div className="flex justify-between items-center mt-1 gap-2">
-            <div className="flex items-center">
-                <DollarSquare />
-                <span className={`${dm_mono.className} text-primary-dark_gray text-[9px] md:text-xs font-light ml-1`}>{formatNaira(product.price,false,true)}</span>
-            </div>
-            <p className="text-primary-dark_gray text-right text-[11px] capitalize truncate"><span className="font-semibold">Category:</span> {product.category?.split("-").join(" ")}</p>
+          <div className="flex items-center">
+              <DollarSquare />
+              <span className={`${dm_mono.className} text-primary-dark_gray text-[9px] md:text-xs font-light ml-1`}>{formatNaira(product.price,false,true)}</span>
+          </div>
+          <p className="text-primary-dark_gray text-right text-[11px] capitalize truncate"><span className="font-semibold">Category:</span> {product.category?.split("-").join(" ")}</p>
         </div>
        
         <div className="flex justify-between items-center overflow-hidden gap-2 pb-1 mt-auto">

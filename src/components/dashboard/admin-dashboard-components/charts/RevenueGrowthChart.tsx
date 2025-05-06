@@ -12,7 +12,20 @@ import {
   TooltipProps
 } from 'recharts';
 import TimeFrameSelect from '@/components/custom-utils/TimeFrameSelect';
-import { startOfToday, startOfWeek, startOfMonth, format, parse, isToday, isThisWeek, isThisMonth } from 'date-fns';
+import { 
+  startOfToday, 
+  startOfWeek, 
+  startOfMonth, 
+  startOfYear,
+  format, 
+  parse, 
+  isToday, 
+  isThisWeek, 
+  isThisMonth, 
+  isThisYear,
+  getMonth,
+  parseISO
+} from 'date-fns';
 
 
 interface ChartDataPoint {
@@ -43,6 +56,7 @@ function RevenueGrowthChart({
     const todayStr = format(startOfToday(), 'yyyy-M-d')
     const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
     const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
+    const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
     
     // Filter transactions based on the date
     const filteredTransactions = filterTransactionsByDate(transactions, dateFilter)
@@ -54,6 +68,8 @@ function RevenueGrowthChart({
       return generateDailyData(filteredTransactions)
     } else if (dateFilter === monthStartStr) {
       return generateWeeklyData(filteredTransactions)
+    } else if (dateFilter === yearStartStr) {
+      return generateMonthlyData(filteredTransactions)
     } else {
       // For custom date, default to daily view
       return generateHourlyData(filteredTransactions)
@@ -68,6 +84,7 @@ function RevenueGrowthChart({
       const todayStr = format(startOfToday(), 'yyyy-M-d')
       const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
       const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
+      const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
       
       if (dateFilter === todayStr) {
         // Filter for today
@@ -78,6 +95,9 @@ function RevenueGrowthChart({
       } else if (dateFilter === monthStartStr) {
         // Filter for this month
         return transactions.filter(t => isThisMonth(new Date(t.date)))
+      } else if (dateFilter === yearStartStr) {
+        // Filter for this year
+        return transactions.filter(t => isThisYear(new Date(t.date)))
       } else {
         // For custom date - show transactions from that specific day
         return transactions.filter(t => {
@@ -202,6 +222,48 @@ function RevenueGrowthChart({
     return weeklyData;
   };
   
+  // Generate monthly data for year view
+  const generateMonthlyData = (transactions: Transaction[]): ChartDataPoint[] => {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    
+    // Group transactions by month
+    const groupedByMonth = transactions.reduce((acc, transaction) => {
+      const date = new Date(transaction.date)
+      const monthIndex = getMonth(date)
+      const month = months[monthIndex]
+      
+      if (!acc[month]) {
+        acc[month] = [];
+      }
+      
+      acc[month].push(transaction)
+      return acc;
+    }, {} as Record<string, Transaction[]>)
+    
+    // Generate data for each month
+    return months.map(month => {
+      const monthTransactions = groupedByMonth[month] || [];
+      
+      // Calculate actual revenue from transactions
+      const monthlyRevenue = monthTransactions.reduce((total, t) => {
+        return total + parseFloat(t.amount.replace(/[^0-9.-]+/g, ''))
+      }, 0)
+      
+      // Get abbreviated month name for display
+      const shortMonth = month.substring(0, 3)
+      
+      return {
+        label: month,
+        value: monthlyRevenue,
+        displayLabel: shortMonth,
+        displayTime: month
+      };
+    })
+  };
+  
   // Update chart data when filter changes
   useEffect(() => {
     const data = generateChartData(timeFilter)
@@ -230,6 +292,7 @@ function RevenueGrowthChart({
     const todayStr = format(startOfToday(), 'yyyy-M-d')
     const weekStartStr = format(startOfWeek(new Date()), 'yyyy-M-d')
     const monthStartStr = format(startOfMonth(new Date()), 'yyyy-M-d')
+    const yearStartStr = format(startOfYear(new Date()), 'yyyy-M-d')
     
     if (timeFilter === todayStr) {
       return "Today's Revenue (Hourly)";
@@ -237,6 +300,8 @@ function RevenueGrowthChart({
       return "Weekly Revenue (Daily)";
     } else if (timeFilter === monthStartStr) {
       return "Monthly Revenue (Weekly)";
+    } else if (timeFilter === yearStartStr) {
+      return "Yearly Revenue (Monthly)";
     } else {
       try {
         const date = parse(timeFilter, 'yyyy-M-d', new Date())
@@ -251,7 +316,7 @@ function RevenueGrowthChart({
     <div className="w-full shadow-sm rounded-lg bg-white p-6">
       <div className="flex justify-between flex-wrap gap-6 items-center mb-8">
         <h2 className="text-lg font-medium text-gray-800">{getChartTitle()}</h2>
-        <div className='hidden lg:blockM'>
+        <div className='hidden lg:block'>
           <TimeFrameSelect 
             setTimeFilter={setTimeFilter} 
             timeFilter={timeFilter} 

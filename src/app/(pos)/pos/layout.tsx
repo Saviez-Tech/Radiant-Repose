@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import CartSection from "@/components/dashboard/CartSection";
 import CategoriesTabSection from "@/components/dashboard/CategoriesTabSection";
 import { getUserSessionID } from "@/lib/helperFns/getUserSession";
+import Scanner from "@/lib/Scanner";
 // import Scanner from "@/lib/Scanner";
 
 
@@ -22,7 +23,7 @@ export default async function Layout({ children }: LayoutProps) {
 
       <div className="flex-grow relative md:overflow-y-auto w-full md:pt-28 px-1">
         <DashboardAreaHeader />
-        <main className="px-6 w-full flex gap-12 justify-between items-stretch">
+        <main className="px-6 relative w-full flex gap-12 justify-between items-stretch">
           <div className="flex-1 max-w-full">
             <div className="pt-5">
               <h2 className="font-semibold text-primary-deepBlack">Categories</h2>
@@ -31,7 +32,7 @@ export default async function Layout({ children }: LayoutProps) {
             {children}
           </div>
 
-          {/* <Scanner /> */}
+          <Scanner />
           <CartSection />
         </main>
       </div>

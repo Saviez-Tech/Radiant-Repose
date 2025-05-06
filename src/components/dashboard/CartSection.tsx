@@ -75,6 +75,11 @@ export default function CartSection() {
     setShowConfirmModal(false)
   }
 
+  const handleClose = () => {
+    dispatch(clearScannedItems())
+    setPrint(false)
+  }
+
   const handleCompleteSale = async() => {
     setIsProcessing(true)
     const { success, error } = await addSaleHandler({
@@ -182,6 +187,7 @@ export default function CartSection() {
             orderNumber={orderNumber || ""}
             print={print}
             setPrint={setPrint}
+            handleClose={handleClose}
             scannedItems={scannedItems}
             subTotal={calculateCartTotal(scannedItems)}
             total={calculateCartTotalWithDiscountAndBalance(scannedItems,0,0)}

@@ -36,7 +36,7 @@ export default function ServiceHeader() {
         </div>
       </div>
       <div className="flex max-md:flex-col md:items-center gap-2 md:gap-4">
-        <h2 className="text-primary-dark_slate font-semibold text-lg">
+        <h2 className="text-primary-dark_slate font-semibold">
           Categories
         </h2>
         <ProductTypeCard /><p className="text-primary-dark_slate">|</p>

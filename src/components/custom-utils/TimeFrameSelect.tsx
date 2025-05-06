@@ -23,7 +23,7 @@ const dateToString = (date: Date): string => {
   return format(date, 'yyyy-M-d')
 }
 
-type TimeFrameType = | 'week' | 'month' | 'custom';
+type TimeFrameType = | 'week' | 'month' | 'year' | 'custom';
 
 export default function TimeFrameSelect({
   timeFilter,
@@ -37,14 +37,14 @@ export default function TimeFrameSelect({
 }) {
 
   // State for selected timeframe type (week, month)
-  const [timeFrameType, setTimeFrameType] = useState<TimeFrameType>((timeFilter === "week" || timeFilter === "month") ? timeFilter : "custom")
+  const [timeFrameType, setTimeFrameType] = useState<TimeFrameType>((timeFilter === "week" || timeFilter === "month" || timeFilter === "year") ? timeFilter : "custom")
   
   // Initialize date from the timeFilter string
   const [date, setDate] = useState<Date>(() => {
     return stringToDate(timeFilter)
   });
 
-  const [disabledDatePicker,setDisabledDatePicker] = useState((timeFilter === "week" || timeFilter === "month") ? true : false)
+  const [disabledDatePicker,setDisabledDatePicker] = useState((timeFilter === "week" || timeFilter === "month" || timeFilter === "year") ? true : false)
 
   // For client-side rendering only
   const [mounted, setMounted] = useState(false)
@@ -54,22 +54,22 @@ export default function TimeFrameSelect({
  
   // Get formatted display text with special handling for today and yesterday
   const getDisplayText = () => {
-    if (timeFilter !== "week" && timeFilter !== "month"){
-        const selectedDate = stringToDate(timeFilter)
-    
-        const formattedDate = format(selectedDate, "MMM d, yyyy")
-    
-        let specialText = "";
-        if (isToday(selectedDate)) {
-        specialText = " (Today)";
-        } else if (isYesterday(selectedDate)) {
-        specialText = " (Yesterday)";
-        }
-    
-        return formattedDate + specialText;
+    if (timeFilter !== "week" && timeFilter !== "month" && timeFilter !== "year"){
+      const selectedDate = stringToDate(timeFilter)
+  
+      const formattedDate = format(selectedDate, "MMM d, yyyy")
+  
+      let specialText = "";
+      if (isToday(selectedDate)) {
+      specialText = " (Today)";
+      } else if (isYesterday(selectedDate)) {
+      specialText = " (Yesterday)";
+      }
+  
+      return formattedDate + specialText;
     }
     else {
-        return timeFilter;
+      return timeFilter;
     }
   }
  
@@ -93,19 +93,19 @@ export default function TimeFrameSelect({
   const handleTimeFrameTypeChange = (value: string) => {
     setTimeFrameType(value as TimeFrameType)
 
-    setDisabledDatePicker((value === "week" || value === "month") ? true : false)
+    setDisabledDatePicker((value === "week" || value === "month" || value === "year") ? true : false)
     
     // Update date range based on the new time frame type
     if (value === 'week') {
-      setTimeFilter(value);
+      setTimeFilter(value)
     } else if (value === 'month') {
-      setTimeFilter(value);
+      setTimeFilter(value)
     }
   }
  
   // Update date when timeFilter changes externally
   useEffect(() => {
-    setDate((timeFilter === "week" || timeFilter === "month") ? new Date() : stringToDate(timeFilter));
+    setDate((timeFilter === "week" || timeFilter === "month" || timeFilter === "year") ? new Date() : stringToDate(timeFilter))
   }, [timeFilter]);
 
   if (!mounted) {
@@ -125,6 +125,7 @@ export default function TimeFrameSelect({
           <SelectContent>
             <SelectItem value="week">Week</SelectItem>
             <SelectItem value="month">Month</SelectItem>
+            <SelectItem value="year">Year</SelectItem>
             <SelectItem value="custom">Custom</SelectItem>
           </SelectContent>
         </Select>
