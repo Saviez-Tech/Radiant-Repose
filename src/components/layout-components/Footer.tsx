@@ -39,7 +39,7 @@ export default function Footer() {
 
             <div className="border-t border-primatext-primary-base_color1/30 my-10"></div>
 
-            <div className="w-full md:grid grid-cols-2 lg:flex flex-col md:flex-row justify-between gap-10 text-sm">
+            <div className="w-full flex flex-col md:grid grid-cols-2 lg:flex flex-col md:flex-row justify-between gap-10 text-sm">
                 <div className="max-w-xs">
                     <Logo src={LogoSrc} />
                     <p className="my-2">
