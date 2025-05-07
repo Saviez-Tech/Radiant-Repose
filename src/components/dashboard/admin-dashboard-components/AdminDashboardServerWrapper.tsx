@@ -20,6 +20,8 @@ export async function fetchDashboardData(filter?: string): Promise<{
   try {
     const axiosInstance = await createAxiosInstance()
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    console.log( "filter",filter)
     
     // Fetch all data concurrently for better performance
     const [categorySalesRes, salesRes, totalGoodsSoldRes] = await Promise.all([
