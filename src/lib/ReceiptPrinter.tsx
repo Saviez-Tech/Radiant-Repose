@@ -201,7 +201,7 @@ export default function ReceiptPrinter({
           id="receipt-modal-title" 
           className='text-center font-medium'
         >
-          Receipt #{orderNumber}
+          Receipt {orderNumber}
         </h2>
         
         <div ref={receiptRef} className="bg-white border-2 mt-2 border-dotted border-gray-400 w-full flex justify-center flex-col items-center">
