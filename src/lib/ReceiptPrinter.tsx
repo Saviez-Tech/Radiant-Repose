@@ -101,7 +101,7 @@ export default function ReceiptPrinter({
                 }
                 /* Make text darker for better printing */
                 * {
-                  color: #000000af !important;
+                  color: #000 !important;
                   -webkit-print-color-adjust: exact;
                   print-color-adjust: exact;
                 }
