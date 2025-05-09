@@ -3,6 +3,7 @@ export const mobileNavItems = [
     { name: "About", path: "/about-us" },
     { name: "Services", path: "/services", hasDropdown: true},
     { name: "Products", path: "/products" },
+    { name: "FAQ", path: "/faqs" },
     { name: "Blog", path: "/blog" },
     { name: "Contact", path: "/contact" },
 ]

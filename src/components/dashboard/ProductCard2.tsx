@@ -107,7 +107,7 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
         </div>
        
         <div className="flex justify-between items-center mt-1">
-          <span className={`text-xs ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
+          <span className={`text-xs bg-gray-100 p-1 rounded ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
             {isOutOfStock ? "Out of stock" : `${product.stock_quantity} Pieces left`}
           </span>
         </div>

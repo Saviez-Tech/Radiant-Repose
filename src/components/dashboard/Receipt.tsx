@@ -14,12 +14,12 @@ const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
     <div className="flex items-center py-3 border-b border-gray-100 text-[#000000]">
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h3 className="text-xs font-semibold truncate pb-1">{name}</h3>
-          <span className="text-xs font-semibold">{quantity}x</span>
+          <h3 className="text-xs font-extrabold truncate pb-1">{name}</h3>
+          <span className="text-xs font-extrabold">{quantity}x</span>
         </div>
-        <p className={`${dm_mono.className} text-xs font-medium`}>Price: {formatNaira(price || 0, false)}</p>
+        <p className={`${dm_mono.className} text-xs font-bold`}>Price: {formatNaira(price || 0, false)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price || 0, quantity || 0), false)}</span>
+          <span className={`${dm_mono.className} text-xs font-bold`}>{formatNaira(calculateCartItemTotal(price || 0, quantity || 0), false)}</span>
         </div>
       </div>
     </div>
@@ -56,9 +56,9 @@ export default function Receipt({
       </div>
       
       <div className="text-center mb-4">
-        <h2 className="text-sm font-semibold text-[#000000] print:text-black">Receipt #{orderNumber}</h2>
-        <p className="text-xs font-medium text-[#000000] print:text-black">{formatDate(date,'MMM d, yyyy')}</p>
-        {customerName && <p className="text-xs font-medium text-[#000000] print:text-black">Customer: {customerName}</p>}
+        <h2 className="text-sm font-extrabold text-[#000000] print:text-black">Receipt #{orderNumber}</h2>
+        <p className="text-xs font-bold text-[#000000] print:text-black">{formatDate(date,'MMM d, yyyy')}</p>
+        {customerName && <p className="text-xs font-bold text-[#000000] print:text-black">Customer: {customerName}</p>}
       </div>
       
       <div className="space-y-0">
@@ -69,31 +69,31 @@ export default function Receipt({
 
       <div className={`${dm_mono.className} mb-6 mt-8 text-[#000000] print:text-black text-xs`}>
         <div className="flex justify-between py-2">
-          <span className="font-medium">Subtotal</span>
-          <span className="font-medium">{subTotal}</span>
+          <span className="font-bold">Subtotal</span>
+          <span className="font-bold">{subTotal}</span>
         </div>
         
         <div className="flex justify-between py-2">
-          <span className="font-medium">Discount</span>
-          <span className="font-medium">{discount ? formatNaira(discount, true) : '--'}</span>
+          <span className="font-bold">Discount</span>
+          <span className="font-bold">{discount ? formatNaira(discount, true) : '--'}</span>
         </div>
         
         <div className="flex justify-between py-2">
-          <span className="font-medium">Balance</span>
-          <span className="font-medium">--</span>
+          <span className="font-bold">Balance</span>
+          <span className="font-bold">--</span>
         </div>
         
         <div className="border-t-2 border-dotted border-gray-900 my-2"></div>
         
         <div className="flex justify-between py-2">
-          <span className="font-semibold text-base">Total</span>
-          <span className="font-semibold text-base">{total}</span>
+          <span className="font-extrabold text-base">Total</span>
+          <span className="font-extrabold text-base">{total}</span>
         </div>
       </div>
 
-      <div className="text-center text-xs font-medium text-[#000000] print:text-black mt-4 mb-6">
+      <div className="text-center text-xs font-bold text-[#000000] print:text-black mt-4 mb-6">
         {cashierName && <p className="mb-1">Served by: {cashierName}</p>}
-        <p className="font-semibold">Thank you for your purchase!</p>
+        <p className="font-extrabold">Thank you for your purchase!</p>
         <p className="mt-2">**Customer Copy**</p>
       </div>
     </div>

@@ -20,7 +20,7 @@ export default function OurMissionSection(){
             </div>
             <div>
                 {/* Will soon be replaced with an actual image. */}
-                <div className="rounded-3xl w-96 h-[22em] bg-primary-darkRed mx-auto"></div>
+                <div className="rounded-3xl max-w-full w-96 h-[22em] bg-primary-darkRed mx-auto"></div>
             </div>
         </section>
     )

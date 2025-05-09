@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -15,7 +16,7 @@ export default function PriceRangeDialog({
 }: {
   children: ReactNode;
 }) {
-  const { width} = useWindowSize();
+  const { width } = useWindowSize()
 
   return (
     <Popover>

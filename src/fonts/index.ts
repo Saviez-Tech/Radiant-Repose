@@ -1,7 +1,7 @@
 import { Bricolage_Grotesque, DM_Mono, DM_Sans, Inter, Poppins, Rubik } from 'next/font/google'
 
 export const poppins = Poppins({
-    weight: ["300","400","500","600",'700'],
+    weight: ["300","400","500","600",'700','800'],
     subsets: ["latin"]
 })
 
