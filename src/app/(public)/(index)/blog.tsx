@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { LucideArrowRight } from "lucide-react";
 import BlogCard from "@/components/blog-page/BlogCard";
+import { blogData } from "../blog/page";
 
 export default function Blog() {
   return (
@@ -15,7 +16,7 @@ export default function Blog() {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 max-w-[950px] mx-auto">
-          {blogs.map((v, i) => (
+          {blogData.slice(0, 3).map((v, i) => (
             <BlogCard blogData={v} key={i} />
           ))}
         </div>
@@ -33,47 +34,4 @@ export default function Blog() {
   );
 }
 
-const blogs: BlogPost[] = [
-  {
-    id: "1",
-    title: "How to Stay on Track Without Stress",
-    description:
-      "Discover pharmacy tools and techniques that simplify your daily medication routine.",
-    image: "/images/heroimg2.png",
-    date: "April 29, 2025",
-    author: {
-      name: "Dominica Lopez",
-      avatar: "/images/demo-user1.png",
-      role: "Spa Expert",
-    },
-    category: "Wellness",
-  },
-  {
-    id: "2",
-    title: "5 Morning Habits for Better Productivity",
-    description:
-      "Learn the essential morning rituals that can transform your entire day and boost your focus.",
-    image: "/images/heroimg5.jpg",
-    date: "April 25, 2025",
-    author: {
-      name: "Marcus Chen",
-      avatar: "/images/demo-user1.png",
-      role: "Productivity Coach",
-    },
-    category: "Lifestyle",
-  },
-  {
-    id: "3",
-    title: "The Ultimate Guide to Digital Detox",
-    description:
-      "Practical steps to reduce screen time and reconnect with the world around you.",
-    image: "/images/heroimg1.png",
-    date: "April 20, 2025",
-    author: {
-      name: "Sarah Johnson",
-      avatar: "/images/demo-user1.png",
-      role: "Mental Health Specialist",
-    },
-    category: "Health",
-  },
-];
+

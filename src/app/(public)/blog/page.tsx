@@ -1,9 +1,9 @@
-const blogData: BlogPost[] = [
+export const blogData: BlogPost[] = [
     {
       id: "1",
       title: "How to Stay on Track Without Stress",
       description: "Discover pharmacy tools and techniques that simplify your daily medication routine.",
-      image: "/images/heroimg1.png",
+      image: "/images/spa2.png",
       date: "April 29, 2025",
       author: {
         name: "Dominica Lopez",

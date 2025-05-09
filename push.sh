@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "designed: faq page "
+git commit -m "designed: Blog single page"
 
 ECHO "________________Committed________________"
 
