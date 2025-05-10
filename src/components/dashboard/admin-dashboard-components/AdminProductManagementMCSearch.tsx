@@ -1,6 +1,5 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Search, X } from "lucide-react";
 
 interface SearchInputProps {
@@ -15,27 +14,48 @@ export default function AdminProductManagementMCSearch({
   placeholder = "Search products...",
   onSearch,
   className = "",
+  debounceTime = 500,
   autoFocus = false,
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState("")
-
-  // Debounce effect
+  const searchTermRef = useRef(searchTerm)
+  
+  // Update ref when searchTerm changes
   useEffect(() => {
-    const debounce = setTimeout(() => {
-        if (searchTerm?.trim() !== "" && (searchTerm && searchTerm?.trim().length > 3)) {
-          onSearch(searchTerm)
-        }
-      }, 500)
-    
-      return () => clearTimeout(debounce)
-      
+    searchTermRef.current = searchTerm;
   }, [searchTerm])
-
+  
+  // Debounce effect with cleanup
+  useEffect(() => {
+    // Don't trigger search for empty inputs or inputs that are too short
+    if (!searchTerm?.trim() || searchTerm.trim().length <= 3) {
+      // If search is cleared, immediately notify parent
+      if (!searchTerm) {
+        onSearch("")
+      }
+      return;
+    }
+    
+    // Store the current search term to compare later
+    const currentSearchTerm = searchTerm;
+    
+    const debounce = setTimeout(() => {
+      // Only perform search if the term is still current when timeout completes
+      if (currentSearchTerm === searchTermRef.current) {
+        onSearch(currentSearchTerm)
+      }
+    }, debounceTime)
+   
+    // Clear timeout on cleanup
+    return () => clearTimeout(debounce)
+     
+  }, [searchTerm, debounceTime])
+  
   const handleClearSearch = () => {
     setSearchTerm("")
     onSearch("")
   }
-
+  
   return (
     <div
       className={`relative flex items-center w-full max-w-md ${className}`}

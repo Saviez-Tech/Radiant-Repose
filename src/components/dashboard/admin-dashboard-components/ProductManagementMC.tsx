@@ -8,6 +8,7 @@ import { ProductType } from "@/enums";
 import AdminProductManagementMCSearch from "./AdminProductManagementMCSearch";
 import { fetchProductAction } from "@/actions/product.server";
 import SpinnerLoader from "@/components/loaders/SpinnerLoader";
+import toast from "react-hot-toast";
 
 
 export default function ProductManagementMC({ data, section }: { data: Product[], section: string }) {
@@ -26,33 +27,43 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         return data.filter(product => product.category === section)
     }, [data, section])
     
-    // Handle search functionality
     const handleSearch = async (value: string) => {
+        // Update search value first
         setSearchValue(value)
         
+        // Clear search results if search is empty
         if (!value.trim()) {
-            // Clear search results when input is empty
             setSearchedProducts(null)
             return;
         }
         
+        // Show loading indicator
         setIsSearching(true)
-
-        const { errorMessage, products } = await fetchProductAction(searchValue)
-
-        if(products && products.length > 0){
-            setSearchedProducts(products)
-        }else{
+        
+        try {
+            // Search with the current value
+            const { errorMessage, products } = await fetchProductAction(value)
+            
+            // Update state based on current search value
+            if (products && products.length > 0) {
+                setSearchedProducts(products)
+            } else {
+                setSearchedProducts([])
+            }
+            
+            if (errorMessage) {
+                setSearchedProducts([])
+            }
+        } catch (error) {
+            toast.error("Search error:" + error)
             setSearchedProducts([])
+        } finally {
+            // Always hide the loading indicator
+            setIsSearching(false)
         }
-
-        if (errorMessage){
-            setSearchedProducts([])
-        }
-
-        setIsSearching(false)
     }
-    
+
+
     // Determine which products to display based on search state
     const productsToFilter = useMemo(() => {
         if (searchValue && searchedProducts !== null) {
