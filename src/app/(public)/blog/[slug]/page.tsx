@@ -1,12 +1,13 @@
 import Scalffold from "@/components/custom-utils/Scalffold";
 import Image from "next/image";
 import RelatedBlogs from "./RelatedBlogs";
-import { blogData } from "../page";
+import { blogData } from "@/components-data/blog-data";
 
 
 
 export default function Page() {
-    const blog = blogData[0]
+
+  const blog = blogData[0]
   return (
     <Scalffold>
       <main className="app-container py-16 grid md:grid-cols-3 gap-8">

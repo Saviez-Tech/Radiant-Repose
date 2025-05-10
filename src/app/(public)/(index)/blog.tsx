@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { LucideArrowRight } from "lucide-react";
 import BlogCard from "@/components/blog-page/BlogCard";
-import { blogData } from "../blog/page";
+import { blogData } from "@/components-data/blog-data";
 
 export default function Blog() {
   return (
