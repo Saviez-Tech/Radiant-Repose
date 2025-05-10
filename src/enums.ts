@@ -3,3 +3,4 @@ export enum ProductType {
     SHOES = "shoes",
     JEWELRY = "jewelry",
     PERFUMES = "perfumes"
+}
