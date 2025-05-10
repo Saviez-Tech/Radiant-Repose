@@ -7,41 +7,41 @@ import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSal
 
 const handleFetchTransactionHistory = async(userID: string ) => {
 
-    if (!userID){
-        redirect("/pos/categories")
-    }
+  if (!userID){
+    redirect("/pos/categories")
+  }
 
-    try{
-        const axiosInstance = await createAxiosInstance()
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+  try{
+    const axiosInstance = await createAxiosInstance()
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-        const res = await axiosInstance.get(`${baseUrl}/api/worker/sales`)
-        return {
-            data: res.data,
-            success: true
-        }
+    const res = await axiosInstance.get(`${baseUrl}/api/worker/sales`)
+    return {
+      data: res.data,
+      success: true
     }
-    catch (err) {
-        let errorMessage = "An error occurred while fetching transaction history";
-        if (axios.isAxiosError(err)) {
-          if (err.response) {
-            errorMessage = handleApiError(err.response.data)
-          } else if (err.request) {
-            console.error("Request failed:", err.request);
-            errorMessage = "Network request failed. Please check your connection.";
-          } else {
-            errorMessage = `Request error: ${err.message}`;
-          }
-        } else if (err instanceof Error) {
-          console.error("Non-Axios error:", err)
-          errorMessage = err.message;
-        }
-        
-        return {
-          success: false,
-          errorMessage
-        }
+  }
+  catch (err) {
+    let errorMessage = "An error occurred while fetching transaction history";
+    if (axios.isAxiosError(err)) {
+      if (err.response) {
+        errorMessage = handleApiError(err.response.data)
+      } else if (err.request) {
+        console.error("Request failed:", err.request);
+        errorMessage = "Network request failed. Please check your connection.";
+      } else {
+        errorMessage = `Request error: ${err.message}`;
+      }
+    } else if (err instanceof Error) {
+      console.error("Non-Axios error:", err)
+      errorMessage = err.message;
     }
+    
+    return {
+      success: false,
+      errorMessage
+    }
+  }
 }
 
 

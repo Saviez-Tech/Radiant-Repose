@@ -2,68 +2,20 @@
 
 import Image from "next/image";
 import { Pagination } from "./Pagination";
-import TransactionFilter from "./TransactionFilter";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 export default function TransactionHistoryClientContainer({ data }: { data: Transaction[] }) {
-  const [selectedFilter, setSelectedFilter] = useState('day')
   const [currentPage, setCurrentPage] = useState(1)
   const [rowsPerPage, setRowsPerPage] = useState(7)
 
-  // Apply filter function
-  const applyFilter = (transactions: Transaction[], filter: string) => {
-    const today = new Date()
-    const yesterday = new Date()
-    yesterday.setDate(yesterday.getDate() - 1)
-    
-    const lastWeekStart = new Date()
-    lastWeekStart.setDate(lastWeekStart.getDate() - 7)
-    
-    const lastMonthStart = new Date()
-    lastMonthStart.setMonth(lastMonthStart.getMonth() - 1)
-    
-    switch (filter) {
-      case 'day':
-        return transactions.filter(t => {
-          const transactionDate = new Date(t.date)
-          return (
-            transactionDate.getDate() === today.getDate() &&
-            transactionDate.getMonth() === today.getMonth() &&
-            transactionDate.getFullYear() === today.getFullYear()
-          )
-        })
-      case 'week':
-        return transactions.filter(t => {
-          const transactionDate = new Date(t.date)
-          return transactionDate >= lastWeekStart && transactionDate <= today;
-        })
-      case 'month':
-        return transactions.filter(t => {
-          const transactionDate = new Date(t.date)
-          return transactionDate >= lastMonthStart && transactionDate <= today;
-        })
-      default:
-        return transactions;
-    }
-  }
-
-  // Apply filter immediately using useMemo
-  const filteredTransactions = useMemo(() => {
-      return applyFilter(data, selectedFilter)
-  }, [data, selectedFilter])
-  
   // Calculate pagination
   const paginatedTransactions = useMemo(() => {
-    return filteredTransactions.slice(
-        (currentPage - 1) * rowsPerPage,
-        currentPage * rowsPerPage
+    return data.slice(
+      (currentPage - 1) * rowsPerPage,
+      currentPage * rowsPerPage
     )
-  }, [filteredTransactions, currentPage, rowsPerPage])
+  }, [data.length, currentPage, rowsPerPage])
 
-  // Reset pagination when filter changes
-  useEffect(() => {
-    setCurrentPage(1)
-  }, [selectedFilter])
   
   // Handle page change
   const handlePageChange = (page: number) => {
@@ -78,13 +30,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
 
   return (
     <div className="w-full py-16">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-lg font-medium text-primary-deepBlack">Transaction History</h2>
-        <TransactionFilter
-          selectedFilter={selectedFilter}
-          setSelectedFilter={setSelectedFilter}
-        />
-      </div>
+      <h2 className="text-lg font-medium text-primary-deepBlack mb-4">Transaction History</h2>
       
       <div className="overflow-x-auto">
           <table className="table-auto w-full">
@@ -135,7 +81,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
       </div>
       
       <Pagination
-        totalItems={filteredTransactions.length}
+        totalItems={data.length}
         currentPage={currentPage}
         rowsPerPage={rowsPerPage}
         onPageChange={handlePageChange}
