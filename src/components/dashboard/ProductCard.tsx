@@ -14,7 +14,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
   const handleCardClick = () => {
     if (isOutOfStock) return; 
     if (isSelected){
-      dispatch(deselectItem(product.barCode!))
+      dispatch(deselectItem(product.barcode))
     }else{
       dispatch(selectItem(product))
     }

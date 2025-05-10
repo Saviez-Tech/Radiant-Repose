@@ -21,6 +21,7 @@ type Product = {
     stock_quantity: number;
     category?: "luxury-collection" | "spa-section" | "pharmacy" | string;
     productType: ProductType | string;
+    barcode: string;
     branch?: number
 }
 
