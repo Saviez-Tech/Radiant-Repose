@@ -5,5 +5,5 @@ export const mobileNavItems = [
     { name: "Products", path: "/products" },
     { name: "FAQ", path: "/faqs" },
     { name: "Blog", path: "/blog" },
-    { name: "Contact", path: "/contact" },
+    { name: "Contact", path: "/contact-us" },
 ]
