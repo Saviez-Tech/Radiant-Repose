@@ -1,4 +1,3 @@
-import BlogCard from "@/components/blog-page/BlogCard";
 import Scalffold from "@/components/custom-utils/Scalffold";
 import Image from "next/image";
 import RelatedBlogs from "./RelatedBlogs";
