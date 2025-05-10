@@ -11,7 +11,7 @@ export default function ProductCard2({ product, handleItemRemove, setIsSelected,
   product: ScannedProduct, 
   handleItemRemove: (barcode: string) => void, 
   isSelected: boolean, 
-  setIsSelected: Dispatch<SetStateAction<Product[]>> 
+  setIsSelected: Dispatch<SetStateAction<ScannedProduct[]>> 
 }) {
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
 

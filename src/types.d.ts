@@ -19,20 +19,20 @@ type Product = {
     image_url: string;
     description?: string;
     stock_quantity: number;
-    barcode?: string;
     category?: "luxury-collection" | "spa-section" | "pharmacy" | string;
     productType: ProductType | string;
     branch?: number
 }
 
-interface ScannedProduct extends Product {
+interface SelectedProduct extends Product {
+    barcode: string;
     quantity: number;
-    piecesLeft: number;
-    barCode: string;
-    category: "luxury-collection" | "spa-section" | "pharmacy";
+    totalPrice: number;
 }
 
 interface ScannedProduct extends Product {
+    barcode: string;
+    quantity: number;
     totalPrice: number;
 }
 

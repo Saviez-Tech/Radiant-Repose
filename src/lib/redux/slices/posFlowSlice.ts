@@ -6,7 +6,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 type InitialState = {
   barcode: string | null;
   searchValue: string | null;
-  selectedItems: Product[];
+  selectedItems: SelectedProduct[];
   scannedItems: ScannedProduct[];
   isLoading: boolean;
   error: string | null;
@@ -59,7 +59,7 @@ const updateItemQuantity = (item: ScannedProduct, change: number): ScannedProduc
   return {
     ...item,
     quantity: newQuantity,
-    totalPrice: item.price * newQuantity
+    totalPrice: Number(item.price) * newQuantity
   }
 }
 
@@ -94,7 +94,7 @@ const posFlowSlice = createSlice({
     },
     
     // Selected items management
-    selectItem: (state, { payload }: PayloadAction<Product>) => {
+    selectItem: (state, { payload }: PayloadAction<SelectedProduct>) => {
       // Check if item is already selected to avoid duplicates
       const existingIndex = state.selectedItems.findIndex(item => item.barcode === payload.barcode)
       if (existingIndex === -1) {
@@ -114,7 +114,7 @@ const posFlowSlice = createSlice({
     },
     
     // Scanned items management
-    addScannedItem: (state, { payload }: PayloadAction<ScannedProduct>) => {
+    addScannedItem: (state, { payload }: PayloadAction<SelectedProduct>) => {
       // Check if item is already in scanned items
       const existingIndex = state.scannedItems.findIndex(item => item.barcode === payload.barcode)
       
@@ -124,7 +124,7 @@ const posFlowSlice = createSlice({
         state.scannedItems[existingIndex] = updateItemQuantity(existingItem, 1)
       } else {
         // If new, add it to scanned items
-        state.scannedItems.push({...payload, quantity: 1 })
+        state.scannedItems.push({...payload, quantity: 1, totalPrice: 1 * Number(payload.price) })
       }
     },
     

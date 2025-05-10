@@ -17,7 +17,7 @@ export default function ItemBarCodeManualLookupPage() {
     const { searchValue, scannedItems } = useAppSelector(store => store.posFlow)
     const [items, setItems] = useState<ScannedProduct[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [selectedItems, setSelectedItems] = useState<Product[]>([])
+    const [selectedItems, setSelectedItems] = useState<SelectedProduct[]>([])
     const dispatch = useAppDispatch()
     const router = useRouter()
 
@@ -50,7 +50,7 @@ export default function ItemBarCodeManualLookupPage() {
 
     const handleAddSelectedItems = () => {
         if (selectedItems.length){
-            items.forEach(item => dispatch(addScannedItem(item)))
+            selectedItems.forEach(item => dispatch(addScannedItem(item)))
         }
     }
 
@@ -68,6 +68,20 @@ export default function ItemBarCodeManualLookupPage() {
       
         return () => clearTimeout(debounce)
     }, [searchValue])
+    
+    useEffect(() => {
+        if (!scannedItems.length || !selectedItems.length) return;
+        
+        // Create a new array with items that are NOT in scannedItems
+        const updatedSelectedItems = selectedItems.filter(selectedItem => 
+            !scannedItems.some(scannedItem => scannedItem.barcode === selectedItem.barcode)
+        )
+        
+        // Only update state if there's actually a change
+        if (updatedSelectedItems.length !== selectedItems.length) {
+            setSelectedItems(updatedSelectedItems)
+        }
+    }, [scannedItems.length, selectedItems.length])
 
     useEffect(() => {
         if (!items.length) return;
