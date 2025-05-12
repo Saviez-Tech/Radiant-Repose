@@ -1,24 +1,30 @@
 import Scalffold from "@/components/custom-utils/Scalffold";
+import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 import { Suspense } from "react";
+import Products from "./Products";
 import ServiceHeader from "./ServiceHeader";
-import ProductCard from "@/components/custom-utils/ProductCard";
-import { dummyProducts } from "@/components-data/sample-data";
 
-export default function Page() {
-    const products = dummyProducts
+export default async function Page() {
+
+   const { success, data, errorMessage } = await fetchProductsData()
+      
+      if (!success) {
+        return (
+          <div className="p-6 bg-red-50 border border-red-200 rounded-md">
+            <h3 className="text-red-600 font-medium mb-2">Error Loading Products Data</h3>
+            <p className="text-red-500">{errorMessage}</p>
+          </div>
+        )
+      }
+      
+    
     return (
       <Scalffold>
         <div className="flex flex-col app-container py-6">
           <Suspense>
-            <ServiceHeader />
+            
+         <Products products={data} />
           </Suspense>
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 grid-cols-2  gap-4 py-10">
-            {
-              products.map((product, index) => (
-                <ProductCard key={index} {...product} />
-              ))
-            }
-          </div>
         </div>
       </Scalffold>
     )

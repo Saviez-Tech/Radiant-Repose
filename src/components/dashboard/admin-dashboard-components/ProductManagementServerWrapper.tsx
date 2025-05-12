@@ -4,7 +4,7 @@ import createAxiosInstance from "@/lib/axios";
 import ProductManagementMC from "./ProductManagementMC";
 
 
-async function fetchProductsData() {
+ export  async function fetchProductsData() {
     try {
       const axiosInstance = await createAxiosInstance()
       const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products`)
