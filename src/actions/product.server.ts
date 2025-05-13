@@ -81,7 +81,7 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
       description: "description" in productDetails ? productDetails.description : "",
       stock_quantity: "quantityInStock" in productDetails ? parseInt(productDetails.quantityInStock, 10) : 0,
       barcode: "barcode" in productDetails ? productDetails.barcode : "",
-      branch: 1
+      branch: "branch" in productDetails ? parseInt(productDetails.branch) : 1,
     }
 
     const formData = new FormData()

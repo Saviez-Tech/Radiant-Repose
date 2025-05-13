@@ -4,6 +4,7 @@ export const productFormSchema = z.object({
   productSection: z.string().min(1, "Product section is required"),
   productName: z.string().min(1, "Product name is required"),
   category: z.string().min(1, "Category is required"),
+  branch: z.string().min(1, "Select a branch"),
   barcode: z.string({
     required_error: "Barcode is required"
   }).min(5, "Barcode must be at least 5 characters"),

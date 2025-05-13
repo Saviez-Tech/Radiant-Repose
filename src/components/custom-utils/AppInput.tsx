@@ -47,7 +47,7 @@ export default function AppInput({
   const inputType = isPassword ? (eyeOpen ? "text" : "password") : type;
 
   const baseStyles = cn(
-    "rounded-md max-w-full w-full text-sm py-3 disabled:cursor-not-allowed h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400",
+    "rounded-md max-w-full w-full text-sm text-primary-dark_gray py-3 disabled:cursor-not-allowed h-12 px-3 focus:outline-offset-0 focus:outline focus:outline-[1.5px] focus:outline-stone-400",
     prefix ? "pl-8" : "",
     variant === "transparent"
       ? "bg-transparent border-[1px]"

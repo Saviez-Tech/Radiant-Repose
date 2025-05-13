@@ -68,7 +68,7 @@ export default function AdminProductManagementMCSearch({
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder={placeholder}
-        className="w-full cursor-pointer pl-6 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-800/70 text-sm focus:border-none text-gray-700"
+        className="w-full cursor-pointer pl-8 pr-10 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-800/70 text-sm focus:border-none text-gray-700"
         autoFocus={autoFocus}
       />
       {searchTerm && (

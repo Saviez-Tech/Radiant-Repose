@@ -164,10 +164,10 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
             )}
            
             {/* Products Grid */}
-            <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
+            <div className="mt-5 grid grid-cols-2 md:grid-cols-3 gap-4 gap-y-6 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
                 {!isSearching && paginatedProductsData.length > 0 ? (
                     paginatedProductsData.map((product, index) => (
-                        <ProductCard3 key={product.id || index} product={product} />
+                        <ProductCard3 key={product.id || index} product={product} searchValue={searchValue} onSearch={handleSearch} />
                     ))
                 ) : (
                     <div className="col-span-full text-center py-8 text-gray-500">

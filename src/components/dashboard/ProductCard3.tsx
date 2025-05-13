@@ -16,7 +16,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setProductToEdit } from "@/lib/redux/slices/editProductSlice";
 
 
-export default function ProductCard3({ product }: { product: Product }) {
+export default function ProductCard3({ product, onSearch, searchValue }: { product: Product, searchValue: string, onSearch: (value: string) => void; }) {
 
   const router = useRouter()
 
@@ -30,7 +30,7 @@ export default function ProductCard3({ product }: { product: Product }) {
     productID: null
   })
 
-  const onConfirmDeactivateAccount = async() => {
+  const onConfirmDeleteProduct = async() => {
     setProcessing(true)
 
     if (!showConfirmModal.productID) {
@@ -43,6 +43,7 @@ export default function ProductCard3({ product }: { product: Product }) {
     if (success){
       await revalidatePathHandler("/admin/product-management/luxury-collection")
       toast.success("Product Deleted Successfully")
+      onSearch(searchValue)
     }
 
     if (error){
@@ -118,7 +119,7 @@ export default function ProductCard3({ product }: { product: Product }) {
         description="Delete This Product"
         onCancel={onCancelAction}
         processing={processing}
-        onConfirm={onConfirmDeactivateAccount}
+        onConfirm={onConfirmDeleteProduct}
         open={showConfirmModal.show}
       />
 

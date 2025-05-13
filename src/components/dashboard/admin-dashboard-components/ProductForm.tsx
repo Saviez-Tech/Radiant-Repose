@@ -17,7 +17,8 @@ import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function ProductForm({ formActionType, productID }: { productID?: string, formActionType: "add" | "edit" }) {
 
-
+  
+  const { branches } = useAppSelector(store => store.storeBranches)
   const { productToEdit } = useAppSelector(store => store.editProduct)
 
   const {
@@ -35,6 +36,7 @@ export default function ProductForm({ formActionType, productID }: { productID?:
       id: productToEdit?.id || "",
       image: undefined,
       productName: productToEdit?.name || "",
+      branch: productToEdit?.branch,
       unitPrice: productToEdit?.price.toString() || "",
       productSection: productToEdit?.category || "",
       category: productToEdit?.productType || "",
@@ -48,6 +50,10 @@ export default function ProductForm({ formActionType, productID }: { productID?:
   const productSectionOptions = [
     { value: "luxury-item", label: "Luxury Item" },
   ]
+
+  const locationOptions = branches.map(v => {
+    return { label: `${v.name}, ${v.location}`, value: v.id.toString()}
+  })
 
   const categoryOptions = [
     { value: "bags", label: "Bags" },
@@ -66,6 +72,7 @@ export default function ProductForm({ formActionType, productID }: { productID?:
       toast.error(error)
     }
   }
+  
 
   // Render different form based on formActionType
   if (formActionType === "edit") {
@@ -80,13 +87,13 @@ export default function ProductForm({ formActionType, productID }: { productID?:
             error={errors.productName?.message}
           />
 
-        <FileUpload
-          label="Upload Product Photo"
-          name="image"
-          className="h-12"
-          control={control}
-          error={errors.image?.message}
-        />
+          <FileUpload
+            label="Upload Product Photo"
+            name="image"
+            className="h-12"
+            control={control}
+            error={errors.image?.message}
+          />
 
           <div className="space-y-1 max-w-full">
             <Label htmlFor="unitPrice" className="font-medium mb-1 text-primary-dark_gray">
@@ -122,6 +129,16 @@ export default function ProductForm({ formActionType, productID }: { productID?:
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
       <div className="grid md:grid-cols-3 gap-x-6 gap-y-8 mb-6">
+        <AppSelect
+          label="Assigned Location"
+          name="branch"
+          placeholder="Select Location"
+          options={locationOptions}
+          control={control}
+          error={errors.branch?.message}
+        />
+
+
         <AppSelect
           label="Product Section"
           name="productSection"
@@ -178,7 +195,7 @@ export default function ProductForm({ formActionType, productID }: { productID?:
                 id="unitPrice"
                 placeholder="150,000"
                 className={cn(
-                  "border rounded-r-md border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
+                  "border rounded-r-md text-primary-dark_gray border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
                   errors.unitPrice ? "border-red-500 focus:ring-red-500" : "border-gray-300"
                 )}
                 {...register("unitPrice")}
@@ -206,7 +223,7 @@ export default function ProductForm({ formActionType, productID }: { productID?:
             id="description"
             placeholder="Enter Description (e.g., colors, size, brand)"
             className={cn(
-              "border py-2.5 px-3 min-h-[80px] focus:ring-gray-400 text-sm",
+              "border py-2.5 px-3 min-h-[80px] text-primary-dark_gray focus:ring-gray-400 text-sm",
               errors.description ? "border-red-500 focus:ring-red-500" : "border-gray-300"
             )}
             {...register("description")}
