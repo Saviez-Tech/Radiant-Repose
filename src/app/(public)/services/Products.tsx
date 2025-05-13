@@ -1,23 +1,23 @@
 "use client";
 
-import { fetchProductAction } from "@/actions/product.server";
+// import { fetchProductAction } from "@/actions/product.server";
 import ProductCard from "@/components/custom-utils/ProductCard";
 import { Pagination } from "@/components/dashboard/Pagination";
 import { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
 import ServiceHeader from "./ServiceHeader";
 
 export default function Products({ products: data }: { products: Product[] }) {
-  const [selectedFilter, setSelectedFilter] = useState("all");
-  const [selectedProductType, setSelectedProductType] =
+  const [selectedFilter] = useState("all");
+  const [selectedProductType] =
     useState<ProductType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(7);
-  const [searchValue, setSearchValue] = useState("");
-  const [searchedProducts, setSearchedProducts] = useState<Product[] | null>(
+  const [searchValue] = useState("");
+  const [searchedProducts] = useState<Product[] | null>(
     null
   );
-  const [isSearching, setIsSearching] = useState(false);
+  // const [isSearching, setIsSearching] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [priceFrom, setPriceFrom] = useState(0);
   const [priceTo, setPriceTo] = useState<undefined | number>(undefined);
@@ -27,43 +27,43 @@ export default function Products({ products: data }: { products: Product[] }) {
       return data;
     }
     return data.filter((product) => product.category === activeTab);
-  }, [data, activeTab]);
+  }, [data, activeTab])
 
-  const handleSearch = async (value: string) => {
-    // Update search value first
-    setSearchValue(value);
+  // const handleSearch = async (value: string) => {
+  //   // Update search value first
+  //   setSearchValue(value);
 
-    // Clear search results if search is empty
-    if (!value.trim()) {
-      setSearchedProducts(null);
-      return;
-    }
+  //   // Clear search results if search is empty
+  //   if (!value.trim()) {
+  //     setSearchedProducts(null);
+  //     return;
+  //   }
 
-    // Show loading indicator
-    setIsSearching(true);
+  //   // Show loading indicator
+  //   setIsSearching(true);
 
-    try {
-      // Search with the current value
-      const { errorMessage, products } = await fetchProductAction(value);
+  //   try {
+  //     // Search with the current value
+  //     const { errorMessage, products } = await fetchProductAction(value);
 
-      // Update state based on current search value
-      if (products && products.length > 0) {
-        setSearchedProducts(products);
-      } else {
-        setSearchedProducts([]);
-      }
+  //     // Update state based on current search value
+  //     if (products && products.length > 0) {
+  //       setSearchedProducts(products);
+  //     } else {
+  //       setSearchedProducts([]);
+  //     }
 
-      if (errorMessage) {
-        setSearchedProducts([]);
-      }
-    } catch (error) {
-      toast.error("Search error:" + error);
-      setSearchedProducts([]);
-    } finally {
-      // Always hide the loading indicator
-      setIsSearching(false);
-    }
-  };
+  //     if (errorMessage) {
+  //       setSearchedProducts([]);
+  //     }
+  //   } catch (error) {
+  //     toast.error("Search error:" + error);
+  //     setSearchedProducts([]);
+  //   } finally {
+  //     // Always hide the loading indicator
+  //     setIsSearching(false);
+  //   }
+  // };
 
   // Determine which products to display based on search state
   const productsToFilter = useMemo(() => {

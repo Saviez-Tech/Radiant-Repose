@@ -2,7 +2,7 @@ import Scalffold from "@/components/custom-utils/Scalffold";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 import { Suspense } from "react";
 import Products from "./Products";
-import ServiceHeader from "./ServiceHeader";
+// import ServiceHeader from "./ServiceHeader";
 
 export default async function Page() {
 

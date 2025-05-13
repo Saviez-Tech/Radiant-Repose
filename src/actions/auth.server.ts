@@ -77,7 +77,7 @@ export const fetchStoreBranches = async () => {
       success: true
     }
   }
-  catch(err){
+  catch{
     return {
       success: false,
       data: []
