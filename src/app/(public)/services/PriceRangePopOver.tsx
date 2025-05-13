@@ -13,11 +13,27 @@ import {useWindowSize } from 'react-use'
 
 export default function PriceRangeDialog({
   children,
+  from,
+  to,
+  setFrom,
+  setTo,
 }: {
   children: ReactNode;
+  from: number;
+  to?: number;
+  setFrom: (value: number) => void;
+  setTo?: (value?: number) => void;  
 }) {
   const { width } = useWindowSize()
-
+function haddleFrom(value:string){
+  if(isNaN(parseInt(value))) return setFrom("" as unknown as number)
+  setFrom(parseInt(value))
+}
+function haddleTo(value:string){
+  if(isNaN(parseInt(value))) return setTo?.(undefined)
+  setTo?.(parseInt(value))
+  
+}
   return (
     <Popover>
       <PopoverTrigger>{children}</PopoverTrigger>
@@ -36,16 +52,20 @@ export default function PriceRangeDialog({
         <div className="grid md:grid-cols-2 gap-3">
           <div className="flex flex-col">
             <p>From:</p>
-            <input
-              type="number"
-              className="border border-[#5B5B5B80]/50 rounded-md p-2 w-full
-                        focus:border-primary-darkRed focus:text-primary-darkRed focus:outline-none"
-              placeholder="0.00"
+            <input 
+            onChange={e => haddleFrom(e.target.value)}
+            value={from}
+            type="number"
+            className="border border-[#5B5B5B80]/50 rounded-md p-2 w-full
+            focus:border-primary-darkRed focus:text-primary-darkRed focus:outline-none"
+            placeholder="0.00"
             />
           </div>
           <div className="flex flex-col">
             <p>To:</p>
             <input
+            onChange={e => haddleTo(e.target.value)}
+            value={to}
               type="number"
               className="border border-[#5B5B5B80]/50 rounded-md p-2 w-full
                         focus:border-primary-darkRed focus:text-primary-darkRed focus:outline-none"
