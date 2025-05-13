@@ -1,3 +1,4 @@
+// Static Data, Dynamic is being fetched and set in a redux slice
 export const storeLocation = [
     {
         branch: 1,

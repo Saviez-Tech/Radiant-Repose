@@ -16,6 +16,7 @@ const authUserSlice = createSlice({
             state.emailOrUsername = payload.emailOrUsername;
             state.group = payload.group;
             state.name = payload.name
+            state.branch = payload.branch
         },
         logoutUser: (state) => {
             state.id = null;

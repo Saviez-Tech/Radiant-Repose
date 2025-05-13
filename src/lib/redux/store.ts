@@ -5,6 +5,7 @@ import authUserReducer from "./slices/authUserSlice"
 import mobileNavReducer from "./slices/mobileNavSlice"
 import editStaffReducer from "./slices/editStaffSlice"
 import editProductReducer from "./slices/editProductSlice"
+import storeBranchesReducer from "./slices/storeBranchesSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -12,9 +13,10 @@ export const makeStore = () => {
       posFlow: posFlowReducer,
       categoryTab: categoryTabReducer,
       authUser: authUserReducer,
+      storeBranches: storeBranchesReducer,
       mobileNav: mobileNavReducer,
       editStaff: editStaffReducer,
-      editProduct: editProductReducer
+      editProduct: editProductReducer,
     }
   })
 }

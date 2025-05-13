@@ -36,7 +36,7 @@ export default function ClearTransactionBtn(){
                 <X className="ml-2" size={16} />
             </Button>
 
-            <DestructiveActionPrompt processing={false} open={showConfirmModal} description="clear this transaction" onCancel={onCancelAction} onConfirm={handleConfirmClear} />
+            <DestructiveActionPrompt processing={false} open={showConfirmModal} description="Clear this transaction" onCancel={onCancelAction} onConfirm={handleConfirmClear} />
             <DestructiveActionPromptSuccess onClose={() => setShowSuccessModal(false)} open={showSuccessModal}>
                 <Image src="/icons/cleared-transaction-success.svg" alt="success" width={110} height={110} />
                 <div className="text-center">

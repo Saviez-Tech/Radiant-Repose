@@ -7,7 +7,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuSeparator } from "../../ui/dropdown-menu";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "../../layout-components/Logo";
-import { Analytics, BagIcon } from "../../Svg";
+import { Analytics, BagIcon, ReceiptIcon } from "../../Svg";
 import { productManagementSections } from "@/components-data/productsManagementSectionsLinkData";
 import React from "react";
 import AuthUserDetails from "@/components/layout-components/AuthUserDetails";
@@ -42,6 +42,7 @@ function AdminDashboardSideNav() {
                         { href: "/admin/staff-management", label: "Staff Management", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-management") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/staff-analysis", label: "Staff Analysis", icon: <Analytics className={`${isActiveRoute("/admin/staff-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/payment-tracking", label: "Payment Tracking", icon: <Icon icon="uil:wallet" width="24" height="24" className={`${isActiveRoute("/admin/payment-tracking") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
+                        { href: "/admin/pending-order", label: "Pending Order", icon: <ReceiptIcon className={`${isActiveRoute("/admin/pending-order") ? "stroke-primary-base_color1" : "stroke-primary-dark_slate" }`} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (

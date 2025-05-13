@@ -2,8 +2,18 @@ interface IAuthUser {
     id: string | null;
     emailOrUsername: string | null;
     group: "Administrator" | "Worker" | null;
-    name: string | null
+    name: string | null,
+    branch?: string | null
 }
+
+interface StoreBranch {
+    id: number;
+    name: string;
+    location: string;
+    contact_number: string;
+}
+
+
 
 enum ProductType {
     BAGS = "bags",
@@ -119,6 +129,30 @@ type SalePayload = {
       quantity: number;
     }[]
 }
+
+
+
+
+interface OrderList {
+  full_name: string;
+  email: string;
+  id: string;
+  phone: string;
+  street_address: string;
+  zip_code: string;
+  city: string;
+  state: string;
+  country: string;
+}
+
+interface OrderListDetailProducts extends ScannedProduct { price_at_sale: string, quantity: number }
+
+interface OrderListDetail {
+    id: string,
+    customer: OrderList,
+    products: OrderListDetailProducts[]
+}
+
  
 type AppPageError = {
   error: Error & { digest?: string },

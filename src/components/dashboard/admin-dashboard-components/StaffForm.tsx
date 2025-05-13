@@ -1,10 +1,10 @@
 "use client";
 
 import { addStaffHandler, editStaffHandler } from "@/actions/staff.server";
-import { storeLocation } from "@/components-data/store-locations";
 import SubmitBtnWithLoader from "@/components/buttons/SubmitBtnWithLoader";
 import AppInput from "@/components/custom-utils/AppInput";
 import AppSelect from "@/components/custom-utils/AppSelect";
+import { useAppSelector } from "@/lib/redux/hooks";
 import {
   EditStaffFormValues,
   staffEditFormSchema,
@@ -36,10 +36,11 @@ export default function StaffForm({
   })
 
   const router = useRouter()
+  const { branches } = useAppSelector(store => store.storeBranches)
 
-  const locationOptions = [
-    { value: storeLocation[0].branch.toString(), label: storeLocation[0].location },
-  ]
+  const locationOptions = branches.map(v => {
+    return { label: `${v.name}, ${v.location}`, value: v.id.toString()}
+  })
 
   const onSubmit: SubmitHandler<StaffFormValues | EditStaffFormValues> = async(data) => {
     const { success, error } = formActionType === "add" ? await addStaffHandler(data as StaffFormValues) : await editStaffHandler(data as EditStaffFormValues,staffID)

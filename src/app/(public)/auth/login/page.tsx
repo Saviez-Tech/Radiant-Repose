@@ -76,10 +76,10 @@ export default function Login(){
             <div className="glob-px text-primary-light_black pb-12 md:basis-1/2 md:px-10">
                 <div className="flex flex-col md:flex-row justify-between gap-y-8 gap-x-4 items-center py-10">
                     <Logo src={LogoSrc} className="w-48" />
-                    <div>
+                    {/* <div>
                         <h2 className="font-medium text-base text-primary-deepBlack"><span className="font-semibold">Radiant Repose</span> Point of Sales System</h2>
                         <p className="text-xs">Varoyal Plaza, opp Royal Spring Palm suit, Akachi road, Owerri</p>
-                    </div>
+                    </div> */}
                 </div>
 
                 <div className="flex flex-col justify-center mt-8 max-w-md mx-auto">
