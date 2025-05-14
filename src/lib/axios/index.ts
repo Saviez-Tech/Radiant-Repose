@@ -8,7 +8,7 @@ const createAxiosInstance = async () => {
   const cookieValue = await JSON.parse(myCookies.get("user_session")?.value || "")
 
   return axios.create({
-    baseURL: process.env.NEXT_PUBLIC_BACKEND_SERVER_URL,
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
