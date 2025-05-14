@@ -10,7 +10,7 @@ export default function Page() {
       <div className="flex app-container flex-col  py-6">
         <div className="grid md:grid-cols-2 gap-[65px]">
           <div>
-            <OrderSummary />
+            <OrderSummary subTotal={0} />
             <CustomerDetails />
             <DeliveryAddress />
           </div>

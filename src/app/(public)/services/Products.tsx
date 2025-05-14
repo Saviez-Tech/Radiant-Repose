@@ -17,7 +17,7 @@ export default function Products({ products: data }: { products: Product[] }) {
   const [searchedProducts] = useState<Product[] | null>(
     null
   );
-  // const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [priceFrom, setPriceFrom] = useState(0);
   const [priceTo, setPriceTo] = useState<undefined | number>(undefined);
@@ -28,6 +28,8 @@ export default function Products({ products: data }: { products: Product[] }) {
     }
     return data.filter((product) => product.category === activeTab);
   }, [data, activeTab])
+  console.log({data});
+  
 
   // const handleSearch = async (value: string) => {
   //   // Update search value first

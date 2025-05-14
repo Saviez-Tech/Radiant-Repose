@@ -1,5 +1,6 @@
 "use client";
 
+import { useCart } from "@/hooks/useCart";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import Image from "next/image";
 import { useState } from "react";
@@ -10,11 +11,16 @@ export default function TableRow({
   name,
   price,
   description,
+  id,
 }: Product) {
-  const [quantity, setQuantity] = useState(1);
+  const { incrementItem, decrementItem, items, removeItem } = useCart();
 
-  const increment = () => setQuantity((prev) => prev + 1);
-  const decrement = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const quantity = (
+    items.find((item) => item.product === id)?.quantity || 1
+  );
+
+  const increment = () => incrementItem(id);
+  const decrement = () => decrementItem(id);
 
   const totalPrice = price * quantity;
 
@@ -69,16 +75,18 @@ export default function TableRow({
       <div className="grid grid-cols-3 md:w-[45%] max-md:pl-20 ">
         <div className="">
           <p className="md:hidden text-xs ">Unit Price</p>
-        <div className=" md:text-sm text-xs ">{formatNaira(price, true)}</div>
+          <div className=" md:text-sm text-xs ">{formatNaira(price, true)}</div>
         </div>
         <div className="">
           <p className="md:hidden text-xs ">Total</p>
-        <div className="text-primary-darkRed md:text-sm text-xs font-semibold ">
-          {formatNaira(totalPrice, true)}
-        </div>
+          <div className="text-primary-darkRed md:text-sm text-xs font-semibold ">
+            {formatNaira(totalPrice, true)}
+          </div>
         </div>
         <div>
-          <button className="text-red-500 rounded-3xl py-2 px-3 md:text-sm text-xs truncate">
+          <button
+            onClick={() => removeItem(id)}
+           className="text-red-500 rounded-3xl py-2 px-3 md:text-sm text-xs truncate">
             Remove item
           </button>
         </div>

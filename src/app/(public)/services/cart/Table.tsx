@@ -1,9 +1,12 @@
+"use client";
+
+import { useCart } from "@/hooks/useCart";
 import TableRow from "./TableRow";
-import { dummyProducts } from "@/components-data/sample-data";
 import OrderSummary from "./OrderSummary";
 
-export default function Table() {
-  const cartItems = dummyProducts;
+export default function Table({ products: data }: { products: Product[] }) {
+  const { cartItems, items } = useCart(data);
+
   return (
     <div className="overflow-x-auto bg-white rounded-xl overflow-hidden ">
       <div className="w-full">
@@ -27,13 +30,17 @@ export default function Table() {
           </div>
         </div>
         <div className="bg-white max-md:space-y-4 ">
-          {cartItems.map((item) => (
+          {cartItems.map((item: any) => (
             <TableRow key={item.id} {...item} />
           ))}
         </div>
-
       </div>
-       <OrderSummary />
+      <OrderSummary
+        subTotal={cartItems.reduce(
+          (acc, item) => acc + item!.price * items.find(i => i.product === item!.id)!.quantity,
+          0
+        )}
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "Intergrated services api"
+git commit -m "Intergrating ecommerce api"
 
 ECHO "________________Committed________________"
 
