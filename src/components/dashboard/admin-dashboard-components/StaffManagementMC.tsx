@@ -148,7 +148,7 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
                                             <span className="text-[0.85rem] text-gray-700">{staff.name}</span>
                                         </div>
                                     </td>
-                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.user}</td>
+                                    <td className="p-4 text-[0.85rem] text-primary-dark_gray text-center">{staff.user}</td>
                                     <td className="p-4 text-[0.85rem] text-primary-dark_gray">{staff.phone_number}</td>
                                     <td className="p-4 text-[0.85rem] text-primary-dark_gray max-w-xs">
                                         <p className="truncate">{staff.branch.location}</p>

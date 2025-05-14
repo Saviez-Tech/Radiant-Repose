@@ -108,7 +108,7 @@ export default function ProductCard3({ product, onSearch, searchValue }: { produ
         </div>
        
         <div className="flex justify-between items-center overflow-hidden gap-2 pb-1 mt-auto">
-          <span className="text-[9px] md:text-[11px] text-gray-500 bg-gray-100 p-1 rounded">{product.stock_quantity} Pieces left</span>
+          <span className="text-[9px] md:text-[10px] text-gray-500 bg-gray-100 p-1 rounded">{product.stock_quantity} Pieces left</span>
           <div className="max-w-full">
             <BarcodeGenerator barCode={product.barcode!} />
           </div>

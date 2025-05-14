@@ -146,7 +146,7 @@ export default function Products({ products: data }: { products: Product[] }) {
   return (
     <div className="flex flex-col">
       <ServiceHeader from={priceFrom} to={priceTo} setFrom={setPriceFrom} setTo={setPriceTo} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="grid md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 grid-cols-2  gap-4 py-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
         {paginatedProductsData.map((product, index) => (
           <ProductCard key={index} {...product} />
         ))}

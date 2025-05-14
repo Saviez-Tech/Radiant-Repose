@@ -41,7 +41,7 @@ export default function OrderDetailsMC({ orderDetails }:{ orderDetails: OrderLis
                 </div>
             }
 
-            <div className="mt-14 grid grid-cols-2 md:grid-cols-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
+            <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
                 {orderDetails.products?.length > 0 ? (
                     orderDetails.products?.map((v, index) => (
                         <ProductCard4 key={index} {...v} quantity={v.quantity} price_at_sale={v.price_at_sale} />
