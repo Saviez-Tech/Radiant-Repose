@@ -22,7 +22,7 @@ export async function CheckoutHandler(d: CheckoutFormData) {
 
     const data = await response.json();
     if (!response.ok) {
-      let errorMessage =
+      const errorMessage =
         response.status === 401 || response.status === 404
           ? "Invalid credentials. Please try again."
           : "Failed to checkout. Please check your network or try again later.";
