@@ -18,6 +18,7 @@ type FormSelectFieldProps = {
   className?: string;
   disabled?: boolean;
   variant?: "solid" | "transparent";
+  onChange?: (v:string)=>void;
 };
 
 export default function AppSelect({
@@ -30,6 +31,7 @@ export default function AppSelect({
   error,
   className,
   variant = "solid",
+  onChange
 }: FormSelectFieldProps) {
   const selectTriggerStyles = cn(
     "!text-primary-dark_gray py-4 h-12 px-3 focus:ring-stone-400",
@@ -51,7 +53,10 @@ export default function AppSelect({
         control={control}
         render={({ field }) => (
           <Select
-            onValueChange={field.onChange}
+            onValueChange={(v)=>{
+              field.onChange(v)
+              onChange?.(v)
+            }}
             defaultValue={field.value}
             disabled={disabled}
           >

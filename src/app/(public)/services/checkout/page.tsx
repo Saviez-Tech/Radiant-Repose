@@ -1,18 +1,28 @@
-import CustomerDetails from "@/components/cheechout-page/CustomerDetails";
-import DeliveryAddress from "@/components/cheechout-page/DeliveryAddress";
-import OrderSummary from "@/components/cheechout-page/OrderSummary";
 import Payment from "@/components/cheechout-page/Payment";
 import Scalffold from "@/components/custom-utils/Scalffold";
+import CheckoutForm from "./CheckoutForm";
+import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 
-export default function Page() {
+export default async function Page() {
+  const { success, data, errorMessage } = await fetchProductsData();
+
+  if (!success) {
+    return (
+      <div className="p-6 bg-red-50 border border-red-200 rounded-md">
+        <h3 className="text-red-600 font-medium mb-2">
+          Error Loading Products Data
+        </h3>
+        <p className="text-red-500">{errorMessage}</p>
+      </div>
+    );
+  }
+
   return (
     <Scalffold>
       <div className="flex app-container flex-col  py-6">
         <div className="grid md:grid-cols-2 gap-[65px]">
           <div>
-            <OrderSummary subTotal={0} />
-            <CustomerDetails />
-            <DeliveryAddress />
+            <CheckoutForm products={data} />
           </div>
           <div>
             <Payment />

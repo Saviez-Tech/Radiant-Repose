@@ -1,9 +1,11 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { CheckoutFormData } from "@/app/(public)/services/checkout/CheckoutForm";
+import { useCountriesAndStates } from "@/hooks/useCountries";
+import { UseFormReturn } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";
 import AppSelect from "../custom-utils/AppSelect";
 
-interface DeliveryFormData {
+export interface DeliveryFormData {
   street_address: string;
   zip_code: string;
   city: string;
@@ -11,38 +13,29 @@ interface DeliveryFormData {
   country: string;
 }
 
-const countryOptions = [
-  { value: "us", label: "United States" },
-  { value: "ca", label: "Canada" },
-  { value: "uk", label: "United Kingdom" },
-  { value: "au", label: "Australia" },
-];
-
-const stateOptions = [
-  { value: "ny", label: "New York" },
-  { value: "ca", label: "California" },
-  { value: "tx", label: "Texas" },
-  { value: "fl", label: "Florida" },
-];
-
-const cityOptions = [
-  { value: "nyc", label: "New York City" },
-  { value: "la", label: "Los Angeles" },
-  { value: "ch", label: "Chicago" },
-  { value: "ho", label: "Houston" },
-];
-
-export default function DeliveryAddress() {
+export default function DeliveryAddress({
+  form,
+}: {
+  form: UseFormReturn<CheckoutFormData>;
+}) {
   const {
     register,
-    handleSubmit,
     control,
     formState: { errors },
-  } = useForm<DeliveryFormData>();
+  } = form;
 
-  const onSubmit = (data: DeliveryFormData) => {
-    console.log(data);
-  };
+  const { countries, states, setCountry } = useCountriesAndStates();
+
+  const countryOptions = countries.map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
+
+  const stateOptions = states.map((state) => ({
+    value: state.isoCode,
+    label: state.name,
+  }));
+
 
   return (
     <div className="flex flex-col">
@@ -50,7 +43,7 @@ export default function DeliveryAddress() {
         Delivery Address
       </h3>
       <div className="border-t border-gray-400 my-4">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
           <div className="py-4 w-full flex flex-col gap-4">
             <AppInput
               variant="transparent"
@@ -82,6 +75,16 @@ export default function DeliveryAddress() {
                 error={errors.city?.message}
               />
               <AppSelect
+                label="Country"
+                name="country"
+                placeholder="Select Country"
+                options={countryOptions}
+                control={control}
+                error={errors.country?.message}
+                variant="transparent"
+                onChange={setCountry}
+              />
+              <AppSelect
                 label="State"
                 name="state"
                 placeholder="Select State"
@@ -90,18 +93,9 @@ export default function DeliveryAddress() {
                 error={errors.state?.message}
                 variant="transparent"
               />
-              <AppSelect
-                label="Country"
-                name="country"
-                placeholder="Select Country"
-                options={countryOptions}
-                control={control}
-                error={errors.country?.message}
-                variant="transparent"
-              />
             </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
