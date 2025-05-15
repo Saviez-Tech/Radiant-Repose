@@ -1,6 +1,7 @@
 "use server";
 
 import { CheckoutFormData } from "@/app/(public)/services/checkout/CheckoutForm";
+import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 
 export async function CheckoutHandler(d: CheckoutFormData) {
   try {
@@ -26,7 +27,7 @@ export async function CheckoutHandler(d: CheckoutFormData) {
           ? "Invalid credentials. Please try again."
           : "Failed to checkout. Please check your network or try again later.";
       if (response.status === 400) {
-        throw new Error(data.detail);
+        throw new Error(handleApiError(data))
       }
       throw new Error(errorMessage);
     }

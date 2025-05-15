@@ -35,12 +35,12 @@ export default function ProductCard4({ image_url, price_at_sale, quantity, name,
                 <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2 h-8">{description}</p>
             </div>
         
-            <div className="flex justify-between items-center my-2 gap-2">
+            <div className="flex justify-between items-center my-2 gap-2 flex-wrap">
                 <div className="flex items-center">
                     <DollarSquare className="size-6" />
                     <span className={`${dm_mono.className} text-primary-dark_gray text-xs md:text-xs font-light ml-1`}>{formatNaira(price,false,true)}</span>
                 </div>
-                <p className="text-primary-dark_gray text-right text-xs capitalize truncate"><span className="font-semibold">quantity:</span> {quantity}</p>
+                <p className="text-primary-dark_gray text-right text-xs capitalize"><span className="font-semibold">quantity:</span> {quantity}</p>
             </div>
         
             <div className="flex justify-between items-center overflow-hidden gap-2 pb-1">

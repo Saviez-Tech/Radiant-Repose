@@ -19,28 +19,28 @@ export async function addStaffHandler(staffDetails: StaffFormValues) {
     try {
         // Transform the form values to match the expected backend structure
         const transformedData: BackendStaffPayload = {
-        username: staffDetails.emailOrUsername,
-        userfullname: staffDetails.fullName,
-        password: staffDetails.password,
-        phone_number: staffDetails.phoneNumber,
-        address: staffDetails.address,
-        branch_id: parseInt(staffDetails.AssignedLocation)
+            username: staffDetails.emailOrUsername,
+            userfullname: staffDetails.fullName,
+            password: staffDetails.password,
+            phone_number: staffDetails.phoneNumber,
+            address: staffDetails.address,
+            branch_id: parseInt(staffDetails.AssignedLocation)
         }
 
         const auth_token = await getUserSession()
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Token ${auth_token}`
-        },
-        body: JSON.stringify(transformedData)
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${auth_token}`
+            },
+            body: JSON.stringify(transformedData)
         })
 
         if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(handleApiError(errorData))
+            const errorData = await response.json()
+            throw new Error(handleApiError(errorData))
         }
 
         const data = await response.json()
@@ -49,15 +49,15 @@ export async function addStaffHandler(staffDetails: StaffFormValues) {
         revalidatePath('/admin/staff-management')
         
         return { 
-        success: true, 
-        data 
+            success: true, 
+            data 
         }
-    } catch (error) {
+    }catch (error) {
         console.error('Error adding staff:', error)
         return { 
         success: false, 
         error: error instanceof Error ? error.message : 'An unknown error occurred' 
-        }
+     }
     }
 }
 

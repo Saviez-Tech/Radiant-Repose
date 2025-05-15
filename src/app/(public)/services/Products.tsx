@@ -1,11 +1,12 @@
 "use client";
 
 // import { fetchProductAction } from "@/actions/product.server";
-import ProductCard from "@/components/custom-utils/ProductCard";
+// import ProductCard from "@/components/custom-utils/ProductCard";
 import { Pagination } from "@/components/dashboard/Pagination";
 import { useEffect, useMemo, useState } from "react";
 // import toast from "react-hot-toast";
 import ServiceHeader from "./ServiceHeader";
+import ProductCardAlreadyInCart from "@/components/custom-utils/ProductCardAlreadyInCart";
 
 export default function Products({ products: data }: { products: Product[] }) {
   const [selectedFilter] = useState("all");
@@ -17,7 +18,7 @@ export default function Products({ products: data }: { products: Product[] }) {
   const [searchedProducts] = useState<Product[] | null>(
     null
   );
-  const [isSearching, setIsSearching] = useState(false);
+  // const [isSearching, setIsSearching] = useState(false);
   const [activeTab, setActiveTab] = useState("");
   const [priceFrom, setPriceFrom] = useState(0);
   const [priceTo, setPriceTo] = useState<undefined | number>(undefined);
@@ -150,7 +151,8 @@ export default function Products({ products: data }: { products: Product[] }) {
       <ServiceHeader from={priceFrom} to={priceTo} setFrom={setPriceFrom} setTo={setPriceTo} activeTab={activeTab} setActiveTab={setActiveTab} />
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
         {paginatedProductsData.map((product, index) => (
-          <ProductCard key={index} {...product} />
+          <ProductCardAlreadyInCart key={index} product={product} />
+          // <ProductCard key={index} product={product} />
         ))}
       </div>
       <Pagination

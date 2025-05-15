@@ -7,7 +7,7 @@ function PendingOrderCard(props: OrderList){
     
   return (
     <div className={`${inter.className} w-[98%] relative mx-auto hover:scale-[1.02] duration-200 ease-in-out bg-primary-base_color1 drop-shadow-md border border-gray-50 rounded-xl p-4 py-8 md:p-4 pb-14 md:pb-12 shadow-sm text-[#8E95A9]`}>
-      <div className={`${inter.className} flex flex-col gap-3`}>
+      <div className={`${inter.className} flex flex-col gap-4`}>
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-full aspect-square overflow-hidden bg-gray-100">
             <Image
@@ -26,12 +26,36 @@ function PendingOrderCard(props: OrderList){
 
         <div className="flex items-center gap-2">
           <Icon 
-              icon="tdesign:location" 
-              className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
+            icon="tdesign:location" 
+            className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
           />
           <div>
-              <p className="text-sm font-semibold text-[#1C2A53]">Location</p>
-              <p className="text-sm text-[#8E95A9]">{props.street_address}, {props.city}, {props.state}, {props.country}</p>
+            <p className="text-sm font-semibold text-[#1C2A53]">Location</p>
+            <p className="text-sm text-[#8E95A9]">{props.street_address}, {props.city}, {props.state}, {props.country}</p>
+          </div>
+        </div>
+
+        <div className='flex justify-between'>
+          <div className="flex items-center gap-2">
+            <Icon 
+              icon="line-md:email"
+              className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
+            />
+            <div>
+              <p className="text-sm font-semibold text-[#1C2A53]">Zip Code</p>
+              <p className="text-sm text-[#8E95A9]">{props.zip_code}</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Icon 
+              icon="solar:phone-outline" 
+              className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
+            />
+            <div>
+              <p className="text-sm font-semibold text-[#1C2A53]">Phone No.</p>
+              <p className="text-sm text-[#8E95A9]">{props.phone}</p>
+            </div>
           </div>
         </div>
       </div>

@@ -11,7 +11,7 @@ export default function OrderDetailsMC({ orderDetails }:{ orderDetails: OrderLis
         <main>
             {
                 orderDetails.customer &&
-                 <div className={`${inter.className} flex gap-6`}>
+                <div className={`${inter.className} flex gap-8 flex-wrap mt-6`}>
                     <div className="flex items-center gap-2">
                         <div className="w-12 h-12 rounded-full aspect-square overflow-hidden bg-gray-100">
                             <Image
@@ -38,13 +38,37 @@ export default function OrderDetailsMC({ orderDetails }:{ orderDetails: OrderLis
                             <p className="text-sm text-[#8E95A9] mt-1">{orderDetails.customer?.street_address}, {orderDetails.customer?.city}, {orderDetails.customer?.state}, {orderDetails.customer?.country}</p>
                         </div>
                     </div>
+
+                    <div className='flex justify-between gap-8'>
+                        <div className="flex items-center gap-2">
+                            <Icon 
+                            icon="line-md:email"
+                            className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
+                            />
+                            <div>
+                            <p className="text-sm font-semibold text-[#1C2A53]">Zip Code</p>
+                            <p className="text-sm text-[#8E95A9]">{orderDetails.customer.zip_code}</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <Icon 
+                            icon="solar:phone-outline" 
+                            className="w-5 h-5 flex-shrink-0 text-[#8E95A9]"
+                            />
+                            <div>
+                            <p className="text-sm font-semibold text-[#1C2A53]">Phone No.</p>
+                            <p className="text-sm text-[#8E95A9]">{orderDetails.customer.phone}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
 
             <div className="mt-14 grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
                 {orderDetails.products?.length > 0 ? (
                     orderDetails.products?.map((v, index) => (
-                        <ProductCard4 key={index} {...v} quantity={v.quantity} price_at_sale={v.price_at_sale} />
+                        <ProductCard4 key={index} {...v.product} quantity={v.quantity} price_at_sale={v.price_at_sale} />
                     ))
                 ) : (
                     <div className="col-span-full text-center py-8 mt-32 text-gray-500">

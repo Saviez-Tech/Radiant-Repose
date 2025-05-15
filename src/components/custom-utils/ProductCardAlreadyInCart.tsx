@@ -1,37 +1,31 @@
-import { X } from "lucide-react";
 import Image from "next/image";
 import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { decrementItemQuantity, deselectItem, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
-export default function ProductCard({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
-  const dispatch = useAppDispatch();
+export default function ProductCardAlreadyInCart({ product }: { product: Product }) {
+
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
-  
-  const handleCardClick = () => {
-    if (isOutOfStock) return; 
-    if (isSelected){
-      dispatch(deselectItem(product.barcode))
-    }else{
-      dispatch(selectItem(product))
-    }
-  }
+
 
   return (
     <div  
-      tabIndex={isOutOfStock ? -1 : 0}
-      onClick={handleCardClick}
       className={`
-        ${isSelected ? "ring-2 ring-red-500" : ""} 
         ${isOutOfStock ? "opacity-60 grayscale" : "cursor-pointer"} 
         relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
       `}
     >
       <div className="relative">
         <div className="relative h-40 flex-shrink-0">
+          <p className="absolute bottom-4 opacity-90 left-1 z-10 rounded-3xl flex items-center gap-1 p-2 bg-primary-base_color1 text-[10px] md:text-xs font-medium text-brand-primary-light_black">
+            <strong>4.5</strong>
+            <span className="flex items-center">
+              <Icon icon="material-symbols-light:star-rounded" width="11" height="11" className="-translate-y-[1px] text-primary-yellow" />
+              <span className="text-[9px] md:text-[10px] text-primary-dark_ash_slate">(25+)</span>
+            </span>
+          </p>
           {
             product.image_url?.length ?
             <Image
@@ -45,18 +39,6 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
             <Skeleton className="w-full h-full" />
           }
         </div>
-       
-        {!isOutOfStock && (
-          <button 
-            onClick={(e) => {
-              e.stopPropagation();
-              dispatch(removeScannedItem(product.barcode!))
-            }} 
-            className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
-          >
-            <X size={16} />
-          </button>
-        )}
 
         {isOutOfStock && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30">
@@ -77,8 +59,8 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
             <div className="flex gap-1">
               <button 
                 onClick={(e) => {
-                  e.stopPropagation();
-                  dispatch(incrementItemQuantity(product.barcode!))
+                  e.stopPropagation()
+                //   add increment here
                 }} 
                 className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center"
               >
@@ -86,8 +68,8 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
               </button>
               <button 
                 onClick={(e) => {
-                  e.stopPropagation();
-                  dispatch(decrementItemQuantity(product.barcode!));
+                  e.stopPropagation()
+                //   add decrement here
                 }} 
                 className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1"
               >
@@ -97,19 +79,19 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
           )}
         </div>
        
-        <div className="flex justify-between items-center my-2">
+        <div className="flex justify-between gap-1 flex-wrap items-center my-2">
           <div className="flex items-center">
             <DollarSquare />
             <span className={`${dm_mono.className} text-primary-dark_gray text-xs font-light ml-1`}>{formatNaira(product.price,false,true)}</span>
           </div>
-          <span className="text-primary-dark_gray text-xs"><span className="font-medium">Quantity:</span> {product.quantity}</span>
+          <span className="text-primary-dark_gray text-[10px] md:text-xs"><span className="font-medium">Quantity:</span> 2</span>
         </div>
        
-        <div className="flex justify-between items-center mt-1">
-          <span className={`text-xs bg-gray-100 p-1 rounded ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
+        <div className="flex justify-between items-center gap-2 mt-1">
+          <span className={`text-[9px] md:text-xs bg-gray-100 p-1 rounded ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
             {isOutOfStock ? "Out of stock" : `${product.stock_quantity} Pieces left`}
           </span>
-          <span className={`${dm_mono.className} text-primary-dark_gray text-sm font-medium`}>₦{Number(product.price) * product.quantity}</span>
+          <span className={`${dm_mono.className} text-primary-dark_gray text-xs font-medium`}>₦{Number(product.price) * 2}</span>
         </div>
       </div>
     </div>

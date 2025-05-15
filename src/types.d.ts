@@ -145,7 +145,7 @@ interface OrderList {
   country: string;
 }
 
-interface OrderListDetailProducts extends ScannedProduct { price_at_sale: string, quantity: number }
+interface OrderListDetailProducts { price_at_sale: string, quantity: number, product: ScannedProduct }
 
 interface OrderListDetail {
     id: string,

@@ -2,7 +2,7 @@
 import { CheckoutFormData } from "@/app/(public)/services/checkout/CheckoutForm";
 import { UseFormReturn } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";
-import Payment from "./Payment";
+// import Payment from "./Payment";
 
 export default function CustomerDetails({
   form,
@@ -11,8 +11,6 @@ export default function CustomerDetails({
 }) {
     const {
     register,
-    control,
-    formState: { errors },
   } = form;
 
   return (

@@ -46,6 +46,5 @@ export default async function PendingOrderServerWrapper() {
         </div>
       )
     }
-    
     return <PendingOrderMC data={data || []} />
   }

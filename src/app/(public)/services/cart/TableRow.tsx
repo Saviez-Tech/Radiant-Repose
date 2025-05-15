@@ -3,7 +3,6 @@
 import { useCart } from "@/hooks/useCart";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import Image from "next/image";
-import { useState } from "react";
 import { LuMinus, LuPlus } from "react-icons/lu";
 
 export default function TableRow({

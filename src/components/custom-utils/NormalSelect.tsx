@@ -8,8 +8,8 @@ import {
 export default function NormalSelect({ options, value }: { options: { value: string; label: string }[], value?: string }) {
     return (
         <Select value={value}>
-      <SelectTrigger className=" w-[432px] border border-primary-dark_slate focus:ring-primary-darkRed focus:ring-2 focus:ring-offset-0 focus:ring-offset-transparent bg-[#F8F8F8] h-12 px-3 py-4 text-primary-dark_gray">
-        <SelectValue placeholder="Select a timezone" />
+      <SelectTrigger className="max-w-[90%] w-[432px] border border-primary-dark_slate focus:ring-primary-darkRed focus:ring-2 focus:ring-offset-0 focus:ring-offset-transparent bg-[#F8F8F8] h-12 px-3 py-4 text-primary-dark_gray">
+        <SelectValue placeholder="Select a store branch" />
       </SelectTrigger >
       <SelectContent >
           {options.map((option) => (

@@ -8,7 +8,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../../ui/dropdown-menu";
 import { LayoutDashboard } from "lucide-react";
 import Logo from "@/components/layout-components/Logo";
-import { Analytics, BagIcon, ReceiptIcon } from "@/components/Svg";
+import { BagIcon, ReceiptIcon } from "@/components/Svg";
 import { productManagementSections } from "@/components-data/productsManagementSectionsLinkData";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
@@ -98,12 +98,12 @@ export default function AdminMobileSidebar() {
                         <div>
                             <Logo src={LogoSrc} className="w-32" />
                             <ul className="flex mt-7 flex-col gap-4">
+                                {/* // { href: "/admin/staff-analysis", label: "Staff Analysis", icon: <Analytics className={`${isActiveRoute("/admin/staff-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                                // { href: "/admin/payment-tracking", label: "Payment Tracking", icon: <Icon icon="uil:wallet" width="24" height="24" className={`${isActiveRoute("/admin/payment-tracking") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> }, */}
                                 {[
                                     { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/admin/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
                                     { href: "/admin/product-management", label: "Product Management", icon: <BagIcon className={`${isActiveRoute("/admin/product-management") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                                     { href: "/admin/staff-management", label: "Staff Management", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-management") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
-                                    { href: "/admin/staff-analysis", label: "Staff Analysis", icon: <Analytics className={`${isActiveRoute("/admin/staff-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
-                                    { href: "/admin/payment-tracking", label: "Payment Tracking", icon: <Icon icon="uil:wallet" width="24" height="24" className={`${isActiveRoute("/admin/payment-tracking") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                                     { href: "/admin/pending-order", label: "Pending Order", icon:<ReceiptIcon className={`${isActiveRoute("/admin/pending-order") ? "text-primary-base_color1" : "text-primary-dark_slate" }`} /> },
                                 ].map(({ href, label, icon }) => {
                                     const isActive = isActiveRoute(href)
