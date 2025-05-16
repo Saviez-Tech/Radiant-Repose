@@ -6,6 +6,7 @@ import ProductTypeFilter from "./ProductTypeFilter";
 import ServicePopOver from "./ServicePopOver";
 import { useAppSelector } from "@/lib/redux/hooks";
 import { storeLocation } from "@/components-data/store-locations";
+import { useCart } from "@/hooks/useCart";
 
 export default function ServiceHeader({
   activeTab,
@@ -22,13 +23,22 @@ export default function ServiceHeader({
   setFrom: (value: number) => void;
   setTo?: (value?: number) => void;
 }) {
+  const branches = useAppSelector((store) => store.storeBranches?.branches);
 
+  const locationOptions = branches?.length
+    ? branches.map((v) => {
+        return { label: `${v.name}, ${v.location}`, value: v.id.toString() };
+      })
+    : [
+        {
+          label: storeLocation[0].location,
+          value: storeLocation[0].branch.toString(),
+        },
+      ];
 
-  const branches = useAppSelector(store => store.storeBranches?.branches)
-
-  const locationOptions = branches?.length ? branches.map(v => {
-    return { label: `${v.name}, ${v.location}`, value: v.id.toString()}
-  }) : [{label: storeLocation[0].location, value: storeLocation[0].branch.toString()}]
+  const { items } = useCart(); // Get cart items
+  const cartCount = items.length;
+  // alert(JSON.stringify(items))
 
   return (
     <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
@@ -58,10 +68,13 @@ export default function ServiceHeader({
           />
           <p className="text-primary-dark_slate">|</p>
           <Link
-            href="/services/cart"
-            className="flex items-center gap-2 bg-[#EFE1D2] font-semibold text-lg rounded-md "
+          
+            href={cartCount > 0 ? "/services/cart":"#"}
+            className={`relative flex items-center gap-2 font-semibold text-lg rounded-md ${
+              cartCount > 0 ?  "bg-primary-darkRed" : "bg-[#EFE1D2]"
+            }`}
           >
-            <span>
+            <span className="relative">
               <svg
                 width="48"
                 height="48"
@@ -69,12 +82,22 @@ export default function ServiceHeader({
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <rect width="48" height="48" rx="5" fill="#EFE1D2" />
+                <rect
+                  width="48"
+                  height="48"
+                  rx="5"
+                  fill={cartCount > 0 ? "#A80000" : "#EFE1D2"}
+                />
                 <path
                   d="M30 30C28.89 30 28 30.89 28 32C28 32.5304 28.2107 33.0391 28.5858 33.4142C28.9609 33.7893 29.4696 34 30 34C30.5304 34 31.0391 33.7893 31.4142 33.4142C31.7893 33.0391 32 32.5304 32 32C32 31.4696 31.7893 30.9609 31.4142 30.5858C31.0391 30.2107 30.5304 30 30 30ZM14 14V16H16L19.6 23.59L18.24 26.04C18.09 26.32 18 26.65 18 27C18 27.5304 18.2107 28.0391 18.5858 28.4142C18.9609 28.7893 19.4696 29 20 29H32V27H20.42C20.3537 27 20.2901 26.9737 20.2432 26.9268C20.1963 26.8799 20.17 26.8163 20.17 26.75C20.17 26.7 20.18 26.66 20.2 26.63L21.1 25H28.55C29.3 25 29.96 24.58 30.3 23.97L33.88 17.5C33.95 17.34 34 17.17 34 17C34 16.7348 33.8946 16.4804 33.7071 16.2929C33.5196 16.1054 33.2652 16 33 16H18.21L17.27 14M20 30C18.89 30 18 30.89 18 32C18 32.5304 18.2107 33.0391 18.5858 33.4142C18.9609 33.7893 19.4696 34 20 34C20.5304 34 21.0391 33.7893 21.4142 33.4142C21.7893 33.0391 22 32.5304 22 32C22 31.4696 21.7893 30.9609 21.4142 30.5858C21.0391 30.2107 20.5304 30 20 30Z"
                   fill="#ABA299"
                 />
               </svg>
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-primary-red text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center shadow">
+                  {cartCount}
+                </span>
+              )}
             </span>
           </Link>
         </div>

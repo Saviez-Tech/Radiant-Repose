@@ -7,6 +7,8 @@ import { useEffect, useMemo, useState } from "react";
 // import toast from "react-hot-toast";
 import ServiceHeader from "./ServiceHeader";
 import ProductCardAlreadyInCart from "@/components/custom-utils/ProductCardAlreadyInCart";
+import { useCart } from "@/hooks/useCart";
+import ProductCard from "@/components/custom-utils/ProductCard";
 
 export default function Products({ products: data }: { products: Product[] }) {
   const [selectedFilter] = useState("all");
@@ -31,42 +33,6 @@ export default function Products({ products: data }: { products: Product[] }) {
   }, [data, activeTab])
   console.log({data});
   
-
-  // const handleSearch = async (value: string) => {
-  //   // Update search value first
-  //   setSearchValue(value);
-
-  //   // Clear search results if search is empty
-  //   if (!value.trim()) {
-  //     setSearchedProducts(null);
-  //     return;
-  //   }
-
-  //   // Show loading indicator
-  //   setIsSearching(true);
-
-  //   try {
-  //     // Search with the current value
-  //     const { errorMessage, products } = await fetchProductAction(value);
-
-  //     // Update state based on current search value
-  //     if (products && products.length > 0) {
-  //       setSearchedProducts(products);
-  //     } else {
-  //       setSearchedProducts([]);
-  //     }
-
-  //     if (errorMessage) {
-  //       setSearchedProducts([]);
-  //     }
-  //   } catch (error) {
-  //     toast.error("Search error:" + error);
-  //     setSearchedProducts([]);
-  //   } finally {
-  //     // Always hide the loading indicator
-  //     setIsSearching(false);
-  //   }
-  // };
 
   // Determine which products to display based on search state
   const productsToFilter = useMemo(() => {
@@ -145,23 +111,45 @@ export default function Products({ products: data }: { products: Product[] }) {
     setRowsPerPage(rows);
     setCurrentPage(1);
   };
+ 
+const { cartItems } = useCart(data);
 
-  return (
-    <div className="flex flex-col">
-      <ServiceHeader from={priceFrom} to={priceTo} setFrom={setPriceFrom} setTo={setPriceTo} activeTab={activeTab} setActiveTab={setActiveTab} />
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
-        {paginatedProductsData.map((product, index) => (
-          <ProductCardAlreadyInCart key={index} product={product} />
-          // <ProductCard key={index} product={product} />
-        ))}
-      </div>
-      <Pagination
-        totalItems={filteredProducts.length}
-        currentPage={currentPage}
-        rowsPerPage={rowsPerPage}
-        onPageChange={handlePageChange}
-        onRowsPerPageChange={handleRowsPerPageChange}
-      />
+return (
+  <div className="flex flex-col">
+    <ServiceHeader 
+      from={priceFrom} 
+      to={priceTo} 
+      setFrom={setPriceFrom} 
+      setTo={setPriceTo} 
+      activeTab={activeTab} 
+      setActiveTab={setActiveTab} 
+    />
+    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
+      {paginatedProductsData.map((product) => {
+        if (!product || !product.id) return null; // Skip invalid products
+
+        const isInCart = cartItems.some(item => item?.id === product.id); 
+        
+        return isInCart ? (
+          <ProductCardAlreadyInCart 
+            key={`in-cart-${product.id}`} 
+            product={product} 
+          />
+        ) : (
+          <ProductCard 
+            key={`regular-${product.id}`} 
+            product={product} 
+          />
+        );
+      })}
     </div>
-  );
+    <Pagination
+      totalItems={filteredProducts.length}
+      currentPage={currentPage}
+      rowsPerPage={rowsPerPage}
+      onPageChange={handlePageChange}
+      onRowsPerPageChange={handleRowsPerPageChange}
+    />
+  </div>
+)
 }

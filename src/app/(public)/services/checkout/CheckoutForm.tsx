@@ -1,13 +1,13 @@
 "use client";
 
+import { CheckoutHandler } from "@/actions/services.server";
 import CustomerDetails from "@/components/cheechout-page/CustomerDetails";
 import DeliveryAddress from "@/components/cheechout-page/DeliveryAddress";
-import OrderSummary from "../cart/OrderSummary";
-import { useForm } from "react-hook-form";
-import { CheckoutHandler } from "@/actions/services.server";
 import { useCart } from "@/hooks/useCart";
-import toast from "react-hot-toast";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import OrderSummary from "../cart/OrderSummary";
 
 export type CheckoutFormData = {
   full_name: string;
@@ -23,7 +23,7 @@ export type CheckoutFormData = {
 
 export default function CheckoutForm({ products }: { products: Product[] }) {
   const formControl = useForm<CheckoutFormData>();
-  const { items, totalPrice, cartItems } = useCart(products);
+  const { items, totalPrice} = useCart(products);
 
   const onSubmit = async (data: CheckoutFormData) => {
     try {
@@ -54,10 +54,7 @@ export default function CheckoutForm({ products }: { products: Product[] }) {
   return (
     <>
        <OrderSummary
-              subTotal={cartItems.reduce(
-                (acc, item) => acc + item!.price * items.find(i => i.product === item!.id)!.quantity,
-                0
-              )}
+              subTotal={totalPrice}
             />
       <form onSubmit={formControl.handleSubmit(onSubmit)}>
         <CustomerDetails form={formControl} />
