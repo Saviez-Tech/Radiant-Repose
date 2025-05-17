@@ -105,11 +105,12 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
       body: formData,
     })
 
+    const data = await response.json()
+
     if (!response.ok) {
-      console.log(response)
+      throw new Error(handleApiError(data))
     }
 
-    const data = await response.json()
     
     revalidatePath('/admin/product-management/luxury-collection')
     
