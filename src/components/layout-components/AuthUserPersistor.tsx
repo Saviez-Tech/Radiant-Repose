@@ -48,10 +48,10 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
 
 
     useEffect(() => {
-        if (!branches.length){
+        if (!pathName.match("/auth") && !branches.length){
             fetchBranchesClientHandler()
         }
-        
+
         if (pathName !== "/admin/staff-management/edit-staff" && staffToEdit){
             dispatch(clearStaffToEdit())
         }
