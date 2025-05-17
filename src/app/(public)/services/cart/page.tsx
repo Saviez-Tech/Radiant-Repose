@@ -5,7 +5,7 @@ import Table from "./Table";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 
 export default async function Page() {
-    const { success, data, errorMessage } = await fetchProductsData()
+    const { success, data } = await fetchProductsData()
         
         if (!success) {
           return (
