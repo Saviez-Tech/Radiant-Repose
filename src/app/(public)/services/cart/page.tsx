@@ -11,7 +11,7 @@ export default async function Page() {
           return (
             <div className="p-6 bg-red-50 border border-red-200 rounded-md">
               <h3 className="text-red-600 font-medium mb-2">Error Loading Products Data</h3>
-              <p className="text-red-500">{errorMessage}</p>
+              {/* <p className="text-red-500">{errorMessage}</p> */}
             </div>
           )
         }

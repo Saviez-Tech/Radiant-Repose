@@ -4,10 +4,15 @@ import { dm_mono } from "@/fonts";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useCart } from "@/hooks/useCart";
 
 export default function ProductCardAlreadyInCart({ product }: { product: Product }) {
 
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
+    const { incrementItem, decrementItem} = useCart();
+
+      const increment = () => incrementItem(product.id);
+  const decrement = () => decrementItem(product.id);
 
 
   return (
@@ -58,19 +63,13 @@ export default function ProductCardAlreadyInCart({ product }: { product: Product
           {!isOutOfStock && (
             <div className="flex gap-1">
               <button 
-                onClick={(e) => {
-                  e.stopPropagation()
-                //   add increment here
-                }} 
+                onClick={increment}
                 className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center"
               >
                 <span className="text-xs">+</span>
               </button>
               <button 
-                onClick={(e) => {
-                  e.stopPropagation()
-                //   add decrement here
-                }} 
+                onClick={decrement}
                 className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1"
               >
                 <span className="text-xs">-</span>

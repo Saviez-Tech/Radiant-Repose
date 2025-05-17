@@ -7,15 +7,7 @@ import { DollarSquare } from "../Svg";
 import { useCart } from "@/hooks/useCart";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
-export default function ProductCard({
-  category,
-  image_url,
-  name,
-  price,
-  description,
-  stock_quantity,
-  id,
-}: Product) {
+export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   return (
     <div className="cursor-pointer relative w-full min-h-[325px] h-fit pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none flex flex-col">
@@ -28,24 +20,25 @@ export default function ProductCard({
             <span className="text-[9px] md:text-[10px] text-primary-dark_ash_slate">(25+)</span>
           </span>
         </p>
-        {image_url?.length ? (
-          <Image
-            src={image_url}
-            width={300}
-            height={300}
-            alt={name}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <Skeleton className="w-full h-full" />
-        )}
+        {
+                   product.image_url?.length ?
+                   <Image
+                     src={product.image_url}
+                     width={300}
+                     height={300}
+                     alt={product.name}
+                     className="w-full h-full object-cover"
+                   />
+                   :
+                   <Skeleton className="w-full h-full" />
+                 }
       </div>
 
       <div className="p-2 flex flex-col justify-between flex-grow">
         <div className="flex-grow overflow-hidden">
-          <h3 className="text-xs md:text-sm font-semibold truncate">{name}</h3>
+          <h3 className="text-xs md:text-sm font-semibold truncate">{product.name}</h3>
           <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2 max-h-8">
-            {description}
+            {product.description}
           </p>
         </div>
 
@@ -55,22 +48,22 @@ export default function ProductCard({
             <span
               className={`${dm_mono.className} text-primary-dark_gray text-xs md:text-xs font-light ml-1`}
             >
-              {formatNaira(price, false, true)}
+              {formatNaira(product.price, false, true)}
             </span>
           </div>
           <p className="text-primary-dark_gray text-right text-[11px] md:text-xs capitalize truncate">
             <span className="font-semibold">Category:</span>{" "}
-            {category?.split("-").join(" ")}
+            {product.category?.split("-").join(" ")}
           </p>
         </div>
 
         <div className="flex justify-between items-center overflow-hidden gap-2 pb-1">
           <span className="text-[9px] md:text-xs text-gray-500 bg-gray-100 p-1 rounded">
-            {stock_quantity} Pieces left
+            {product.stock_quantity} Pieces left
           </span>
           <div className="flex flex-col gap-2 items-center">
             <button
-              onClick={() => addItem({ product: id, quantity: 1 })}
+              onClick={() => addItem({ product: product.id, quantity: 1 })}
               className="bg-primary-light_amber text-white rounded-3xl py-2 px-3 text-[8px] md:text-xs truncate"
             >
               Add to Cart

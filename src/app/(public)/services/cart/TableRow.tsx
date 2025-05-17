@@ -49,9 +49,9 @@ export default function TableRow({
           <div className="flex items-center gap-4">
             <button
               onClick={decrement}
-              className="w-6 h-6 flex items-center justify-center border border-[#FF0000] text-[#FF0000] rounded-full hover:bg-red-100"
+              className="md:w-6 md:h-6 w-5 h-5 flex items-center justify-center border border-[#FF0000] text-[#FF0000] rounded-full hover:bg-red-100"
             >
-              <span className="text-lg font-bold">
+              <span className="md:text-lg text-base font-bold">
                 <LuMinus />
               </span>
             </button>
@@ -62,9 +62,9 @@ export default function TableRow({
 
             <button
               onClick={increment}
-              className="w-6 h-6 flex items-center justify-center bg-[#FF0000] text-white rounded-full shadow-md hover:bg-red-600"
+              className="md:w-6 md:h-6 w-5 h-5 flex items-center justify-center bg-[#FF0000] text-white rounded-full shadow-md hover:bg-red-600"
             >
-              <span className="text-lg font-bold">
+              <span className="md:text-lg text-base font-bold">
                 <LuPlus />
               </span>
             </button>
@@ -85,7 +85,7 @@ export default function TableRow({
         <div>
           <button
             onClick={() => removeItem(id)}
-           className="text-red-500 rounded-3xl py-2 px-3 md:text-sm text-xs truncate">
+           className="text-red-500 rounded-3xl py-2 px-3 md:text-sm text-[11px] truncate">
             Remove item
           </button>
         </div>
