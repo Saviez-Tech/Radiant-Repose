@@ -7,7 +7,7 @@ import Appointment from "./Appointment";
 export default function Page() {
   return (
     <Scaffold>
-      <div className="flex flex-col py-16">
+      <div className="flex flex-col pt-5 lg:pt-16">
         <Hero />
         <About />
         <Services />

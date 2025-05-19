@@ -34,7 +34,7 @@ function CounterItem({ value, suffix, label }: { value: number; suffix?: string;
         {displayValue}
         {suffix}
       </span>
-      <span className="text-primary-deepBlack md:text-lg text-sm">{label}</span>
+      <span className="text-primary-deepBlack md:text-lg text-sm text-center">{label}</span>
     </div>
   );
 }

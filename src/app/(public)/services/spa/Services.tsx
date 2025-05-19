@@ -26,7 +26,7 @@ export default function Services() {
         </div>
         <Link
           href="#"
-          className="text-primary-darkRed md:text-xl text-base flex items-center gap-2 justify-center mx-auto w-fit"
+          className="text-primary-darkRed mb-4 text-base flex items-center gap-2 justify-center mx-auto w-fit"
           >
           See Full Services
           <LuArrowRight />

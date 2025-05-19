@@ -20,18 +20,19 @@ export default function ProductCard({ product }: { product: Product }) {
             <span className="text-[9px] md:text-[10px] text-primary-dark_ash_slate">(25+)</span>
           </span>
         </p>
+        
         {
-                   product.image_url?.length ?
-                   <Image
-                     src={product.image_url}
-                     width={300}
-                     height={300}
-                     alt={product.name}
-                     className="w-full h-full object-cover"
-                   />
-                   :
-                   <Skeleton className="w-full h-full" />
-                 }
+          product.image_url?.length ?
+          <Image
+            src={product.image_url}
+            width={300}
+            height={300}
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
+          :
+          <Skeleton className="w-full h-full" />
+        }
       </div>
 
       <div className="p-2 flex flex-col justify-between flex-grow">

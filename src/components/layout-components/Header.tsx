@@ -13,7 +13,6 @@ import {
 import { useEffect } from "react";
 import { Menu } from "lucide-react";
 import UseWindowSize from "../custom-utils/UseWindowSize";
-import { mobileNavItems } from "@/components-data/mobile-nav-data";
 import MobileSidebarNav from "../nav/MobileSideNav";
 import {
   DropdownMenu,
@@ -21,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { navItems } from "@/components-data/nav-data";
 
 export default function Header() {
   const pathName = usePathname();
@@ -44,24 +44,6 @@ export default function Header() {
     }
   }, [pathName]);
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about-us" },
-    {
-      name: "Our Services",
-      path: "/services",
-      hasDropdown: true,
-      dropdownItems: [
-        { name: "Luxury", path: "/services/luxury" },
-        { name: "Spa", path: "/services/spa" },
-        { name: "Pharmacy", path: "/services/pharmacy" },
-      ],
-    },
-    { name: "Location", path: "/location" },
-    { name: "FAQs", path: "/faqs" },
-    { name: "Blog", path: "/blog" },
-    { name: "Contact Us", path: "/contact-us" },
-  ];
 
   return (
     !pathName.startsWith("/auth") &&
@@ -124,7 +106,7 @@ export default function Header() {
             </ul>
           </nav>
 
-          <MobileSidebarNav navItems={mobileNavItems} />
+          <MobileSidebarNav navItems={navItems} />
           <button
             className="lg:hidden"
             onClick={handleToggleMobileNav}

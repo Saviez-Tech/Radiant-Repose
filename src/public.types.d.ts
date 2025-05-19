@@ -12,3 +12,13 @@ interface BlogPost {
   }
   category: string;
 }
+
+
+type SpaService = {
+  id: number,
+  name: string,
+  description: string,
+  price: number,
+  type: string,
+  image: string
+}

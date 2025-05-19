@@ -10,9 +10,10 @@ import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { closeMobileNav } from "@/lib/redux/slices/mobileNavSlice";
 import { motion, AnimatePresence } from "framer-motion";
-import { mobileNavItems } from "@/components-data/mobile-nav-data";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { navItems as NavItems } from "@/components-data/nav-data"
 
-export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileNavItems }) {
+export default function MobileSidebarNav({ navItems }:{ navItems: typeof NavItems }) {
     const pathName = usePathname()
     const dispatch = useAppDispatch()
     const { isOpen } = useAppSelector(store => store.mobileNav)
@@ -23,6 +24,13 @@ export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileN
             setShowModal(true)
         }
     }, [isOpen])
+
+
+    useEffect(() => {
+        if (isOpen) {
+            dispatch(closeMobileNav())
+        }
+    }, [pathName])
 
     const handleClose = () => {
         dispatch(closeMobileNav())
@@ -90,25 +98,52 @@ export default function MobileSidebarNav({ navItems }:{ navItems: typeof mobileN
                             
                             <ul className="flex mt-8 flex-col gap-2">
                                 {navItems.map((item) => (
-                                    item.hasDropdown ? (
-                                        <li 
-                                            key={item.name}
-                                            className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : ""} relative flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors`}
-                                        >
-                                            <Link href={item.path}>{item.name}</Link>
-                                            <Icon icon="cuida:caret-down-outline" width="20" height="20" />
-                                        </li>
-                                    ) : (
-                                        <li key={item.name} className="block">
+                                    <li key={item.name} className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : ""} relative flex items-center justify-between w-full px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors`}>
+                                        {item.hasDropdown ? (
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger asChild>
+                                                    <div
+                                                    className={`${
+                                                        pathName === item.path ||
+                                                        pathName.startsWith(item.path + "/")
+                                                        ? "text-primary-deepBlack font-medium"
+                                                        : "text-primary-dark_slate"
+                                                    } hover:text-gray-700 transition-colors flex items-center cursor-pointer`}
+                                                    >
+                                                    {item.name}
+                                                    <Icon
+                                                        icon="cuida:caret-down-outline"
+                                                        width="20"
+                                                        height="20"
+                                                    />
+                                                    </div>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent className="w-48 z-[9999]" align="start">
+                                                    {item.dropdownItems?.map((dropdownItem) => (
+                                                    <DropdownMenuItem key={dropdownItem.path} asChild>
+                                                        <Link
+                                                            href={dropdownItem.path}
+                                                            className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack" : "text-primary-dark_slate"} flex items-center px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors w-full`}
+                                                        >
+                                                        {dropdownItem.name}
+                                                        </Link>
+                                                    </DropdownMenuItem>
+                                                    ))}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        ) : (
                                             <Link
                                                 href={item.path}
-                                                className={`${pathName === item.path ? "bg-gray-100 text-primary-deepBlack font-medium" : "text-primary-dark_slate"} flex items-center px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors w-full`}
-                                                onClick={() => isOpen && dispatch(closeMobileNav())}
+                                                className={`${
+                                                    pathName === item.path
+                                                    ? "text-primary-deepBlack font-medium"
+                                                    : "text-primary-dark_slate"
+                                                } hover:text-primary-text_stone_color transition-colors flex items-center`}
                                             >
-                                                {item.name}
+                                            {item.name}
                                             </Link>
-                                        </li>
-                                    )
+                                        )}
+                                    </li>
                                 ))}
                             </ul>
                         </div>
