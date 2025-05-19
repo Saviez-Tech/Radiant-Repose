@@ -1,5 +1,5 @@
 "use client";
-import { CheckoutFormData } from "@/app/(public)/services/checkout/CheckoutForm";
+import { CheckoutFormData } from "@/app/(public)/services/luxury/checkout/CheckoutForm";
 import { useCountriesAndStates } from "@/hooks/useCountries";
 import { UseFormReturn } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";

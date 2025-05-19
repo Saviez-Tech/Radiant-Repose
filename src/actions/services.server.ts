@@ -1,6 +1,6 @@
 "use server";
 
-import { CheckoutFormData } from "@/app/(public)/services/checkout/CheckoutForm";
+import { CheckoutFormData } from "@/app/(public)/services/luxury/checkout/CheckoutForm";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 
 export async function CheckoutHandler(d: CheckoutFormData) {
