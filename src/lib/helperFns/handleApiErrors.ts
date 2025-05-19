@@ -41,8 +41,7 @@ export function handleApiError(errorData: ApiErrorResponse): string {
      
       if (typeof fieldErrors === 'string') {
         // Format the field name for better readability
-        const formattedFieldName = formatFieldName(firstErrorField);
-        return `${formattedFieldName}: ${fieldErrors}`;
+        return `Error: ${fieldErrors}`;
       }
     }
   }

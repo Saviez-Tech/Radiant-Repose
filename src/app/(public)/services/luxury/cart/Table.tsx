@@ -5,7 +5,7 @@ import TableRow from "./TableRow";
 import OrderSummary from "./OrderSummary";
 
 export default function Table({ products: data }: { products: Product[] }) {
-  const { cartItems, totalPrice, items } = useCart(data);
+  const { cartItems, totalPrice } = useCart(data);
 
   // Add loading state if cartItems isn't ready
   if (!cartItems) return <div>Loading cart...</div>;
