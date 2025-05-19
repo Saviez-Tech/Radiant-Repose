@@ -81,7 +81,7 @@ export default function Header() {
                           <DropdownMenuItem key={dropdownItem.path} asChild>
                             <Link
                               href={dropdownItem.path}
-                              className="w-full hover:text-primary-text_stone_color"
+                              className="w-full hover:text-primary-text_stone_color border-b border-b-gray-200/70 py-2"
                             >
                               {dropdownItem.name}
                             </Link>
