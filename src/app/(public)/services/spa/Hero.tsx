@@ -16,7 +16,7 @@ export default function Hero() {
         </div>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
-            href="/services/spa"
+            href="/services/spa/listing"
             className="btn btn-yellow !px-5 !py-3 max-md:w-fit flex items-center gap-2"
           >
             Explore Spa Services

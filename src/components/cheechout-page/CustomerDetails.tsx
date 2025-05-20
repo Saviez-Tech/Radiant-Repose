@@ -18,7 +18,7 @@ export default function CustomerDetails({
       <h3 className="text-lg font-semibold text-primary-deepBlack">
         Customer Details
       </h3>
-      <div className="border-t border-gray-400 my-4">
+      <form className="border-t border-gray-400 my-4">
         <div className="py-4 w-full flex flex-col gap-4">
           <AppInput
             variant="transparent"
@@ -49,7 +49,7 @@ export default function CustomerDetails({
             />
           </div>
         </div>
-      </div>
+      </form>
     </div>
   );
 }

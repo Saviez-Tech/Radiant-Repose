@@ -2,9 +2,10 @@ import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import createAxiosInstance from "@/lib/axios";
 import BookAppointmentMC from "./BookAppointmentMC";
+import SpaListingMC from "./SpaListingMC";
 
 
- async function fetchServicesData() {
+  async function fetchServicesData() {
   try {
     const axiosInstance = await createAxiosInstance()
     const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/services/`)
@@ -35,7 +36,7 @@ import BookAppointmentMC from "./BookAppointmentMC";
   }
 }
 
-export default async function BookAppointmentServerWrapper() {
+export default async function SpaListingServerWrapper() {
   const { success, data, errorMessage } = await fetchServicesData()
 
   console.log("data",data,success)
@@ -49,5 +50,5 @@ export default async function BookAppointmentServerWrapper() {
     )
   }
   
-  return <BookAppointmentMC data={data || []} />
+  return <SpaListingMC data={data || []} />
 }
