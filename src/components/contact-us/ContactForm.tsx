@@ -58,7 +58,6 @@ export default function ContactForm() {
   } = useForm<ContactFormData>()
 
   const onSubmit = (data: ContactFormData) => {
-    console.log(data)
     reset()
   }
 

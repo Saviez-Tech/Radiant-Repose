@@ -20,7 +20,6 @@ export async function CheckoutHandler(d: PaymentFormValues) {
         }),
       }
     );
-    console.log(response.status);
 
     const data = await response.json();
     if (!response.ok) {
