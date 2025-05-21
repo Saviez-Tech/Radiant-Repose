@@ -1,13 +1,13 @@
 "use client";
-import { CheckoutFormData } from "@/app/(public)/services/luxury/checkout/CheckoutForm";
 import { UseFormReturn } from "react-hook-form";
 import AppInput from "../custom-utils/AppInput";
+import { PaymentFormValues } from "@/schemas/paymentFormSchema";
 // import Payment from "./Payment";
 
 export default function CustomerDetails({
   form,
 }: {
-  form: UseFormReturn<CheckoutFormData>;
+  form: UseFormReturn<PaymentFormValues>;
 }) {
     const {
     register,
@@ -18,7 +18,7 @@ export default function CustomerDetails({
       <h3 className="text-lg font-semibold text-primary-deepBlack">
         Customer Details
       </h3>
-      <form className="border-t border-gray-400 my-4">
+      <div className="border-t border-gray-400 my-4">
         <div className="py-4 w-full flex flex-col gap-4">
           <AppInput
             variant="transparent"
@@ -49,7 +49,7 @@ export default function CustomerDetails({
             />
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "Designing spa checkout page"
+git commit -m "Inplemented payment gateway and designed and implemented functionalities for the spa cart page"
 
 ECHO "________________Committed________________"
 

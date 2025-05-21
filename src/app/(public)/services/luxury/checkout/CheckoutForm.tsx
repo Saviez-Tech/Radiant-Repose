@@ -8,34 +8,34 @@ import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import OrderSummary from "../cart/OrderSummary";
+import { PaymentFormValues } from "@/schemas/paymentFormSchema";
 
-export type CheckoutFormData = {
-  full_name: string;
-  email: string;
-  phone: string;
-  street_address: string;
-  zip_code: string;
-  city: string;
-  state: string;
-  country: string;
-  order: string;
-};
+// export type CheckoutFormData = {
+//   full_name: string;
+//   email: string;
+//   phone: string;
+//   street_address: string;
+//   zip_code: string;
+//   city: string;
+//   state: string;
+//   country: string;
+//   order: string;
+// };
 
 export default function CheckoutForm({ products }: { products: Product[] }) {
-  const formControl = useForm<CheckoutFormData>();
+  const formControl = useForm<PaymentFormValues>();
   const { items, totalPrice} = useCart(products);
 
-  const onSubmit = async (data: CheckoutFormData) => {
+  const onSubmit = async (data: PaymentFormValues) => {
     try {
       const result = await CheckoutHandler(data);
 
-      if (!result.success) {
+      if (result && !result.success) {
         toast.error(result.error || "Chekout failed");
         return;
       }
 
       toast.success("Checkout successful");
-    //   TODO: after succussful checkout, redirect to payment gateway
     } catch (err) {
       console.error("Login error in component:", err);
 

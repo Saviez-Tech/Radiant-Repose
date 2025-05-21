@@ -1,32 +1,29 @@
 "use client";
 
-import { UseFormReturn } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import AppInput from "@/components/custom-utils/AppInput";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import AppSelect from "@/components/custom-utils/AppSelect";
+import SameDayBooking from "./SameDayBooking";
+import DifferentDaysBooking from "./DifferentDaysBooking";
+import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
+import { useSpaCart } from "@/hooks/useSpaCart";
 
-export type CheckoutFormData = {
-  full_name: string;
-  phone: string;
-  date: string;
-  time: string;
-  note: string;
-  scheduling: "same-day" | "different-days";
-};
 
-export default function CheckoutForm({
-  form,
-}: {
-  form: UseFormReturn<CheckoutFormData>;
-}) {
+export default function CheckoutForm() {
+  const {items} = useSpaCart()
+  const form = useForm<SpaCheckoutFormValues>({
+    defaultValues: {
+      scheduling: "same-day",
+    }
+  });
+
+
   const { register, setValue, watch } = form;
   const scheduling = watch("scheduling");
 
   return (
-    <section className="flex flex-col gap-6">
-      {/* Personal Details */}
+    <form className="flex flex-col gap-6 md:max-w-md md:mx-w-[500px] md:p-4">
       <div className="flex flex-col gap-2 border-b border-gray-300 pb-5">
         <h1 className="md:text-4xl text-2xl font-semibold">Booking Details</h1>
         <p className="md:text-xl text-lg font-semibold">Personal Details</p>
@@ -43,7 +40,6 @@ export default function CheckoutForm({
         ))}
       </div>
 
-      {/* Scheduling Section */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2 border-b border-gray-300 pb-5">
           <h2 className="md:text-xl text-lg font-semibold">
@@ -58,51 +54,37 @@ export default function CheckoutForm({
               setValue("scheduling", val)
             }
           >
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="same-day" id="same-day" />
-              <Label htmlFor="same-day" className="text-sm font-medium">
-                Same Day
-              </Label>
-            </div>
-            <div className="flex items-center gap-2">
-              <RadioGroupItem value="different-days" id="different-days" />
-              <Label htmlFor="different-days" className="text-sm font-medium">
-                Different Days
-              </Label>
-            </div>
+            {options.map(({ value, label }) => (
+              <div key={value} className="flex items-center gap-2">
+                <RadioGroupItem value={value} id={value} />
+                <Label
+                  htmlFor={value}
+                  className={`text-sm font-medium ${
+                    scheduling === value
+                      ? "text-primary-deepBlack"
+                      : "text-primary-dark_gray/50"
+                  }`}
+                >
+                  {label}
+                </Label>
+              </div>
+            ))}
           </RadioGroup>
         </div>
 
-        {/* Date & Time */}
-        <div className="grid md:grid-cols-2 gap-4">
-          <AppSelect
-            name="date"
-            label="Date"
-            placeholder="Select Preferred Date"
-            variant="transparent"
-            options={[]}
-            control={form.control}
-          />
-          <AppSelect
-            name="time"
-            label="Time"
-            placeholder="Select Preferred Time"
-            variant="transparent"
-            options={[]}
-            control={form.control}
-          />
-        </div>
-
-        <AppInput
-          variant="transparent"
-          name="note"
-          placeholder="Enter your note"
-          register={register}
-          textarea
-          label="Enter Special Requests/Note here"
-        />
+        {scheduling === "same-day" ? (
+          <SameDayBooking form={form} />
+        ) : (
+          <>
+          {
+            items.map((item) => (
+              <DifferentDaysBooking key={item.id} form={form} item={item} />
+            ))
+          }
+          </>
+        )}
       </div>
-    </section>
+    </form>
   );
 }
 
@@ -117,4 +99,9 @@ const formFields = [
     label: "Phone Number",
     placeholder: "Enter your phone number",
   },
+];
+
+const options = [
+  { value: "same-day", label: "Same Day" },
+  { value: "different-days", label: "Different Days" },
 ];

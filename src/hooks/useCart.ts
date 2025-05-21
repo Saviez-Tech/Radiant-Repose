@@ -34,6 +34,7 @@ export function useCart(products: Product[] = []) {
     addItem: (item: CartItem) => dispatch(addItem(item)),
     removeItem: (productId: string) => dispatch(removeItem(productId)),
     incrementItem: (productId: string) => dispatch(incrementItem(productId)),
+    // decrementItem: (productId: string) => dispatch(decrementItem(productId)),
     decrementItem: (productId: string) => dispatch(decrementItem(productId)),
     clearCart: () => dispatch(clearCart()),
     totalPrice,

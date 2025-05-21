@@ -8,10 +8,11 @@ import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { Divider } from "@mui/material";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { removeService, selectService } from "@/lib/redux/slices/spaCartSlice";
+import { useSpaCart } from "@/hooks/useSpaCart";
 
 export default function SpaServiceCard({ service, isSelected }: { service: SpaService, isSelected: boolean }) {
   
-    const dispatch = useAppDispatch()   
+   const {removeItem, addItem} = useSpaCart() 
 
     return (
         <div  
@@ -45,7 +46,7 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
             <button 
                 onClick={(e) => {
                     e.stopPropagation()
-                    dispatch(removeService(service.id))
+                    removeItem(service.id.toString())
                 }} 
                 className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
             >
@@ -76,7 +77,7 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
                 isSelected ?
                 <i className="text-xs text-primary-yellow mx-auto mt-3 block w-fit">Service Selected</i>
                 :
-                <button onClick={() => dispatch(selectService(service))} className="text-primary-darkRed mt-3 flex items-center text-xs">
+                <button onClick={() => addItem(service)} className="text-primary-darkRed mt-3 flex items-center text-xs">
                     <i>Select Service</i>
                     <Icon icon="formkit:arrowright" width="16" height="9" />
                 </button>

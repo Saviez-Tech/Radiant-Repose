@@ -1,9 +1,11 @@
 // store/index.ts
-import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './cartSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import cartReducer from "./cartSlice";
+import spaCartReducer from "./spaCartSlice";
 
 export const store = configureStore({
   reducer: {
+    spaCarts: spaCartReducer,
     cart: cartReducer,
   },
 });

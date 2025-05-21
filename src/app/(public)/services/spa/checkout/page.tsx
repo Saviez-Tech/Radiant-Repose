@@ -1,19 +1,17 @@
-"use client";
-
 import Scaffold2 from "@/components/custom-utils/Scalffold";
 import CheckoutForm from "./CheckoutForm";
-import { useForm } from "react-hook-form";
-import { CheckoutFormData } from "./CheckoutForm"; 
 import SelectedService from "./SelectedService";
 
 export default function Page() {
-  const form = useForm<CheckoutFormData>();
-
   return (
     <Scaffold2>
-      <main className="grid grid-cols-1 md:grid-cols-2 gap-8 py-12 app-container items-center">
-        <CheckoutForm form={form} />
-        <SelectedService />
+      <main className="flex flex-col md:flex-row justify-center items-start gap-12 py-12 app-container">
+        <div className="w-full md:max-w-md lg:max-w-lg">
+          <CheckoutForm />
+        </div>
+        <div className="w-full md:max-w-md lg:max-w-lg">
+          <SelectedService />
+        </div>
       </main>
     </Scaffold2>
   );

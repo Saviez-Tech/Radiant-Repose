@@ -1,40 +1,33 @@
-export default function SelectedServicesCard() {
+import { formatNaira } from "@/lib/helperFns/formatNumber";
+
+
+export default function SelectedServicesCard({ services }: { services: SpaService }) {
   return (
-    <div className="flex items-start justify-between gap-4 p-4 rounded-xl border border-gray-200 shadow-sm">
-      <div className="relative w-[100px] aspect-[120/80] rounded-2xl overflow-hidden">
-        <img
-          src="/images/christin-hume.png"
-          alt=""
-          className="w-full h-full object-cover"
-        />
-        {/* <div className="absolute bottom-2 left-2 bg-white text-primary-red text-xs font-medium px-2 py-0.5 rounded-full shadow">
-          30 Minutes
-        </div> */}
-      </div>
+    <div className="flex flex-col divide-y">
+        <div className="flex items-start gap-3 py-4">
+          <div className="relative w-[60px] h-[60px] flex-shrink-0 rounded-2xl overflow-hidden shadow-md">
+            <img src={services.image || "/placeholder.svg"} alt={services.name} className="w-full h-full object-cover" />
+            {/* <div className="absolute bottom-1 left-1 bg-white text-[10px] font-medium px-1.5 py-0.5 rounded-full shadow">
+              30 mins
+            </div> */}
+          </div>
 
-      <div className="flex-1 flex flex-col justify-center gap-1">
-        <p className="text-base font-semibold text-primary-deepBlack">
-          Hot Stone Therapy
-        </p>
-        <p className="text-sm text-primary-dark_ash_slate leading-snug">
-          A deeply relaxing massage that eases tension, improves circulation and
-          revitalizes the body.
-        </p>
-      </div>
+          <div className="flex-1 flex flex-col justify-center">
+            <p className="md:text-sm text-xs font-semibold text-black">{services.name}</p>
+            <p className="md:text-xs text-[10px] text-gray-600 leading-tight mt-0.5">
+              {services.description}
+            </p>
+          </div>
 
-      <div className="flex flex-col items-end justify-between text-right gap-1">
-        <div>
-          <p className="text-sm font-semibold text-primary-grayDark">Total</p>
-          <p className="text-lg font-semibold text-primary-darkRed">
-            N65,200
-          </p>
+          <div className="flex flex-col items-end justify-between text-right">
+            <div>
+              <p className="md:text-xs text-[10px] text-gray-600">Total</p>
+              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
+            </div>
+            <button className="md:text-xs text-[10px] text-primary-red italic mt-1">Remove Item</button>
+          </div>
         </div>
-        <button className="text-sm text-primary-red italic mt-2 hover:underline">
-          Remove Item
-        </button>
-      </div>
+      
     </div>
-  );
+  )
 }
-
-

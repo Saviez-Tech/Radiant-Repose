@@ -8,6 +8,7 @@ import ErrorPara from "./ErrorPara";
 import type { ProductFormValues } from "@/schemas/addProduct.schema";
 import type { StaffFormValues } from "@/schemas/addStaff.schema";
 import type { PaymentFormValues } from "@/schemas/paymentFormSchema";
+import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 
 type FormInputFieldProps = {
   label: string;
@@ -15,6 +16,7 @@ type FormInputFieldProps = {
     | keyof StaffFormValues
     | keyof ProductFormValues
     | keyof PaymentFormValues
+    | keyof SpaCheckoutFormValues
     | string;
   placeholder: string;
   register: any;

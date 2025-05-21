@@ -2,8 +2,10 @@
 
 import { CheckoutFormData } from "@/app/(public)/services/luxury/checkout/CheckoutForm";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
+import { redirect } from "next/navigation";
 
 export async function CheckoutHandler(d: CheckoutFormData) {
+  let paymentUrl: string = "";
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/ecommerce/make-order`,
@@ -27,19 +29,26 @@ export async function CheckoutHandler(d: CheckoutFormData) {
           ? "Invalid credentials. Please try again."
           : "Failed to checkout. Please check your network or try again later.";
       if (response.status === 400) {
-        throw new Error(handleApiError(data))
+        throw new Error(handleApiError(data));
+        return;
       }
       throw new Error(errorMessage);
     }
-
+    
     // console.log({ data });
 
+    if (data.payment && data.payment?.data?.authorization_url){
+      paymentUrl = data.payment?.data?.authorization_url;
+      throw new Error()
+      return;
+    }
     return {
       success: true,
       data,
     };
   } catch (error) {
     console.error("Login error:", error);
+    if(paymentUrl) redirect(paymentUrl);
     return {
       error:
         error instanceof Error

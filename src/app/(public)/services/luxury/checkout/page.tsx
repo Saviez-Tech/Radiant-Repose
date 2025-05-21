@@ -2,6 +2,8 @@ import Payment from "@/components/cheechout-page/Payment";
 import Scalffold from "@/components/custom-utils/Scalffold";
 import CheckoutForm from "./CheckoutForm";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
+import { Suspense } from "react";
+import CheckoutSuccessfulModal from "@/components/modals/CheckoutSuccessfulModal";
 
 export default async function Page() {
   const { success, data, errorMessage } = await fetchProductsData();
@@ -29,6 +31,9 @@ export default async function Page() {
           </div>
         </div>
       </div>
+      <Suspense>
+        <CheckoutSuccessfulModal />
+      </Suspense>
     </Scalffold>
   );
 }
