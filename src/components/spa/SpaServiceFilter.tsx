@@ -40,7 +40,7 @@ export function SpaServiceFilter({ services, onFilterChange }: ServiceFilterProp
   }
 
   return (
-    <div className="max-w-full w-fit mb-6">
+    <div className="max-w-full w-fit">
       <Select value={selectedType} onValueChange={handleFilterChange}>
         <SelectTrigger className="bg-primary-base_color1 text-primary-deepBlack">
           <SelectValue placeholder="All Spa Services" />

@@ -1,7 +1,6 @@
 import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import createAxiosInstance from "@/lib/axios";
-import BookAppointmentMC from "./BookAppointmentMC";
 import SpaListingMC from "./SpaListingMC";
 
 
@@ -38,12 +37,10 @@ import SpaListingMC from "./SpaListingMC";
 
 export default async function SpaListingServerWrapper() {
   const { success, data, errorMessage } = await fetchServicesData()
-
-  console.log("data",data,success)
   
   if (!success) {
     return (
-      <div className="p-6 bg-red-50 border border-red-200 rounded-md">
+      <div className="glob-px !py-40 bg-red-50 border border-red-200 rounded-md">
         <h3 className="text-red-600 font-medium mb-2">Error Loading Services</h3>
         <p className="text-red-500">{errorMessage}</p>
       </div>

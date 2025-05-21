@@ -7,21 +7,18 @@ import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { Divider } from "@mui/material";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { removeService, selectService } from "@/lib/redux/slices/spaCartSlice";
 
 export default function SpaServiceCard({ service, isSelected }: { service: SpaService, isSelected: boolean }) {
   
-    const dispatch = useAppDispatch()  
-    const handleCardClick = () => {
-        
-    }
+    const dispatch = useAppDispatch()   
 
     return (
         <div  
             tabIndex={0}
-            onClick={handleCardClick}
             className={`
-            ${isSelected ? "ring-2 ring-red-500" : ""} 
-            relative max-w-60 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
+            ${isSelected ? "ring-2 ring-red-500" : "ring-0"} 
+            relative max-w-60 pb-2 bg-white cursor-pointer rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
         `}
         >
             
@@ -48,6 +45,7 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
             <button 
                 onClick={(e) => {
                     e.stopPropagation()
+                    dispatch(removeService(service.id))
                 }} 
                 className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
             >
@@ -57,13 +55,13 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
         
         <div className="py-2 px-3">
             <div className="flex justify-between items-center">
-                <div className="flex-grow overflow-hidden">
+                <div className="flex-grow">
                     <h3 className="text-xs md:text-sm font-semibold capitalize">{service.name}</h3>
-                    <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2 h-8">{service.description}</p>
+                    <p className="text-primary-dark_gray/50 text-[9px] md:text-[11px] line-clamp-2">{service.description}</p>
                 </div>
             </div>
         
-            <div className="flex justify-between gap-4 items-center text-primary-dark_gray my-3">
+            <div className="flex justify-between flex-wrap gap-4 items-center text-primary-dark_gray my-3">
                 <div className="flex items-center">
                     <DollarSquare className="size-5" />
                     <span className={`${dm_mono.className} text-sm font-light ml-1`}>{formatNaira(service.price,false,true)}</span>
@@ -75,10 +73,10 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
             <Divider />
             
             {
-                !isSelected ?
+                isSelected ?
                 <i className="text-xs text-primary-yellow mx-auto mt-3 block w-fit">Service Selected</i>
                 :
-                <button className="text-primary-darkRed mt-3 flex items-center text-xs">
+                <button onClick={() => dispatch(selectService(service))} className="text-primary-darkRed mt-3 flex items-center text-xs">
                     <i>Select Service</i>
                     <Icon icon="formkit:arrowright" width="16" height="9" />
                 </button>
