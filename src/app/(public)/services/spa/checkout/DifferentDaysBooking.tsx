@@ -1,6 +1,6 @@
 import AppInput from "@/components/custom-utils/AppInput";
-import { UseFormReturn } from "react-hook-form";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
+import { UseFormReturn } from "react-hook-form";
 
 export default function DifferentDaysBooking({
   form,
@@ -9,7 +9,7 @@ export default function DifferentDaysBooking({
   form: UseFormReturn<SpaCheckoutFormValues>;
   item: SpaService;
 }) {
-  const { register, setValue, watch } = form;
+  const { register, setValue, watch, formState: { errors, isSubmitting } } = form;
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -35,6 +35,7 @@ export default function DifferentDaysBooking({
           placeholder="Select a date"
           variant="transparent"
           register={register}
+          error={errors.date?.message}
         />
         <AppInput
           label="Time"
@@ -43,6 +44,7 @@ export default function DifferentDaysBooking({
           variant="transparent"
           placeholder="Select a time"
           register={register}
+          error={errors.time?.message}
         />
       </div>
     </div>

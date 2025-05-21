@@ -1,10 +1,10 @@
 "use server";
 
-import { CheckoutFormData } from "@/app/(public)/services/luxury/checkout/CheckoutForm";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
+import { PaymentFormValues } from "@/schemas/paymentFormSchema";
 import { redirect } from "next/navigation";
 
-export async function CheckoutHandler(d: CheckoutFormData) {
+export async function CheckoutHandler(d: PaymentFormValues) {
   let paymentUrl: string = "";
   try {
     const response = await fetch(

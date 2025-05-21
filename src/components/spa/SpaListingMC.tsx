@@ -79,7 +79,7 @@ export default function SpaListingMC({ data }: { data: SpaService[] }) {
               router.push("/services/spa/checkout");
             }}
             disabled={!selectedServices.length}
-            className="bg-primary-red text-primary-base_color1 disabled:bg-primary-dark_gray/10 disabled:text-primary-dark_gray/25 rounded-3xl py-3 px-10 text-sm"
+            className="bg-primary-red text-primary-base_color1 disabled:bg-primary-dark_gray/10 disabled:text-primary-dark_gray/25 rounded-3xl py-3 px-10 text-sm mb-3"
           >
             Proceed
           </button>

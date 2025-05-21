@@ -8,6 +8,7 @@ import SameDayBooking from "./SameDayBooking";
 import DifferentDaysBooking from "./DifferentDaysBooking";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 import { useSpaCart } from "@/hooks/useSpaCart";
+import { error } from "console";
 
 
 export default function CheckoutForm() {
@@ -19,7 +20,7 @@ export default function CheckoutForm() {
   });
 
 
-  const { register, setValue, watch } = form;
+  const { register, setValue, watch,  formState: { errors, isSubmitting }} = form;
   const scheduling = watch("scheduling");
 
   return (
@@ -36,6 +37,8 @@ export default function CheckoutForm() {
             {...field}
             register={register}
             variant="transparent"
+            error={errors[field.name as keyof typeof errors]?.message}
+
           />
         ))}
       </div>

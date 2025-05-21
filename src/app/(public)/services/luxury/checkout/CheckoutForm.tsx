@@ -10,17 +10,6 @@ import toast from "react-hot-toast";
 import OrderSummary from "../cart/OrderSummary";
 import { PaymentFormValues } from "@/schemas/paymentFormSchema";
 
-// export type CheckoutFormData = {
-//   full_name: string;
-//   email: string;
-//   phone: string;
-//   street_address: string;
-//   zip_code: string;
-//   city: string;
-//   state: string;
-//   country: string;
-//   order: string;
-// };
 
 export default function CheckoutForm({ products }: { products: Product[] }) {
   const formControl = useForm<PaymentFormValues>();
