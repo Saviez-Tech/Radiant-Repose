@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import AppInput from "@/components/custom-utils/AppInput";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
@@ -8,7 +8,6 @@ import SameDayBooking from "./SameDayBooking";
 import DifferentDaysBooking from "./DifferentDaysBooking";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 import { useSpaCart } from "@/hooks/useSpaCart";
-import { error } from "console";
 
 
 export default function CheckoutForm({form}:{form: UseFormReturn<SpaCheckoutFormValues>;}) {

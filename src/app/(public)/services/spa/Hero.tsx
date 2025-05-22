@@ -23,7 +23,7 @@ export default function Hero() {
             <LuArrowRight />
           </Link>
           <Link
-            href="spa/appointments/book-appointment"
+            href="/services/spa/listing/"
             className="btn btn-gradient !px-5 !py-3 max-md:w-fit flex items-center gap-2"
           >
             Book an Appointment

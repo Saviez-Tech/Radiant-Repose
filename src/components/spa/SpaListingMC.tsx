@@ -1,18 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SpaServiceFilter } from "./SpaServiceFilter";
 import SpaServiceCard from "./SpaServiceCard";
 import Scalffold from "../custom-utils/Scalffold";
-import { usePathname, useRouter } from "next/navigation";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import {
-  addService,
-  clearCart,
-  clearSelections,
-  selectSelectedServices,
-} from "@/lib/redux/slices/spaCartSlice";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useSpaCart } from "@/hooks/useSpaCart";
 
@@ -26,9 +18,8 @@ type SpaService = {
 };
 
 export default function SpaListingMC({ data }: { data: SpaService[] }) {
-  const pathName = usePathname();
   const [filteredServices, setFilteredServices] = useState<SpaService[]>(data);
-  const { items: selectedServices, addItem, removeItem } = useSpaCart();
+  const { items: selectedServices, addItem } = useSpaCart()
 
   const handleFilterChange = (newFilteredServices: SpaService[]) => {
     setFilteredServices(newFilteredServices);

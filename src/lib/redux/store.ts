@@ -6,7 +6,6 @@ import mobileNavReducer from "./slices/mobileNavSlice"
 import editStaffReducer from "./slices/editStaffSlice"
 import editProductReducer from "./slices/editProductSlice"
 import storeBranchesReducer from "./slices/storeBranchesSlice"
-import spaCartReducer from "./slices/spaCartSlice"
 
 export const makeStore = () => {
   return configureStore({
@@ -18,7 +17,6 @@ export const makeStore = () => {
       mobileNav: mobileNavReducer,
       editStaff: editStaffReducer,
       editProduct: editProductReducer,
-      spaCart: spaCartReducer,
     }
   })
 }

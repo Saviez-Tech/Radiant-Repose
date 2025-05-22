@@ -2,12 +2,10 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { DollarSquare, TimeIcon } from "../Svg";
 import { dm_mono } from "@/fonts";
-import { useAppDispatch } from "@/lib/redux/hooks";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { Divider } from "@mui/material";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { removeService, selectService } from "@/lib/redux/slices/spaCartSlice";
 import { useSpaCart } from "@/hooks/useSpaCart";
 
 export default function SpaServiceCard({ service, isSelected }: { service: SpaService, isSelected: boolean }) {
@@ -19,7 +17,7 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
             tabIndex={0}
             className={`
             ${isSelected ? "ring-2 ring-red-500" : "ring-0"} 
-            relative max-w-60 pb-2 bg-white cursor-pointer rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
+            relative max-w-60 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
         `}
         >
             

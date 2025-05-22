@@ -249,3 +249,40 @@ export async function addSaleHandler(saleDetails: SalePayload){
     }
   }
 }
+
+
+
+export async function fulFillSaleHandler(orderID: string){
+  try {
+    const auth_token = await getUserSession()
+
+    if (!orderID) {
+      return {
+        success: false,
+        error: "Invalid Order ID"
+      }
+    }
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/ecommerce/buyers/${orderID}/fulfill-orders/`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${auth_token}`,
+      }
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(handleApiError(errorData))
+    }
+
+    return {
+      success: true
+    }
+  } catch (error) {
+    console.error("Error clearing sale", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unknown error occurred"
+    }
+  }
+}
