@@ -17,7 +17,7 @@ export default function SpaServiceCard({ service, isSelected }: { service: SpaSe
             tabIndex={0}
             className={`
             ${isSelected ? "ring-2 ring-red-500" : "ring-0"} 
-            relative max-w-60 pb-2 bg-white cursor-pointer rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
+            relative max-w-60 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
         `}
         >
             

@@ -51,6 +51,7 @@ function DestructiveActionPrompt({ open, description, onConfirm, onCancel, proce
 
           <button
             onClick={onCancel}
+            disabled={processing} 
             className={`${inter.className} w-full bg-white text-primary-darkRed font-medium text-sm py-3 rounded-lg border border-primary-darkRed transition hover:bg-gray-100`}
           >
             Cancel

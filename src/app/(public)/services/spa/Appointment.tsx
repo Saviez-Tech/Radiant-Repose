@@ -17,7 +17,7 @@ export default function Appointment() {
           </p>
         </div>
         <Link
-          href="services/spa/appointments/book-appointment"
+          href="/services/spa/listing/"
           className="btn-gradient flex items-center w-fit gap-2 !rounded-md !px-5 !py-3 text-white mt-4"
         >
           Book an Appointment <LuArrowRight />

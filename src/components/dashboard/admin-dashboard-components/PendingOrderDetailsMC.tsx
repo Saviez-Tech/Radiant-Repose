@@ -7,6 +7,7 @@ import ProductCard4 from "../ProductCard4";
 import ClearTransactionBtn from "@/components/buttons/ClearTransactionBtn";
 
 export default function OrderDetailsMC({ orderDetails }:{ orderDetails: OrderListDetail }){
+
     return (
         <main>
             {
@@ -80,7 +81,7 @@ export default function OrderDetailsMC({ orderDetails }:{ orderDetails: OrderLis
             {
                 orderDetails.products?.length ?
                 <div className="my-10">
-                    <ClearTransactionBtn />
+                    <ClearTransactionBtn orderID={orderDetails.customer.id} />
                 </div>
                 :
                 null
