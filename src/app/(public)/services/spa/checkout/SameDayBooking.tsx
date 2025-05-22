@@ -7,25 +7,27 @@ export default function SameDayBooking({
 }: {
   form: UseFormReturn<SpaCheckoutFormValues>;
 }) {
-  const { register, setValue, watch } = form;
+  const { register, setValue, watch, formState: { errors, isSubmitting } } = form;
   return (
     <div className="flex flex-col gap-4">
       <div className="grid md:grid-cols-2 gap-4">
         <AppInput
           label="Date"
-          name="birthDate"
+          name="date"
           type="date"
           placeholder="Select a date"
           variant="transparent"
           register={register}
+          error={errors.date?.message}
         />
         <AppInput
           label="Time"
-          name="appointmentTime"
+          name="time"
           type="time"
           variant="transparent"
           placeholder="Select a time"
           register={register}
+          error={errors.time?.message}
         />
       </div>
 
@@ -36,6 +38,7 @@ export default function SameDayBooking({
         register={register}
         textarea
         label="Enter Special Requests/Note here"
+        error={errors.note?.message}
       />
     </div>
   );

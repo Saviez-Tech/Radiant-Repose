@@ -1,17 +1,14 @@
 "use client";
 
+import { dm_mono } from "@/fonts";
+import { useSpaCart } from "@/hooks/useSpaCart";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import SelectedServicesCard from "./SelectedServicesCard";
-import { dm_mono } from "@/fonts";
-import { useSelector } from "react-redux";
-import { selectSelectedServices } from "@/lib/redux/slices/spaCartSlice";
-import { useSpaCart } from "@/hooks/useSpaCart";
 
 export default function SelectedService() {
    const {items:selectedServices, totalPrice} = useSpaCart()
    const discount = 10_000;
-  //  console.log({selectedServices});
-   
+
   
   return (
     <section className=" md:p-4">
