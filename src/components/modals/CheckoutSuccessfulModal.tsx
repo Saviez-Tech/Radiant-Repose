@@ -23,7 +23,7 @@ export default function CheckoutSuccessfulModal() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>Open</DialogTrigger>
+      {/* <DialogTrigger>Open</DialogTrigger> */}
       <DialogContent className="flex flex-col items-center text-center justify-center">
         <Image width={96} height={96} src="/images/confetti.png" alt="" />
         <p className="md:text-xl text-lg font-bold">Payment Successful!</p>

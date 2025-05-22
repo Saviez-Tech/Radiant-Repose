@@ -1,14 +1,19 @@
 "use client";
 
-import { dm_mono } from "@/fonts";
-import { useSpaCart } from "@/hooks/useSpaCart";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
-import SelectedServicesCard from "./SelectedServicesCard";
+import SelectedServicesCard from "../../../../../components/spa/SelectedServicesCard";
+import { dm_mono } from "@/fonts";
+import { useSelector } from "react-redux";
+import { selectSelectedServices } from "@/lib/redux/slices/spaCartSlice";
+import { useSpaCart } from "@/hooks/useSpaCart";
+import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
+import { UseFormReturn } from "react-hook-form";
+import SpaCheckoutSuccessfulModal from "@/components/modals/SpaCheckoutSuccefullModal";
 
-export default function SelectedService() {
+export default function SelectedService({form}:{form: UseFormReturn<SpaCheckoutFormValues>;}) {
    const {items:selectedServices, totalPrice} = useSpaCart()
    const discount = 10_000;
-
+   const {formState: {isSubmitting}} = form
   
   return (
     <section className=" md:p-4">
@@ -48,49 +53,22 @@ export default function SelectedService() {
             Payment will be made in-store after service
           </p>
         </div>
-        <button className="w-full py-3 mt-4 rounded-md transition-colors bg-primary-red text-white">
-          Submit Booking
+        <SpaCheckoutSuccessfulModal
+        
+        dates={[
+          ["12/06/2025", "12:30PM"],
+          ["12/06/2025", "12:30PM"],
+          ["12/06/2025", "12:30PM"],
+          ["12/06/2025", "12:30PM"],
+        ]}
+        >
+          <button disabled={isSubmitting} className="w-full py-3 mt-4 rounded-md transition-colors bg-primary-red text-white">
+        {isSubmitting ? "Loading" : "  Submit Booking"}
         </button>
+        </SpaCheckoutSuccessfulModal>
       </div>
     </section>
   );
 }
 
-export const dummyServices: SpaService[] = [
-  {
-    id: 1,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 2,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 3,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 4,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-];
+

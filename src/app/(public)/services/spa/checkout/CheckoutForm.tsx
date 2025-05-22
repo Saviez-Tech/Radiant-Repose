@@ -11,20 +11,16 @@ import { useSpaCart } from "@/hooks/useSpaCart";
 import { error } from "console";
 
 
-export default function CheckoutForm() {
+export default function CheckoutForm({form}:{form: UseFormReturn<SpaCheckoutFormValues>;}) {
   const {items} = useSpaCart()
-  const form = useForm<SpaCheckoutFormValues>({
-    defaultValues: {
-      scheduling: "same-day",
-    }
-  });
+ 
 
 
-  const { register, setValue, watch,  formState: { errors, isSubmitting }} = form;
+   const { register, setValue, watch,  formState: { errors, }} = form;
   const scheduling = watch("scheduling");
 
   return (
-    <form className="flex flex-col gap-6 md:max-w-md md:mx-w-[500px] md:p-4">
+    <div className="flex flex-col gap-6 md:max-w-md md:mx-w-[500px] md:p-4">
       <div className="flex flex-col gap-2 border-b border-gray-300 pb-5">
         <h1 className="md:text-4xl text-2xl font-semibold">Booking Details</h1>
         <p className="md:text-xl text-lg font-semibold">Personal Details</p>
@@ -87,7 +83,7 @@ export default function CheckoutForm() {
           </>
         )}
       </div>
-    </form>
+    </div>
   );
 }
 
