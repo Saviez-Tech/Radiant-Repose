@@ -2,12 +2,10 @@ import { X } from "lucide-react";
 import Image from "next/image";
 import { DollarSquare, TimeIcon } from "../Svg";
 import { dm_mono } from "@/fonts";
-import { useAppDispatch } from "@/lib/redux/hooks";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { Divider } from "@mui/material";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { removeService, selectService } from "@/lib/redux/slices/spaCartSlice";
 import { useSpaCart } from "@/hooks/useSpaCart";
 
 export default function SpaServiceCard({ service, isSelected }: { service: SpaService, isSelected: boolean }) {
