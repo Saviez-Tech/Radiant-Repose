@@ -2,6 +2,7 @@
 
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { PaymentFormValues } from "@/schemas/paymentFormSchema";
+import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 import { redirect } from "next/navigation";
 
 export async function CheckoutHandler(d: PaymentFormValues) {
@@ -33,12 +34,12 @@ export async function CheckoutHandler(d: PaymentFormValues) {
       }
       throw new Error(errorMessage);
     }
-    
+
     // console.log({ data });
 
-    if (data.payment && data.payment?.data?.authorization_url){
+    if (data.payment && data.payment?.data?.authorization_url) {
       paymentUrl = data.payment?.data?.authorization_url;
-      throw new Error()
+      throw new Error();
       return;
     }
     return {
@@ -47,7 +48,76 @@ export async function CheckoutHandler(d: PaymentFormValues) {
     };
   } catch (error) {
     console.error("Login error:", error);
-    if(paymentUrl) redirect(paymentUrl);
+    if (paymentUrl) redirect(paymentUrl);
+    return {
+      error:
+        error instanceof Error
+          ? error.message
+          : "Failed to login. Please check your network or try again later.",
+      success: false,
+    };
+  }
+}
+
+export async function SpaCheckoutHandler(d: SpaCheckoutFormValues) {
+  const isOneDay = d.scheduling === "same-day";
+  const services: string[] = JSON.parse(d.services);
+  const filteredServices = services.map((s) => {
+    if (isOneDay) return s;
+    return { service_id: s, time: `${d[s + "-date"]}T${d[s + "-time"]}:00Z` };
+  });
+  const dates = isOneDay ? [[d.date, d.time]] : services.map((s) => [d[s + "-date"], d[s + "-time"]]) as [string, string][];
+
+  const payload = {
+    customer_name: d.full_name,
+    customer_phone: d.phone,
+    use_same_time_for_all: isOneDay,
+    services: filteredServices,
+    time: isOneDay ? `${d.date}T${d.time}:00Z` : undefined,
+  };
+
+  console.log(payload);
+  // return;
+
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/worker/create-booking/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      const errorMessage =
+        response.status === 401 || response.status === 404
+          ? "Invalid details. Please try again."
+          : "Failed to checkout. Please check your network or try again later.";
+      if (response.status === 400) {
+        throw new Error(handleApiError(data));
+        return;
+      }
+      throw new Error(errorMessage);
+    }
+
+    // console.log({ data });
+
+    if (data.customer_name && data.customer_phone) {
+      return {
+        success: true,
+        data: {
+          ...data,
+          url: `/services/spa/booking-summary/${data.id}`,
+          dates
+        },
+      };
+    }
+  } catch (error) {
+    console.error("Login error:", error);
     return {
       error:
         error instanceof Error

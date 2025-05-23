@@ -51,19 +51,10 @@ export default function SelectedService({form}:{form: UseFormReturn<SpaCheckoutF
             Payment will be made in-store after service
           </p>
         </div>
-        <SpaCheckoutSuccessfulModal
         
-        dates={[
-          ["12/06/2025", "12:30PM"],
-          ["12/06/2025", "12:30PM"],
-          ["12/06/2025", "12:30PM"],
-          ["12/06/2025", "12:30PM"],
-        ]}
-        >
           <button disabled={isSubmitting} className="w-full py-3 mt-4 rounded-md transition-colors bg-primary-red text-white">
         {isSubmitting ? "Loading" : "  Submit Booking"}
         </button>
-        </SpaCheckoutSuccessfulModal>
       </div>
     </section>
   );

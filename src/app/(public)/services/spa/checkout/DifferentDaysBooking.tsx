@@ -9,7 +9,12 @@ export default function DifferentDaysBooking({
   form: UseFormReturn<SpaCheckoutFormValues>;
   item: SpaService;
 }) {
-  const { register, setValue, watch, formState: { errors, isSubmitting } } = form;
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting },
+  } = form;
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-3">
@@ -30,7 +35,7 @@ export default function DifferentDaysBooking({
       <div className="grid md:grid-cols-2 gap-4">
         <AppInput
           label="Date"
-          name="date"
+          name={item.id + "-date"}
           type="date"
           placeholder="Select a date"
           variant="transparent"
@@ -39,7 +44,7 @@ export default function DifferentDaysBooking({
         />
         <AppInput
           label="Time"
-          name="time"
+          name={item.id + "-time"}
           type="time"
           variant="transparent"
           placeholder="Select a time"

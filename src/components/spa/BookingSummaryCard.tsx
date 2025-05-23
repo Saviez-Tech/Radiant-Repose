@@ -1,7 +1,7 @@
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 
 
-export default function SelectedServicesCard({ services }: { services: SpaService }) {
+export default function BookingSummaryCard({ services }: { services: SpaService }) {
   return (
     <div className="flex flex-col divide-y">
         <div className="flex items-start gap-3 py-4">
@@ -21,13 +21,13 @@ export default function SelectedServicesCard({ services }: { services: SpaServic
 
           <div className="flex flex-col items-end justify-between text-right">
             <div>
+              <p className="md:text-xs text-[10px] text-gray-600">Date</p>
+              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
+            </div>
+            <div>
               <p className="md:text-xs text-[10px] text-gray-600">Total</p>
               <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
             </div>
-            <button
-            type="button"
-            role="button"
-             className="md:text-xs text-[10px] text-primary-red italic mt-1">Remove Item</button>
           </div>
         </div>
       

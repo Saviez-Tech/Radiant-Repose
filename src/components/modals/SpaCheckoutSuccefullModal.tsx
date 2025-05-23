@@ -8,22 +8,26 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 type SpaCheckoutSuccessfulModalProps = {
   dates: [string, string][];
-  children: ReactNode;
+  open?: boolean;
+  url: string
 };
 
 export default function SpaCheckoutSuccessfulModal({
-  children,
+  open:_open = false,
   dates,
+  url,
 }: SpaCheckoutSuccessfulModalProps) {
   const isOneDay = dates.length === 1;
+  const [open, setOpen] = useState(_open)
+  useEffect(() => setOpen(_open), [_open])
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      {/* <DialogTrigger asChild>{children}</DialogTrigger> */}
       <DialogContent className="flex w-[470px] flex-col items-center text-center justify-center  rounded-3xl max-w-[90vw]">
         <Image
           width={96}
@@ -41,7 +45,11 @@ export default function SpaCheckoutSuccessfulModal({
           <p className="md:text-base text-sm">
             Your appointment has been scheduled! We look forward to seeing you
             on
-            <strong className="text-sm text-[#424F4A]" > {dates[0][0]}</strong> at <strong>{dates[0][1]}</strong>.
+            <strong className="text-sm text-[#424F4A]">
+              {" "}
+              {dates[0][0]}
+            </strong>{" "}
+            at <strong>{dates[0][1]}</strong>.
           </p>
         ) : (
           <>
@@ -52,14 +60,15 @@ export default function SpaCheckoutSuccessfulModal({
             <div className="text-sm text-[#424F4A]">
               {dates.map((d, i) => (
                 <>
-                  <strong > {d[0]}</strong> at <strong>{d[1]}</strong>. <br />
+                  <strong> {d[0]}</strong> at <strong>{d[1]}</strong>. <br />
                 </>
               ))}
             </div>
           </>
         )}
 
-        <Link href={"/services/spa/booking-summary"}
+        <Link
+          href={url}
           className="btn bg-primary-red text-white rounded-md w-full py-3 px-4;
  "
           onClick={() => {

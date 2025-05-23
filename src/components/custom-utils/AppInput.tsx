@@ -59,7 +59,7 @@ export default function AppInput({
 
   return (
     <div className={cn("space-y-1", className)}>
-      <Label htmlFor={name} className="font-medium mb-1 text-primary-dark_gray">
+      <Label htmlFor={name.toString()} className="font-medium mb-1 text-primary-dark_gray">
         {label}
       </Label>
       <div className="relative">

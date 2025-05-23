@@ -21,4 +21,5 @@ type SpaService = {
   price: number,
   type: string,
   image: string
+  date?: string
 }

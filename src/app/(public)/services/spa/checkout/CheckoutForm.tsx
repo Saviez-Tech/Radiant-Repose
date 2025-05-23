@@ -8,6 +8,7 @@ import SameDayBooking from "./SameDayBooking";
 import DifferentDaysBooking from "./DifferentDaysBooking";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 import { useSpaCart } from "@/hooks/useSpaCart";
+import { useEffect } from "react";
 
 
 export default function CheckoutForm({form}:{form: UseFormReturn<SpaCheckoutFormValues>;}) {
@@ -15,8 +16,21 @@ export default function CheckoutForm({form}:{form: UseFormReturn<SpaCheckoutForm
  
 
 
-   const { register, setValue, watch,  formState: { errors, }} = form;
+   const { register, setValue, watch, resetField, formState: { errors, }} = form;
   const scheduling = watch("scheduling");
+
+  useEffect(()=>{
+    if(scheduling === "different-days"){
+      resetField("date")
+      resetField("time")
+      resetField("note")
+    }else{
+      items.forEach((item) => {
+        resetField((item.id + "-date") as any)
+        resetField((item.id + "-time") as any)
+      })
+    }
+  }, [scheduling])
 
   return (
     <div className="flex flex-col gap-6 md:max-w-md md:mx-w-[500px] md:p-4">
