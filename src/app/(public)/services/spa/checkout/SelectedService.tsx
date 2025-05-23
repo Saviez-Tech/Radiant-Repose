@@ -1,14 +1,12 @@
 "use client";
 
-import { formatNaira } from "@/lib/helperFns/formatNumber";
-import SelectedServicesCard from "../../../../../components/spa/SelectedServicesCard";
+import SpaCheckoutSuccessfulModal from "@/components/modals/SpaCheckoutSuccefullModal";
 import { dm_mono } from "@/fonts";
-import { useSelector } from "react-redux";
-import { selectSelectedServices } from "@/lib/redux/slices/spaCartSlice";
 import { useSpaCart } from "@/hooks/useSpaCart";
+import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 import { UseFormReturn } from "react-hook-form";
-import SpaCheckoutSuccessfulModal from "@/components/modals/SpaCheckoutSuccefullModal";
+import SelectedServicesCard from "../../../../../components/spa/SelectedServicesCard";
 
 export default function SelectedService({form}:{form: UseFormReturn<SpaCheckoutFormValues>;}) {
    const {items:selectedServices, totalPrice} = useSpaCart()
