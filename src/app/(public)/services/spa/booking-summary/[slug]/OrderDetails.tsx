@@ -1,3 +1,4 @@
+import BookingSummaryCard from "@/components/spa/BookingSummaryCard";
 import SelectedServicesCard from "@/components/spa/SelectedServicesCard";
 import Link from "next/link";
 
@@ -51,7 +52,7 @@ export default function OrderDetails() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-11">
           {dummyServices.map((service) => (
             // i will use the correct card later
-            <SelectedServicesCard key={service.id} services={service} />
+            <BookingSummaryCard key={service.id} services={service} />
           ))}
         </div>
 

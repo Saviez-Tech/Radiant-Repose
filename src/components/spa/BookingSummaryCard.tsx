@@ -25,7 +25,7 @@ export default function BookingSummaryCard({ services }: { services: SpaService 
               <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
             </div>
             <div>
-              <p className="md:text-xs text-[10px] text-gray-600">Total</p>
+              <p className="md:text-xs text-[10px] text-gray-600">time</p>
               <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
             </div>
           </div>
