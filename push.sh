@@ -2,7 +2,7 @@ git add .
 
 ECHO "________________Added________________"
 
-git commit -m "Intergreted booking api"
+git commit -m "Intergreted booking summary api"
 
 ECHO "________________Committed________________"
 

@@ -1,4 +1,5 @@
 import { formatNaira } from "@/lib/helperFns/formatNumber";
+import { format } from "date-fns";
 
 
 export default function BookingSummaryCard({ services }: { services: SpaService }) {
@@ -22,11 +23,11 @@ export default function BookingSummaryCard({ services }: { services: SpaService 
           <div className="flex flex-col items-end justify-between text-right">
             <div>
               <p className="md:text-xs text-[10px] text-gray-600">Date</p>
-              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
+              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{format(services.date!, "dd/MM/yyyy")}</p>
             </div>
             <div>
               <p className="md:text-xs text-[10px] text-gray-600">time</p>
-              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{formatNaira(services.price)}</p>
+              <p className="md:text-sm text-xs font-semibold text-primary-darkRed">{format(services.date!, "hh:mm a")}</p>
             </div>
           </div>
         </div>

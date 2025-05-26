@@ -104,7 +104,7 @@ export async function SpaCheckoutHandler(d: SpaCheckoutFormValues) {
       throw new Error(errorMessage);
     }
 
-    // console.log({ data });
+    console.log({ data });
 
     if (data.customer_name && data.customer_phone) {
       return {

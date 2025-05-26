@@ -14,7 +14,7 @@ import { useState } from "react";
 import SpaCheckoutSuccessfulModal from "@/components/modals/SpaCheckoutSuccefullModal";
 
 export default function Checkout({}) {
-  const { items } = useSpaCart();
+  const { items, clearCart } = useSpaCart();
   const [data, setData] = useState<any>(null);
 
   const form = useForm<SpaCheckoutFormValues>({
@@ -34,6 +34,7 @@ export default function Checkout({}) {
         return;
       }
 
+      clearCart();
       setData(result?.data);
     } catch (err) {
       console.error("Login error in component:", err);

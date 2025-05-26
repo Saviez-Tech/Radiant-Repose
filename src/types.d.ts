@@ -158,3 +158,23 @@ type AppPageError = {
   error: Error & { digest?: string },
   reset: () => void
 }
+
+export type SingleBookingDetail = {
+  id: number;
+  service: {
+    id: number;
+    name: string;
+    description: string;
+    price: string;
+    image: string;
+  };
+  time: string;
+};
+
+export type BookingDetails = {
+  id: number;
+  customer_name: string;
+  customer_phone: string;
+  created_at: string;
+  booked_services: SingleBookingDetail[];
+}
