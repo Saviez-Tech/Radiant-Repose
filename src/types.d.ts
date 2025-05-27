@@ -159,7 +159,7 @@ type AppPageError = {
   reset: () => void
 }
 
-export type SingleBookingDetail = {
+type SingleBookingDetail = {
   id: number;
   service: {
     id: number;
@@ -171,7 +171,7 @@ export type SingleBookingDetail = {
   time: string;
 };
 
-export type BookingDetails = {
+type BookingDetails = {
   id: number;
   customer_name: string;
   customer_phone: string;

@@ -4,7 +4,6 @@ import { dm_mono, roboto_mono } from "@/fonts";
 import logoSrc from "@/public-assets/logo/Logo1.svg"
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { formatDate } from "date-fns";
-import { calculateCartItemTotal } from "@/lib/helperFns/calculateTotal";
 import Logo from "../layout-components/Logo";
 import { useAppSelector } from "@/lib/redux/hooks";
 
