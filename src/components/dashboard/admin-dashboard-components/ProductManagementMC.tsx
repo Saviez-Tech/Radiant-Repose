@@ -42,7 +42,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         
         try {
             // Search with the current value
-            const { errorMessage, products } = await fetchProductAction(value)
+            const { errorMessage, products } = await fetchProductAction(value,"luxury")
             
             // Update state based on current search value
             if (products && products.length > 0) {
