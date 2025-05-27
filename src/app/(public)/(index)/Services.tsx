@@ -7,7 +7,7 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="md:text-3xl text-xl font-bold text-white">
-              Still skeptical? <br /> Here&apos;s why you should choose us.
+              Ready to experience true luxury and care? <br /> With Radiant Repose it's within your reach.
             </h2>
           </div>
           <div className="md:text-right text-sm">
@@ -29,7 +29,6 @@ export default function ServicesSection() {
   )
 }
 
-
 const services = [
   {
     title: "Spa session",
@@ -37,6 +36,7 @@ const services = [
       "Relax and rejuvenate with our premium spa treatments and therapies.",
     className: "bg-[#FFFFAA]",
     img: "/icons/spa.svg",
+    slug: "/services/spa",
   },
   {
     title: "Luxury Collection",
@@ -44,6 +44,7 @@ const services = [
       "Experience our exclusive luxury products and premium services.",
     className: "bg-[#FF0000] !text-white [&_h3]:text-white",
     img: "/icons/luxury.svg",
+    slug: "/services/luxury",
   },
   {
     title: "Wellness Care",
@@ -51,5 +52,6 @@ const services = [
       "Comprehensive wellness programs designed for your health and comfort.",
     className: "bg-white",
     img: "/icons/phamacy.svg",
+    slug: "/services/pharmacy",
   },
-]
+];

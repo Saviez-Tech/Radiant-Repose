@@ -6,9 +6,9 @@ import SpinnerLoader from "@/components/loaders/SpinnerLoader";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
-  addScannedItem,
+  addScannedProduct,
   removeSearchValue,
-} from "@/lib/redux/slices/posFlowSlice";
+} from "@/lib/redux/slices/spaPosSlice";
 import clsx from "clsx";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -16,58 +16,59 @@ import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 
 export default function ItemBarCodeManualLookupPage() {
-  const { searchValue, scannedItems } = useAppSelector(
-    (store) => store.posFlow
-  );
-  const [items, setItems] = useState<ScannedProduct[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [selectedItems, setSelectedItems] = useState<SelectedProduct[]>([]);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
+  const { searchValue, scannedProducts } = useAppSelector(
+    (store) => store.spaPosFlow
+  )
+  const [items, setItems] = useState<ScannedProduct[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [selectedItems, setSelectedItems] = useState<SelectedProduct[]>([])
+  const dispatch = useAppDispatch()
+  const router = useRouter()
 
   const handleFetchProductByBarcode = async () => {
-    setIsLoading(true);
-    setItems([]);
+    setIsLoading(true)
+    setItems([])
     const { products, errorMessage, status } = await fetchProductAction(
-      searchValue!
-    );
+      searchValue!,
+      "spa"
+    )
 
     if (products) {
-      setItems(products);
+      setItems(products)
     } else if (errorMessage) {
-      setItems([]);
+      setItems([])
       if (status !== 404) {
-        toast.error(errorMessage);
+        toast.error(errorMessage)
       }
     }
 
-    setIsLoading(false);
+    setIsLoading(false)
   };
 
   const handleItemRemove = useCallback(
     (barcode: string) => {
       if (items.length === 1) {
-        dispatch(removeSearchValue());
-        router.push("/pos/categories");
+        dispatch(removeSearchValue())
+        router.push("/pos/spa-section/products")
         return;
       }
 
-      setItems((prev) => prev.filter((v) => v.barcode !== barcode));
+      setItems((prev) => prev.filter((v) => v.barcode !== barcode))
     },
     [items.length, dispatch, router]
-  );
+  )
 
   const handleAddSelectedItems = () => {
     if (selectedItems.length) {
-      selectedItems.forEach((item) => dispatch(addScannedItem(item)));
+      selectedItems.forEach((item) => dispatch(addScannedProduct(item)))
     }
   };
 
   // Search value effect
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(true)
     if (!searchValue) {
-      router.push("/pos/categories");
+      router.push("/pos/spa-section")
     }
     const debounce = setTimeout(() => {
       if (
@@ -75,29 +76,29 @@ export default function ItemBarCodeManualLookupPage() {
         searchValue &&
         searchValue?.trim().length > 3
       ) {
-        handleFetchProductByBarcode();
+        handleFetchProductByBarcode()
       }
-    }, 500);
+    }, 500)
 
-    return () => clearTimeout(debounce);
-  }, [searchValue]);
+    return () => clearTimeout(debounce)
+  }, [searchValue])
 
   useEffect(() => {
-    if (!scannedItems.length || !selectedItems.length) return;
+    if (!scannedProducts.length || !selectedItems.length) return;
 
-    // Create a new array with items that are NOT in scannedItems
+    // Create a new array with items that are NOT in scannedProducts
     const updatedSelectedItems = selectedItems.filter(
       (selectedItem) =>
-        !scannedItems.some(
+        !scannedProducts.some(
           (scannedItem) => scannedItem.barcode === selectedItem.barcode
         )
-    );
+    )
 
     // Only update state if there's actually a change
     if (updatedSelectedItems.length !== selectedItems.length) {
-      setSelectedItems(updatedSelectedItems);
+      setSelectedItems(updatedSelectedItems)
     }
-  }, [scannedItems.length, selectedItems.length]);
+  }, [scannedProducts.length, selectedItems.length])
 
   useEffect(() => {
     if (!items.length) return;
@@ -107,47 +108,47 @@ export default function ItemBarCodeManualLookupPage() {
     setItems((prev) => {
       const updatedItems = prev.filter(
         (item) =>
-          !scannedItems.some((scanned) => scanned.barcode === item.barcode)
-      );
+          !scannedProducts.some((scanned) => scanned.barcode === item.barcode)
+      )
 
       // After removing, check if updatedItems is empty
       if (updatedItems.length === 0) {
-        setItems(updatedItems);
+        setItems(updatedItems)
 
         // Use a separate effect for navigation
         if (updatedItems.length === 0) {
           timer = setTimeout(() => {
-            dispatch(removeSearchValue());
-            router.push("/pos/categories");
-          }, 0);
+            dispatch(removeSearchValue())
+            router.push("/pos/spa-section")
+          }, 0)
 
           return updatedItems;
         }
       }
 
       return updatedItems;
-    });
+    })
 
-    return () => clearTimeout(timer);
-  }, [scannedItems.length, items.length]);
+    return () => clearTimeout(timer)
+  }, [scannedProducts.length, items.length])
 
   if (isLoading) {
     return (
       <div className="py-16">
         <SpinnerLoader />
       </div>
-    );
+    )
   }
 
   return (
     <main>
       {items.length ? (
-        <section className="mt-14">
+        <section className="mt-12">
           <div className="flex items-center gap-4">
             <h2 className="font-semibold text-primary-deepBlack">Item Found</h2>
             <hr className="flex-1 h-[1px] w-full bg-primary-base_color2/20" />
           </div>
-          <div className="mt-5 grid grid-cols-1 md:grid-col-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
+          <div className="mt-5 grid grid-cols-1 gap-4 md:grid-cols-[repeat(auto-fill,minmax(184px,1fr))]">
             {items.map((v) => (
               <ProductCard2
                 product={v}
@@ -165,10 +166,10 @@ export default function ItemBarCodeManualLookupPage() {
             onClick={handleAddSelectedItems}
             disabled={!selectedItems.length}
             className={clsx(
-              "flex items-center gap-2 px-4 my-6 py-3 h-12 rounded-md font-medium transition-colors",
+              "flex items-center gap-2 px-4 my-14 py-3 text-sm h-12 rounded-md font-medium transition-colors",
               selectedItems.length
                 ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-primary-dark_gray/10 text-primary-dark_gray/70 cursor-not-allowed"
             )}
           >
             Add Selected Item
@@ -187,5 +188,5 @@ export default function ItemBarCodeManualLookupPage() {
         </div>
       )}
     </main>
-  );
+  )
 }

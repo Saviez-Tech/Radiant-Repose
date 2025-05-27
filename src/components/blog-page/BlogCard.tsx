@@ -3,7 +3,7 @@ import ReadMoreBtn from "../buttons/ReadMoreBtn";
 
 export default function BlogCard({ blogData }:{ blogData: BlogPost }) {
   return (
-    <div className="max-w-md overflow-hidden rounded-2xl border border-gray-200 bg-white shadow">
+    <div className="max-w-md overflow-hidden rounded-2xl border border-gray-200 bg-white shadow flex flex-col h-full">
       <div className="relative h-36 w-full">
         <div className="absolute inset-0 bg-gray-900 rounded-b-xl overflow-hidden">
           <Image
@@ -37,13 +37,15 @@ export default function BlogCard({ blogData }:{ blogData: BlogPost }) {
         </div>
       </div>
       
-      <div className="px-3 pt-2 pb-4 text-primary-deepBlack">
+      <div className="px-3 pt-2 pb-4 text-primary-deepBlack flex flex-col flex-1">
         <h2 className="mb-2 text-sm font-medium">{blogData.title}</h2>
-        <p className="mb-2 text-primary-dark_gray text-xs">
+        <p className="mb-2 text-primary-dark_gray text-xs flex-1">
           {blogData.description.slice(0,45)}...
         </p>
         
-        <ReadMoreBtn slug={blogData.id} />
+        <div className="mt-auto">
+          <ReadMoreBtn slug={blogData.id} />
+        </div>
       </div>
     </div>
   )

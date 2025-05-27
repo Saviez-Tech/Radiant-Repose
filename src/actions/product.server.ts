@@ -12,11 +12,19 @@ type FetchProductResult = {
   status?: number;
 }
   
-export const fetchProductAction: (searchValue: string) => Promise<FetchProductResult> = async (
-  searchValue: string
-): Promise<FetchProductResult> => {
+export const fetchProductAction = async (searchValue: string, productSection: "spa" | "luxury"): Promise<FetchProductResult> => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
+    
+    const response = 
+    productSection === "luxury" ? 
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
+      method: "GET",
+      headers: {
+        'Authorization': `Token ${await getUserSession()}`,
+      },
+    }) 
+    :
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
       method: "GET",
       headers: {
         'Authorization': `Token ${await getUserSession()}`,

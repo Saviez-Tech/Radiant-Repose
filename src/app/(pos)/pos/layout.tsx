@@ -1,10 +1,11 @@
 import DashboardAreaHeader from "@/components/dashboard/DashboardAreaHeader";
 import DashboardDesktopSideNav from "@/components/dashboard/DashboardDesktopSideNav";
 import { ReactNode } from "react";
-import CartSection from "@/components/dashboard/CartSection";
+import LuxuryCartSection from "@/components/dashboard/LuxuryCartSection";
 import CategoriesTabSection from "@/components/dashboard/CategoriesTabSection";
 import { getUserSessionID } from "@/lib/helperFns/getUserSession";
 import Scanner from "@/lib/Scanner";
+import SpaCartSection from "@/components/dashboard/spa-section/SpaCartSection";
 // import Scanner from "@/lib/Scanner";
 
 
@@ -25,15 +26,13 @@ export default async function Layout({ children }: LayoutProps) {
         <DashboardAreaHeader />
         <main className="px-6 relative w-full flex gap-12 justify-between items-stretch">
           <div className="flex-1 max-w-full">
-            <div className="pt-5">
-              <h2 className="font-semibold text-primary-deepBlack">Categories</h2>
-              <CategoriesTabSection />
-            </div>
+            <CategoriesTabSection />
             {children}
           </div>
 
           <Scanner />
-          <CartSection />
+          <LuxuryCartSection />
+          <SpaCartSection />
         </main>
       </div>
     </div>

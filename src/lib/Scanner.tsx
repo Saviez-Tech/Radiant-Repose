@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { addScannedItem } from '@/lib/redux/slices/posFlowSlice';
+import { addScannedItem } from '@/lib/redux/slices/luxuryPosFlowSlice';
 import { toast } from 'react-hot-toast';
 import { fetchProductAction } from '@/actions/product.server';
 import SpinnerLoader from '@/components/loaders/SpinnerLoader';

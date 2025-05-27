@@ -3,29 +3,20 @@ import Image from "next/image";
 import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { decrementItemQuantity, deselectItem, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/posFlowSlice";
+import { decrementItemQuantity, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/luxuryPosFlowSlice";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
+import { decrementProductQuantity, incrementProductQuantity, removeScannedProduct } from "@/lib/redux/slices/spaPosSlice";
 
-export default function ProductCard({ product, isSelected }: { product: ScannedProduct, isSelected: boolean }) {
+export default function ProductCard({ product, cardFor = "luxury" }: { product: ScannedProduct, cardFor?: "spa" | "luxury" }) {
   const dispatch = useAppDispatch();
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
-  
-  const handleCardClick = () => {
-    if (isOutOfStock) return; 
-    if (isSelected){
-      dispatch(deselectItem(product.barcode))
-    }else{
-      dispatch(selectItem(product))
-    }
-  }
 
   return (
     <div  
       tabIndex={isOutOfStock ? -1 : 0}
-      onClick={handleCardClick}
       className={`
-        ${isSelected ? "ring-2 ring-red-500" : ""} 
+        group hover:ring-2 hover:ring-red-500 focus:ring-2 focus:ring-red-500
         ${isOutOfStock ? "opacity-60 grayscale" : "cursor-pointer"} 
         relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
       `}
@@ -50,9 +41,9 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
           <button 
             onClick={(e) => {
               e.stopPropagation();
-              dispatch(removeScannedItem(product.barcode!))
+              dispatch(cardFor === "luxury" ? removeScannedItem(product.barcode) : removeScannedProduct(product.barcode))
             }} 
-            className={`${isSelected ? "block" : "hidden"} absolute top-0 right-0 bg-primary-red rounded-lg p-1 text-primary-base_color1`}
+            className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200 absolute top-1 right-1 bg-primary-red hover:bg-red-600 rounded-lg p-1 text-primary-base_color1 shadow-md"
           >
             <X size={16} />
           </button>
@@ -78,7 +69,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  dispatch(incrementItemQuantity(product.barcode!))
+                  dispatch(cardFor === "luxury" ? incrementItemQuantity(product.barcode) : incrementProductQuantity(product.barcode))
                 }} 
                 className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center"
               >
@@ -87,7 +78,7 @@ export default function ProductCard({ product, isSelected }: { product: ScannedP
               <button 
                 onClick={(e) => {
                   e.stopPropagation();
-                  dispatch(decrementItemQuantity(product.barcode!));
+                  dispatch(cardFor === "luxury" ? decrementItemQuantity(product.barcode) : decrementProductQuantity(product.barcode))
                 }} 
                 className="bg-red-500 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center text-primary-base_color1"
               >

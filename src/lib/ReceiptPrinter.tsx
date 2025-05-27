@@ -1,17 +1,21 @@
 "use client"
 
-import { Dispatch, SetStateAction, useRef } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import Receipt from '@/components/dashboard/Receipt';
 import toast from 'react-hot-toast';
 import { Modal, Box } from '@mui/material';
-import { Printer, Save, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { formatNaira } from './helperFns/formatNumber';
+import SpaReceipt from '@/components/dashboard/spa-section/SpaReceipt';
+import { Icon } from '@iconify/react/dist/iconify.js';
 
 interface ReceiptPrinterProps {
   orderNumber: string;
-  scannedItems: Partial<ScannedProduct>[];
+  scannedItems: ScannedProduct[];
   date: string;
+  services?: SpaService[];
+  printFor: "spa" | "luxury"
   discount?: number;
   amountPaid?: number;
   customerName?: string;
@@ -25,7 +29,9 @@ interface ReceiptPrinterProps {
 
 export default function ReceiptPrinter({ 
   orderNumber, 
-  scannedItems, 
+  scannedItems,
+  printFor,
+  services = [],
   date, 
   discount = 0,
   amountPaid = 0,
@@ -36,6 +42,8 @@ export default function ReceiptPrinter({
   print,
   cashierName = "" 
 }: ReceiptPrinterProps) {
+
+  const [hasPrinted, setHasPrinted] = useState(false)
   const receiptRef = useRef<HTMLDivElement>(null)
 
 
@@ -131,9 +139,8 @@ export default function ReceiptPrinter({
       `)
       
       printWindow.document.close()
-      
+      setHasPrinted(true)
       toast.success('Sending to printer...')
-      
     } catch (error) {
       console.error('Error printing receipt:', error)
       toast.error('Failed to print receipt. Please try again.')
@@ -157,6 +164,7 @@ export default function ReceiptPrinter({
       link.download = `Receipt-${orderNumber}.png`;
       link.href = canvas.toDataURL('image/png', 1.0)
       link.click()
+      setHasPrinted(true)
       toast.success('Receipt saved successfully')
     } catch (error) {
       console.error('Error saving receipt image:', error)
@@ -167,7 +175,6 @@ export default function ReceiptPrinter({
   return (
     <Modal
       open={print}
-      onClose={handleClose}
       aria-labelledby="receipt-modal-title"
       aria-describedby="receipt-modal-description"
       disableEscapeKeyDown
@@ -177,64 +184,76 @@ export default function ReceiptPrinter({
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: { xs: '90%', sm: '500px' },
         maxHeight: '90vh',
         bgcolor: 'background.paper',
         boxShadow: 24,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        p: 4,
         borderRadius: 2,
         overflow: 'auto',
       }}>
         {/* Close button - only way to close the modal */}
         <button 
+          disabled={!hasPrinted}
           onClick={handleClose}
-          className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
+          className="absolute print:hidden disabled:cursor-not-allowed top-1 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
           aria-label="Close"
         >
           <X size={20} />
         </button>
         
-        <h2 
-          id="receipt-modal-title" 
-          className='text-center font-medium'
-        >
-          Receipt {orderNumber}
-        </h2>
-        
-        <div ref={receiptRef} className="bg-white border-2 mt-2 border-dotted border-gray-400 w-full flex justify-center flex-col items-center">
-          <Receipt
-            date={date}
-            orderNumber={orderNumber}
-            scannedItems={scannedItems}
-            subTotal={formatNaira(subTotal, true, true)}
-            total={formatNaira(total, true, true)}
-            amountPaid={amountPaid}
-            cashierName={cashierName}
-            customerName={customerName}
-            discount={discount}
-          />
+        <div ref={receiptRef} className="">
+          {
+            printFor === "luxury"
+            ?
+            <Receipt
+              date={date}
+              orderNumber={orderNumber}
+              scannedItems={scannedItems}
+              subTotal={formatNaira(subTotal, true, true)}
+              total={formatNaira(total, true, true)}
+              amountPaid={amountPaid}
+              cashierName={cashierName}
+              customerName={customerName}
+              discount={discount}
+            />
+            :
+            <SpaReceipt
+              date={date}
+              orderNumber={orderNumber}
+              spaServices={services}
+              scannedItems={scannedItems}
+              subTotal={formatNaira(subTotal, true, true)}
+              total={formatNaira(total, true, true)}
+              discount={discount}
+            />
+          }
+          
         </div>
 
-        <div className="flex justify-center gap-4 mt-6 w-full">
-          <button
-            onClick={printReceipt}
-            className="flex items-center gap-2 bg-green-600 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-green-700 active:bg-green-800 transition-colors duration-200 shadow-sm"
-          >
-            <Printer size={16} />
-            Print
-          </button>
+        <div className="flex justify-center gap-4 my-6 w-[90%]">
           <button
             onClick={saveReceiptAsImage}
-            style={{ background: "#2563eb" }}
-            className="flex items-center gap-2 text-white rounded-md px-4 py-2 text-sm font-medium hover:bg-blue-700 active:bg-blue-800 transition-colors duration-200 shadow-sm"
+            className="flex items-center w-1/2 gap-1 bg-primary-red text-white rounded-md px-4 py-2 text-xs font-medium hover:bg-red-700 active:bg-red-800 transition-colors duration-200 shadow-sm"
           >
-            <Save size={16} />
-            Save
+            <Icon icon="ic:round-download" width="26" height="26" />
+            Download Receipt
+          </button>
+          <button
+            onClick={printReceipt}
+            style={{ background: "#33CC33" }}
+            className="flex items-center w-1/2 gap-1 text-white rounded-md px-4 py-2 text-xs font-medium hover:bg-green-700 active:bg-green-800 transition-colors duration-200 shadow-sm"
+          >
+            <Icon icon="mdi:printer" width="24" height="24" />
+            Print Receipt
           </button>
         </div>
+
+        {
+          !hasPrinted &&
+          <p className='text-xs text-red-700 mb-3'>Print Or Save receipt before closing modal</p>
+        }
       </Box>
     </Modal>
   )

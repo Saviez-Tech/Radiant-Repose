@@ -1,4 +1,4 @@
-import { Bricolage_Grotesque, DM_Mono, DM_Sans, Inter, Poppins, Rubik } from 'next/font/google'
+import { Bricolage_Grotesque, DM_Mono, DM_Sans, Inter, Poppins, Roboto_Mono, Rubik } from 'next/font/google'
 
 export const poppins = Poppins({
     weight: ["300","400","500","600",'700','800'],
@@ -12,6 +12,11 @@ export const inter = Inter({
 
 export const dm_mono = DM_Mono({
     weight: ["300","400","500"],
+    subsets: ["latin"]
+})
+
+export const roboto_mono = Roboto_Mono({
+    weight: ["400","500","600"],
     subsets: ["latin"]
 })
 

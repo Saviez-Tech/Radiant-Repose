@@ -1,42 +1,33 @@
 "use client"
 
-import { X, Plus, Minus, Loader2 } from "lucide-react";
+import { X, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import { dm_mono } from "@/fonts";
-import { calculateCartItemTotal, calculateCartTotal, calculateCartTotalWithDiscountAndBalance } from "@/lib/helperFns/calculateTotal";
+import { calculateCartItemTotal, calculateGrandTotal } from "@/lib/helperFns/calculateTotal";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import DestructiveActionPrompt from "../modals/DestructiveActionPrompt";
-import DestructiveActionPromptSuccess from "../modals/DestructiveActionPromptSuccess";
+import DestructiveActionPrompt from "../../modals/DestructiveActionPrompt";
+import DestructiveActionPromptSuccess from "../../modals/DestructiveActionPromptSuccess";
 import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { usePathname } from "next/navigation";
-import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/posFlowSlice";
-import { addSaleHandler } from "@/actions/product.server";
-import toast from "react-hot-toast";
+import { clearAll, decrementProductQuantity, incrementProductQuantity, manageOrderNumber, removeScannedProduct, removeService } from "@/lib/redux/slices/spaPosSlice";
 import ReceiptPrinter from "@/lib/ReceiptPrinter";
-import { Skeleton } from "../ui/skeleton";
+import CustomSafeImage from "@/components/custom-utils/SafeImage";
 
-
-const CartItem = ({ item }: { item: ScannedProduct }) => {
-
+const SpaCartItem = ({ item }: { item: ScannedProduct }) => {
   const { image_url, name, price, quantity, barcode } = item;
   const dispatch = useAppDispatch()
   
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="w-14 h-14 rounded-xl overflow-hidden mr-4">
-        {
-          image_url ?
-          <Image src={image_url} alt={name} width={40} height={40} className="w-full h-full object-cover" />
-          :
-          <Skeleton className="w-14 h-14 rounded-xl"></Skeleton>
-        }
+        <CustomSafeImage src={image_url} alt={name} width={40} height={40} className="w-full h-full object-cover"  />
       </div>
       
       <div className="flex-grow">
         <div className="flex justify-between">
-          <h3 className="text-xs font-semibold truncate">{name}</h3>
-          <button className="text-red-500" onClick={() => dispatch(removeScannedItem(item.barcode || ""))}>
+          <h3 className="text-xs font-semibold truncate capitalize">{name}</h3>
+          <button className="text-red-500" onClick={() => dispatch(removeScannedProduct(item.barcode || ""))}>
             <X size={16} />
           </button>
         </div>
@@ -44,11 +35,11 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
         <div className="flex justify-between items-center">
           <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
           <div className="flex items-center gap-4">
-            <button onClick={() => dispatch(decrementItemQuantity(barcode!))} className="text-gray-500">
+            <button onClick={() => dispatch(decrementProductQuantity(barcode!))} className="text-gray-500">
               <Minus size={13} />
             </button>
             <span className="text-xs">{quantity}</span>
-            <button onClick={() => dispatch(incrementItemQuantity(barcode!))} className="text-gray-500">
+            <button onClick={() => dispatch(incrementProductQuantity(barcode!))} className="text-gray-500">
               <Plus size={13} />
             </button>
           </div>
@@ -58,22 +49,49 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
   )
 }
 
+const SpaServiceItem = ({ service }: { service: SpaService }) => {
+  const { image, name, price, id } = service;
+  const dispatch = useAppDispatch()
+  
+  return (
+    <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
+      <div className="w-14 h-14 rounded-xl overflow-hidden mr-4">
+        <CustomSafeImage src={image} alt={name} width={40} height={40} className="w-full h-full object-cover"  />
+      </div>
+      
+      <div className="flex-grow">
+        <div className="flex justify-between">
+          <h3 className="text-xs font-semibold truncate capitalize">{name}</h3>
+          <button className="text-red-500" onClick={() => dispatch(removeService(id))}>
+            <X size={16} />
+          </button>
+        </div>
+        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,false)}</p>
+        <div className="flex justify-between items-center">
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(price,false)}</span>
+          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">Service</span>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-
-
-export default function CartSection() {
-
-  const { scannedItems, orderNumber } = useAppSelector(store => store.posFlow)
+export default function SpaCartSection() {
+  const { addedServices, scannedProducts, orderNumber } = useAppSelector(store => store.spaPosFlow)
   const { name } = useAppSelector(store => store.authUser)
   const [showConfirmModal,setShowConfirmModal] = useState(false)
   const [showSuccessModal,setShowSuccessModal] = useState(false)
-  const [isProcessing,setIsProcessing] = useState(false)
   const [print,setPrint] = useState(false)
   const pathName = usePathname()
   const dispatch = useAppDispatch()
 
+  const hasItems = scannedProducts.length > 0 || addedServices.length > 0;
+  
+  // Use the proper calculation function from helpers
+  const grandTotal = calculateGrandTotal(scannedProducts, addedServices);
+
   const onConfirmCancelTransaction = async() => {
-    dispatch(clearScannedItems())
+    dispatch(clearAll())
     setShowConfirmModal(false)
   }
 
@@ -82,50 +100,37 @@ export default function CartSection() {
   }
 
   const handleClose = () => {
-    dispatch(clearScannedItems())
+    dispatch(clearAll())
     setPrint(false)
-  }
-
-  const handleCompleteSale = async() => {
-    setIsProcessing(true)
-    const { success, error } = await addSaleHandler({
-      customer_contact: "",
-      customer_name: "",
-      discount: 0,
-      scanned_items: scannedItems.map(v => ({ product_id: v.id, quantity: v.quantity })),
-      subtotal: calculateCartTotal(scannedItems)
-    })
-
-    if(success){
-      setPrint(true)
-      toast.success("Sale Proccessed Successfully")
-    }else{
-      toast.error(error || "Error Processing Sale")
-    }
-
-    setIsProcessing(false)
   }
 
   useEffect(() => {
     dispatch(manageOrderNumber())
-  },[scannedItems.length])
+  },[scannedProducts.length, addedServices.length])
 
   return (
-    !pathName.startsWith("/pos/categories")
+    !pathName.startsWith("/pos")
     ?
     null
     :
-    <div className={`w-[270px] pt-6 flex flex-col ${scannedItems && scannedItems.length ? "justify-between" : "justify-center items-center"}`}>
+    pathName.startsWith("/pos") && !pathName.match("/luxury")
+    ?
+    <div className={`w-[270px] pt-6 flex flex-col ${hasItems ? "justify-between" : "justify-center items-center"}`}>
       {
-        scannedItems && scannedItems.length ?
-
+        hasItems ?
         <>
           <div>
             <h2 className="text-sm font-medium text-[#111719] mb-4">Order {orderNumber}</h2>
             
             <div className="space-y-0">
-              {scannedItems.map(item => (
-                <CartItem key={item.id} item={item} />
+              {/* Render Products First */}
+              {scannedProducts.map(item => (
+                <SpaCartItem key={item.id} item={item} />
+              ))}
+              
+              {/* Render Services Below Products */}
+              {addedServices.map(service => (
+                <SpaServiceItem key={service.id} service={service} />
               ))}
             </div>
           </div>
@@ -134,7 +139,7 @@ export default function CartSection() {
             <div className={`${dm_mono.className} mb-6 mt-16 text-[#1F1F1F] text-xs`}>
               <div className="flex justify-between py-2">
                 <span className="">Subtotal</span>
-                <span className="">{formatNaira(calculateCartTotal(scannedItems), true)}</span>
+                <span className="">{formatNaira(grandTotal, true)}</span>
               </div>
               
               <div className="flex justify-between py-2">
@@ -156,7 +161,7 @@ export default function CartSection() {
               
               <div className="flex justify-between py-2">
                 <span className="font-medium text-base">Total</span>
-                <span className="font-medium text-base">{formatNaira(calculateCartTotalWithDiscountAndBalance(scannedItems,0,0), true)}</span>
+                <span className="font-medium text-base">{formatNaira(grandTotal, true)}</span>
               </div>
 
               <div className="flex flex-wrap gap-4 mt-5">
@@ -166,37 +171,22 @@ export default function CartSection() {
                 >
                   Cancel Transaction
                 </button>
-                
-                <button
-                  onClick={handleCompleteSale} 
-                  disabled={isProcessing}
-                  className="bg-green-500 disabled:cursor-pointer flex justify-center items-center gap-1 text-primary-base_color1 text-sm h-10 font-medium rounded-md py-2 px-6 flex-1 hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-200"
-                >
-                  {
-                    !isProcessing && !print ?
-                    "Save & Print Transaction"
-                    :
-                    <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      Processing...
-                    </> 
-                  }
-                </button>
               </div>
             </div>
           </div>
-
 
           {/* Printer Lib */}
           <ReceiptPrinter 
             date={new Date().toISOString()}
             orderNumber={orderNumber || ""}
             print={print}
+            printFor="spa"
             setPrint={setPrint}
             handleClose={handleClose}
-            scannedItems={scannedItems}
-            subTotal={calculateCartTotal(scannedItems)}
-            total={calculateCartTotalWithDiscountAndBalance(scannedItems,0,0)}
+            scannedItems={scannedProducts}
+            services={addedServices}
+            subTotal={grandTotal}
+            total={grandTotal}
             amountPaid={0}
             cashierName={name || ""}
             customerName=""
@@ -213,8 +203,10 @@ export default function CartSection() {
           </DestructiveActionPromptSuccess>
         </>
         :
-        <p role="alert" className="text-center font-medium text-sm">No Transcation yet</p>
+        <p role="alert" className="text-center font-medium text-sm">No Transaction yet</p>
       }
     </div>
+    :
+    null
   )
 }

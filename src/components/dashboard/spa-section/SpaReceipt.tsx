@@ -1,17 +1,17 @@
 "use client"
 
-import { dm_mono, roboto_mono } from "@/fonts";
-import logoSrc from "@/public-assets/logo/Logo1.svg"
+import { dm_mono, poppins, roboto_mono } from "@/fonts";
+import logoSrc from "../../../public-assets/logo/Logo1.svg"
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { formatDate } from "date-fns";
-import { calculateCartItemTotal } from "@/lib/helperFns/calculateTotal";
-import Logo from "../layout-components/Logo";
+import Logo from "../../layout-components/Logo";
 import { useAppSelector } from "@/lib/redux/hooks";
 
-const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
-  const { name, price = 0, quantity = 0 } = item;
+const SpaReceiptItem = ({ items }: { items: SpaService | ScannedProduct }) => {
+  const quantity = 1;
+  const { name, price } = items;
   const total = Number(price) * quantity;
-
+  
   return (
     <div className="py-3 border-b border-gray-100 text-[#000000]">
       <div className="flex justify-between items-start print:text-[9px]">
@@ -35,34 +35,33 @@ const ReceiptItem = ({ item }: { item: Partial<ScannedProduct> }) => {
   )
 }
 
-interface ReceiptProps {
+interface SpaReceiptProps {
   orderNumber: string;
-  scannedItems: Partial<ScannedProduct>[];
+  spaServices: SpaService[];
+  scannedItems: ScannedProduct[]
   date: string;
   discount?: number;
-  amountPaid?: number;
-  customerName?: string;
-  cashierName?: string;
   total: string;
   subTotal: string;
 }
 
-export default function Receipt({ 
-  scannedItems, 
+export default function SpaReceipt({ 
+  orderNumber, 
+  spaServices, 
+  scannedItems,
   date, 
   discount = 0,
   total,
   subTotal,
-  cashierName = ""
-}: ReceiptProps) {
+}: SpaReceiptProps) {
 
   const { branches } = useAppSelector(store => store.storeBranches)
   const { branch } = useAppSelector(store => store.authUser)
   const location = branches.find(v => v.id === Number(branch))
-
+    
   return (
-    <div className="w-[322px] flex flex-col p-3 pt-6 bg-primary-base_color1 print:w-full">
-      <div className="">
+    <div className="w-[322px] flex flex-col p-3 bg-primary-base_color1 print:w-full">
+      <div className="bg-[#FFF8EE] w-full pt-6 px-3">
         <div className="flex justify-between">
           <div className="flex justify-center mb-3">
             <Logo src={logoSrc} width={120} height={100} />
@@ -89,8 +88,11 @@ export default function Receipt({
         </div>
         
         <div className="space-y-0 mb-4">
-          {scannedItems.map((item, index) => (
-            <ReceiptItem key={item.id || index} item={item} />
+          {spaServices.map((service, index) => (
+            <SpaReceiptItem key={service.id || index} items={service} />
+          ))}
+          {scannedItems.map((items, index) => (
+            <SpaReceiptItem key={items.id || index} items={items} />
           ))}
         </div>
 
@@ -98,7 +100,7 @@ export default function Receipt({
           ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
           </div>
 
-        <div className={`${dm_mono.className} mb-6 text-[#000000] print:text-black text-xs print:text-[8px]`}>
+        <div className={`${dm_mono.className} mb-6 text-[#000000] print:text-black text-xs print:text-[8.5px]`}>
           <div className="flex justify-between py-2">
             <span className="print:font-bold">Subtotal</span>
             <span className="print:font-bold">{subTotal}</span>
@@ -119,9 +121,18 @@ export default function Receipt({
           </div>
         </div>
 
-        <div className="text-center text-xs font-medium print:font-bold text-[#000000] print:text-black mt-4 mb-6">
-          {cashierName && <p className="mb-1">Served by: {cashierName}</p>}
-          <p className="font-medium print:font-extrabold">Thank you for your purchase!</p>
+        <div className={`${dm_mono.className} text-center mb-4`}>
+          <div className="border-2 rounded-xl border-dashed border-black p-3 h-14 mx-2">
+            <p className="text-xs print:text-[8.5px] bg-[#FFF8EE] px-4 -mt-5 w-fit mx-auto font-normal text-[#000000] print:text-black mb-1">
+              Unique Code
+            </p>
+            <p className="text-sm tracking-wide print:text-[10px] font-bold mt-2 text-[#000000] print:text-black">
+              SPA-{orderNumber}
+            </p>
+          </div>
+          <p className={`text-xs print:text-[8.5px] font-normal text-[#000000] print:text-black mt-2 px-2 ${poppins.className}`}>
+            Show this code to the service providers and product counter to access your purchases/services.
+          </p>
         </div>
       </div>
     </div>

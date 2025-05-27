@@ -3,11 +3,11 @@
 import { useAppSelector } from "@/lib/redux/hooks";
 import ProductCard from "./ProductCard";
 import SpinnerLoader from "../loaders/SpinnerLoader";
-import ClearTransactionBtn from "../buttons/ClearTransactionBtn";
+import POSClearTransactionBtn from "../buttons/POSClearTransactionBtn";
 
-export default function ScannedItemsClientContainer() {
+export default function LuxuryScannedItemsClientContainer() {
 
-    const { scannedItems, selectedItems, isLoading } = useAppSelector(store => store.posFlow)
+    const { scannedItems, isLoading } = useAppSelector(store => store.luxuryPosFlow)
     return (
         <section className="mt-14 pb-10">
             <div className="flex items-center gap-4">
@@ -25,11 +25,11 @@ export default function ScannedItemsClientContainer() {
                     <>
                         <div className="mt-5 grid grid-cols-2 md:grid-col-3 gap-4 xl:grid-cols-[repeat(auto-fill,minmax(180px,1fr))]">
                             {scannedItems.map((v, i) => (
-                                <ProductCard isSelected={selectedItems.some(item => item.barcode === v.barcode)} key={i} product={v} />
+                                <ProductCard key={i} product={v} />
                             ))}
                         </div>
 
-                        <ClearTransactionBtn />
+                        <POSClearTransactionBtn />
                     </>
                 ) : 
                 (
