@@ -7,7 +7,7 @@ export default function SameDayBooking({
 }: {
   form: UseFormReturn<SpaCheckoutFormValues>;
 }) {
-  const { register, setValue, watch, formState: { errors, isSubmitting } } = form;
+  const { register, formState: { errors } } = form;
   return (
     <div className="flex flex-col gap-4">
       <div className="grid md:grid-cols-2 gap-4">

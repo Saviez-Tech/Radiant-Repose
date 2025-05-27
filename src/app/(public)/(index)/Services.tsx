@@ -7,7 +7,7 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
             <h2 className="md:text-3xl text-xl font-bold text-white">
-              Ready to experience true luxury and care? <br /> With Radiant Repose it's within your reach.
+              Ready to experience true luxury and care? <br /> With Radiant Repose it&apos;s within your reach.
             </h2>
           </div>
           <div className="md:text-right text-sm">

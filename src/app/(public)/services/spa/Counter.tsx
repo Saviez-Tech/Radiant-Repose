@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMotionValue, useAnimationFrame, motion } from "framer-motion";
 
 export default function Counter() {

@@ -3,7 +3,7 @@ import Image from "next/image";
 import { DollarSquare } from "../Svg";
 import { dm_mono } from "@/fonts";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { decrementItemQuantity, incrementItemQuantity, removeScannedItem, selectItem } from "@/lib/redux/slices/luxuryPosFlowSlice";
+import { decrementItemQuantity, incrementItemQuantity, removeScannedItem } from "@/lib/redux/slices/luxuryPosFlowSlice";
 import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { decrementProductQuantity, incrementProductQuantity, removeScannedProduct } from "@/lib/redux/slices/spaPosSlice";

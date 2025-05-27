@@ -3,7 +3,6 @@
 import {
     Dialog,
     DialogContent,
-    DialogTrigger
 } from "@/components/ui/dialog";
 import { useCart } from "@/hooks/useCart";
 import Image from "next/image";

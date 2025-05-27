@@ -46,7 +46,7 @@ export default async function Page() {
                     </h3>
                     
                     <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                        We couldn't load the spa services right now. This might be a temporary connection issue.
+                        We couldn&apos;t load the spa services right now. This might be a temporary connection issue.
                     </p>
                     
                     <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">

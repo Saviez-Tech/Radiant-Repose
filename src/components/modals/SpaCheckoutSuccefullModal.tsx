@@ -4,11 +4,10 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 type SpaCheckoutSuccessfulModalProps = {
   dates: [string, string][];
@@ -59,9 +58,9 @@ export default function SpaCheckoutSuccessfulModal({
             </p>
             <div className="text-sm text-[#424F4A]">
               {dates.map((d, i) => (
-                <>
+                <React.Fragment key={i}>
                   <strong> {d[0]}</strong> at <strong>{d[1]}</strong>. <br />
-                </>
+                </React.Fragment>
               ))}
             </div>
           </>

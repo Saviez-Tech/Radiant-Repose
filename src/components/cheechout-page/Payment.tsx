@@ -1,8 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import AppInput from "../custom-utils/AppInput";
 import { Copy } from "lucide-react";
 
 export default function Payment() {

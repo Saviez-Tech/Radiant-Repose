@@ -1,6 +1,5 @@
 "use client";
 
-import SpaCheckoutSuccessfulModal from "@/components/modals/SpaCheckoutSuccefullModal";
 import { dm_mono } from "@/fonts";
 import { useSpaCart } from "@/hooks/useSpaCart";
 import { formatNaira } from "@/lib/helperFns/formatNumber";

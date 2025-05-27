@@ -4,7 +4,7 @@ import { addItem, removeItem, clearCart, SpaCartItem } from "@/store/spaCartSlic
 import type { RootState } from "@/store";
 import { useMemo } from "react";
 
-export function useSpaCart(products: SpaService[] = []) {
+export function useSpaCart() {
   const dispatch = useDispatch();
   const items = useSelector((state: RootState) => state.spaCarts.items);
 

@@ -11,9 +11,7 @@ export default function DifferentDaysBooking({
 }) {
   const {
     register,
-    setValue,
-    watch,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = form;
   return (
     <div className="flex flex-col gap-4">
