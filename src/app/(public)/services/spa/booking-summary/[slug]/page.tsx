@@ -6,7 +6,7 @@ import createAxiosInstance from "@/lib/axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 
 
-export async function fetchBookingDetails(id: string) {
+async function fetchBookingDetails(id: string) {
   try {
     const axiosInstance = await createAxiosInstance();
     const res = await axiosInstance.get(
