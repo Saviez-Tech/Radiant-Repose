@@ -4,8 +4,6 @@ import OrderDetails from "./OrderDetails";
 import axios from "axios";
 import createAxiosInstance from "@/lib/axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
-import { BookingDetails } from "@/types";
-
 
 
 export async function fetchBookingDetails(id: string) {
