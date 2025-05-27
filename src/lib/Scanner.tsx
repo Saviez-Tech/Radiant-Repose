@@ -6,8 +6,11 @@ import { addScannedItem } from '@/lib/redux/slices/luxuryPosFlowSlice';
 import { toast } from 'react-hot-toast';
 import { fetchProductAction } from '@/actions/product.server';
 import SpinnerLoader from '@/components/loaders/SpinnerLoader';
+import { usePathname } from 'next/navigation';
 
 export default function Scanner() {
+
+    const pathName = usePathname()
     const [barcode, setBarcode] = useState<string>('')
     const [isScanning, setIsScanning] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -31,7 +34,7 @@ export default function Scanner() {
         
         setIsLoading(true)
         try {
-            const { errorMessage, products } = await fetchProductAction(barcode)
+            const { errorMessage, products } = await fetchProductAction(barcode,pathName.match("/pos/luxury") ? "luxury" : "spa")
 
             if (products && products.length) {
                 dispatch(addScannedItem(products[0]))

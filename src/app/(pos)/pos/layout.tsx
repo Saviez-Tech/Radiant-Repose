@@ -4,9 +4,7 @@ import { ReactNode } from "react";
 import LuxuryCartSection from "@/components/dashboard/LuxuryCartSection";
 import CategoriesTabSection from "@/components/dashboard/CategoriesTabSection";
 import { getUserSessionID } from "@/lib/helperFns/getUserSession";
-import Scanner from "@/lib/Scanner";
 import SpaCartSection from "@/components/dashboard/spa-section/SpaCartSection";
-// import Scanner from "@/lib/Scanner";
 
 
 type LayoutProps = {
@@ -30,7 +28,6 @@ export default async function Layout({ children }: LayoutProps) {
             {children}
           </div>
 
-          <Scanner />
           <LuxuryCartSection />
           <SpaCartSection />
         </main>

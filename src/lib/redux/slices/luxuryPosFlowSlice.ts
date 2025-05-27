@@ -28,7 +28,7 @@ export const fetchProductsByBarcode = createAsyncThunk(
   async (barcode: string, { rejectWithValue }) => {
 
     try {      
-      const { products, errorMessage, status } = await fetchProductAction(barcode)
+      const { products, errorMessage, status } = await fetchProductAction(barcode,"luxury")
       
       if (products?.length) {
         return products;
