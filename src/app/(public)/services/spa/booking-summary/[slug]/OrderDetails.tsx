@@ -1,8 +1,27 @@
 import BookingSummaryCard from "@/components/spa/BookingSummaryCard";
-import SelectedServicesCard from "@/components/spa/SelectedServicesCard";
+import { BookingDetails } from "@/types";
 import Link from "next/link";
 
-export default function OrderDetails() {
+export default function OrderDetails({ details }: { details: BookingDetails }) {
+  const CustomerDetails = [
+    { label: "Full Name", value: details.customer_name },
+    { label: "Phone Number", value: details.customer_phone },
+    { label: "Payment Method", value: "In-Store Payment" },
+    { label: "Unique Reference Code:", value: `#${details.id}` },
+  ];
+
+  const services: SpaService[] = details.booked_services.map(
+    (service) => ({
+      id: service.service.id,
+      name: service.service.name,
+      description: service.service.description,
+      price: parseFloat(service.service.price),
+      image: service.service.image || "/placeholder.svg",
+      type: "spa",
+      date: service.time,
+    })
+  );
+
   return (
     <section className="py-8  px-4">
       <div className="w-full bg-white p-6 md:p-7 rounded-lg max-w-4xl mx-auto">
@@ -26,7 +45,7 @@ export default function OrderDetails() {
         <div className="flex flex-col items-end gap-2 mt-6 md:w-[400px] ml-auto text-sm text-right">
           <div className="flex justify-between w-full">
             <span className="text-primary-midGray">Subtotal</span>
-            <span className="text-primary-midGray">₦473,598</span>
+            <span className="text-primary-midGray">{services.reduce((acc, service) => acc + service.price, 0)}</span>
           </div>
 
           <div className="flex justify-between w-full">
@@ -50,14 +69,15 @@ export default function OrderDetails() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 md:gap-11">
-          {dummyServices.map((service) => (
+          {services.map((service) => (
             // i will use the correct card later
             <BookingSummaryCard key={service.id} services={service} />
           ))}
         </div>
 
         <p className="text-primary-midGray text-xs md:text-sm mt-6 text-center mb-6">
-          Please arrive 10–15 minutes early. Kindly make your payment at the counter before your session begins.
+          Please arrive 10–15 minutes early. Kindly make your payment at the
+          counter before your session begins.
         </p>
 
         <hr className="border-primary-deepBlack/15 my-4" />
@@ -75,48 +95,4 @@ export default function OrderDetails() {
   );
 }
 
-const CustomerDetails = [
-  { label: "Full Name", value: "Dominic Evans" },
-  { label: "Phone Number", value: "+234 1234 5678" },
-  { label: "Payment Method", value: "In-Store Payment" },
-  { label: "Unique Reference Code:", value: "SPA-BOOK-20250601-1047" },
-];
 
-export const dummyServices: SpaService[] = [
-  {
-    id: 1,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 2,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 3,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-  {
-    id: 4,
-    name: "Hot Stone Therapy",
-    description:
-      "A deeply relaxing massage that eases tension, improves circulation and revitalizes the body.",
-    price: 65000,
-    type: "session",
-    image: "/images/christin-hume.png",
-  },
-];
