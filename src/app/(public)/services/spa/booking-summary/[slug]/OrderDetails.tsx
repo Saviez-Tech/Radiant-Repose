@@ -1,5 +1,4 @@
 import BookingSummaryCard from "@/components/spa/BookingSummaryCard";
-import { BookingDetails } from "@/types";
 import Link from "next/link";
 
 export default function OrderDetails({ details }: { details: BookingDetails }) {
