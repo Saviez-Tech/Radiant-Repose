@@ -122,7 +122,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         setCurrentPage(1)
     }
 
-    if (!data.length){
+    if (!data.length && !isSearching){
         return (
             <div className="h-screen flex gap-10 flex-col justify-center items-center text-center py-8 text-gray-500">
                 <AddNewProductBtn />

@@ -2,7 +2,7 @@ import StaffManagementServerWrapper from "@/components/dashboard/admin-dashboard
 import TableLikeSkeleton from "@/components/loaders/TableLikeSkeleton";
 import { Suspense } from "react";
 
-export default async function Page(){
+export default function Page(){
 
     return (
         <Suspense fallback={<TableLikeSkeleton />}>
