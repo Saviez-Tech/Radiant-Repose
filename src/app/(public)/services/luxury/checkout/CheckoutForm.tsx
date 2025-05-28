@@ -57,7 +57,7 @@ export default function CheckoutForm({ products }: { products: Product[] }) {
           }`}
           disabled={!isFormValid}
         >
-          {formControl.formState.isLoading ? (
+          {formControl.formState.isSubmitting ? (
             "loading..."
           ) : (
             <>Pay {formatNaira(totalPrice)}</>

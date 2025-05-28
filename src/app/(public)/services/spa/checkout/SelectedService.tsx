@@ -52,7 +52,7 @@ export default function SelectedService({form}:{form: UseFormReturn<SpaCheckoutF
         </div>
         
           <button disabled={isSubmitting} className="w-full py-3 mt-4 rounded-md transition-colors bg-primary-red text-white">
-        {isSubmitting ? "Loading" : "  Submit Booking"}
+        {isSubmitting ? "Loading..." : "  Submit Booking"}
         </button>
       </div>
     </section>

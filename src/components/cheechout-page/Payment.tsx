@@ -10,7 +10,7 @@ export default function Payment() {
 
   return (
     <div className="flex flex-col">
-      <h3 className="text-lg font-semibold text-primary-deepBlack">Payment:</h3>
+      <h3 className="text-lg font-semibold text-primary-deepBlack">Bank Tranfer</h3>
       <div className="border-t border-gray-400 my-4">
         <div className="py-4 w-full flex flex-col gap-4">
           
@@ -44,7 +44,7 @@ export default function Payment() {
               </div>
             </div>
 
-          <button
+          {/* <button
             className={`w-full py-3 mt-4 rounded-md transition-colors ${
               isFormValid
                 ? "bg-primary-red text-white"
@@ -58,7 +58,7 @@ export default function Payment() {
             Your personal data will be used to process your order, support your
             experience throughout this website, and for other purposes described
             in our privacy policy.
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

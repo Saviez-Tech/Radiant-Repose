@@ -36,7 +36,7 @@ export default function Hero() {
             <ExploreBtn />
 
             {/* Stats */}
-            <div className="flex gap-12 pt-8">
+            <div className="flex md:gap-10 gap-6 pt-8">
               <div>
                 <h3 className="md:text-3xl text-lg font-bold">280+</h3>
                 <p className="text-sm truncate ">Spa Sessions</p>
