@@ -10,7 +10,7 @@ import ExportDataBtn from "@/components/buttons/ExportDataBtn";
 import TimeFrameSelect from "@/components/custom-utils/TimeFrameSelect";
 import AdminDashboardTransactionHistory from "./AdminDashboardTransactionHistory";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
+import { transformLuxurySaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
 import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { validateDate } from "@/lib/helperFns/formatDate";
@@ -47,7 +47,7 @@ export default function AdminDashboardMC({ data }:{  data: {
         })
     )
 
-    const transactions = data?.sales ? transformSaleRecordsToTransactions(data?.sales) : []
+    const transactions = data?.sales ? transformLuxurySaleRecordsToTransactions(data?.sales) : []
     
     const handlePageRefresh = () => {
         setIsLoading(true)
