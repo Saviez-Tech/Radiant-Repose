@@ -1,14 +1,13 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { addService, clearAddedServices } from "@/lib/redux/slices/spaPosSlice";
+import { addService } from "@/lib/redux/slices/spaPosSlice";
 import { Radio } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { SpaServiceFilter } from "../spa/SpaServiceFilter";
 import SpinnerLoader from "../loaders/SpinnerLoader";
 import SpaServicePageHeaderSection from "./spa-section/SpaServicePageHeaderSection";
 import { searchBookingCode } from "@/actions/services.server";
-import { clear } from "console";
 import { clearCart } from "@/store/spaCartSlice";
 import PosSpaOnlineCodeFound from "./PosSpaOnlineCodeFound";
 import toast from "react-hot-toast";
