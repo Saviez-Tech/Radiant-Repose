@@ -1,5 +1,4 @@
 import createAxiosInstance from "@/lib/axios";
-import LuxuryTransactionHistoryClientContainer from "./LuxuryTransactionHistoryClientContainer";
 import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { redirect } from "next/navigation";

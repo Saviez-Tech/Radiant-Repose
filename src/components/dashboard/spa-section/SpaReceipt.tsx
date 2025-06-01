@@ -47,7 +47,6 @@ interface SpaReceiptProps {
 }
 
 export default function SpaReceipt({ 
-  orderNumber, 
   spaServices, 
   transactionCode,
   scannedItems,

@@ -3,10 +3,6 @@
 import { Copy } from "lucide-react";
 
 export default function Payment() {
- 
-  const isFormValid = false;
-
-
 
   return (
     <div className="flex flex-col">

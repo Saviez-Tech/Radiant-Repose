@@ -10,11 +10,9 @@ import { ReceiptIcon } from "../Svg";
 import AuthUserDetails from "../layout-components/AuthUserDetails";
 
 
-function DashboardDesktopSideNav({ sessionUserID }:{ sessionUserID: string }) {
+function DashboardDesktopSideNav() {
 
     const pathName = usePathname()
-
-
     const isActiveRoute = (route: string) => {
         if (route.includes("luxury") || route.includes("spa-section")) {
             return pathName.startsWith("/pos/luxury") || pathName.startsWith("/pos/spa-section");

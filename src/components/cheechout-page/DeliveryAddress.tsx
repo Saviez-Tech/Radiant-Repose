@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 import { useCountriesAndStates } from "@/hooks/useCountries";
 import { UseFormReturn } from "react-hook-form";

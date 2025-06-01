@@ -1,6 +1,5 @@
 "use client"
 
-import Image from "next/image";
 import { Pagination } from "./Pagination";
 import { useMemo, useState } from "react";
 import CustomSafeImage from "../custom-utils/SafeImage";
