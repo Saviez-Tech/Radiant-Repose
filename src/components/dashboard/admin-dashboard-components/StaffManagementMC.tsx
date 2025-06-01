@@ -19,7 +19,7 @@ export default function StaffManagementMC({ data }: { data: Staff[] }) {
 
     const selectedFilter = 'all'
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(7)
+    const [rowsPerPage, setRowsPerPage] = useState(25)
 
     const [deactivatingUser,setDeactivatingUser] = useState(false)
 

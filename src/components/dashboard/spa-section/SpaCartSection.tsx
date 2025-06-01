@@ -31,9 +31,9 @@ const SpaCartItem = ({ item }: { item: ScannedProduct }) => {
             <X size={16} />
           </button>
         </div>
-        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,false)}</p>
+        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,true)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),false)}</span>
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(calculateCartItemTotal(price,quantity),true)}</span>
           <div className="flex items-center gap-4">
             <button onClick={() => dispatch(decrementProductQuantity(barcode!))} className="text-gray-500">
               <Minus size={13} />
@@ -66,9 +66,9 @@ const SpaServiceItem = ({ service }: { service: SpaService }) => {
             <X size={16} />
           </button>
         </div>
-        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,false)}</p>
+        <p className={`${dm_mono.className} text-xs my-1`}>Price: {formatNaira(price,true)}</p>
         <div className="flex justify-between items-center">
-          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(price,false)}</span>
+          <span className={`${dm_mono.className} text-xs font-medium`}>{formatNaira(price,true)}</span>
           <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">Service</span>
         </div>
       </div>
@@ -113,7 +113,7 @@ export default function SpaCartSection() {
     ?
     null
     :
-    pathName.startsWith("/pos") && !pathName.match("/luxury")
+    pathName.startsWith("/pos") && !pathName.match("/luxury") && !pathName.includes("/transaction-history")
     ?
     <div className={`w-[270px] pt-6 flex flex-col ${hasItems ? "justify-between" : "justify-center items-center"}`}>
       {

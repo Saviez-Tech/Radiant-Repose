@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 export default function AdminDashboardTransactionHistory({ transactions, timeFilter }: { transactions: Transaction[], timeFilter: string, setTimeFilter: Dispatch<SetStateAction<string>>  }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(7)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
 
   const applyDateFilter = (transactions: Transaction[], filter: string) => {
     const today = new Date()

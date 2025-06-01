@@ -1,5 +1,6 @@
 "use server";
 
+import { getUserSession } from "@/lib/helperFns/getUserSession";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { PaymentFormValues } from "@/schemas/paymentFormSchema";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
@@ -127,3 +128,46 @@ export async function SpaCheckoutHandler(d: SpaCheckoutFormValues) {
     };
   }
 }
+
+
+
+
+
+export const searchBookingCode = async (code: string): Promise<{ data: SingleBookingDetail[], errorMessage?: string, status: number }> => {
+  try {
+    
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/search-booked-services/?code=${code}`,{
+      method: "GET",
+      headers: {
+        'Authorization': `Token ${await getUserSession()}`,
+      },
+    })
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        return {
+          data: [],
+          errorMessage: "Booking not found",
+          status: 404,
+        }
+      }
+      throw new Error(handleApiError(await response.json()))
+    }
+    
+    const data = (await response.json())
+
+
+    return {
+      data,
+      status: 200,
+    }
+  } catch (err) {
+    console.error("Error fetching code details:", err)
+    return {
+      data: [],
+      errorMessage: err instanceof Error ? err.message : "An unexpected error occurred. Please try again.",
+      status: 500,
+    }
+  }
+}
+   

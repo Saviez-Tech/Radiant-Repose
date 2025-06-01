@@ -24,9 +24,9 @@ export default function CategoriesTabSection() {
     const handleSearchChange = useCallback((value: string) => {
         dispatch(setSearchValue(value))
         
-        if (pathName !== "/pos/luxury/categories/item-barcode-lookup") {
+        if (pathName !== "/pos/luxury/item-barcode-lookup") {
             setTimeout(() => {
-                router.push("/pos/luxury/categories/item-barcode-lookup")
+                router.push("/pos/luxury/item-barcode-lookup")
             }, 0)
         }
     }, [pathName, router, dispatch])
@@ -40,6 +40,7 @@ export default function CategoriesTabSection() {
     
     return (
         !pathName.includes("/spa-section") &&
+        !pathName.includes("/transaction-history") &&
         !pathName.includes("/spa-section/item-barcode-lookup") && 
         <div className="pt-5">
             <h2 className="font-semibold text-primary-deepBlack">Categories</h2>

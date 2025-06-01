@@ -24,7 +24,7 @@ export const fetchProductAction = async (searchValue: string, productSection: "s
       },
     }) 
     :
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/spa/product/?search=${searchValue}`,{
       method: "GET",
       headers: {
         'Authorization': `Token ${await getUserSession()}`,
@@ -229,11 +229,11 @@ export async function deleteProductHandler(productId: string) {
 
 
 
-export async function addSaleHandler(saleDetails: SalePayload){
+export async function addSaleHandler(saleDetails: SalePayload, addSaleFor?: "luxury" | "spa") {
   try {
     const auth_token = await getUserSession()
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/sales/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/${addSaleFor === "spa" ? "spa/sales" : "sales"}/`, {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
@@ -247,7 +247,8 @@ export async function addSaleHandler(saleDetails: SalePayload){
       throw new Error(handleApiError(errorData))
     }
     return {
-      success: true
+      success: true,
+      data: (await response.json())
     }
   } catch (error) {
     console.error("Error completing purchase", error)

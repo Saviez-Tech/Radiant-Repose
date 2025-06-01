@@ -1,5 +1,7 @@
-import { redirect } from "next/navigation";
+import LuxuryScannedItemsClientContainer from "@/components/dashboard/LuxuryScannedItemsClientContainer";
 
 export default function Page(){
-    redirect("/pos/luxury/categories/")
+    return (
+        <LuxuryScannedItemsClientContainer />
+    )
 }

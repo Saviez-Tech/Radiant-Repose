@@ -15,7 +15,7 @@ const SpaReceiptItem = ({ items }: { items: SpaService | ScannedProduct }) => {
   return (
     <div className="py-3 border-b border-gray-100 text-[#000000]">
       <div className="flex justify-between items-start print:text-[9px]">
-        <h3 className="text-xs print:text-[9.5px] font-semibold print:font-extrabold flex-grow pr-2">{name}</h3>
+        <h3 className="text-xs capitalize print:text-[9.5px] font-semibold print:font-extrabold flex-grow pr-2">{name}</h3>
         <div className="text-right">
           <span className="text-xs print:text-[9px] print:font-bold">Total</span>
         </div>
@@ -42,12 +42,14 @@ interface SpaReceiptProps {
   date: string;
   discount?: number;
   total: string;
+  transactionCode: string | null;
   subTotal: string;
 }
 
 export default function SpaReceipt({ 
   orderNumber, 
   spaServices, 
+  transactionCode,
   scannedItems,
   date, 
   discount = 0,
@@ -127,7 +129,7 @@ export default function SpaReceipt({
               Unique Code
             </p>
             <p className="text-sm tracking-wide print:text-[10px] font-bold mt-2 text-[#000000] print:text-black">
-              SPA-{orderNumber}
+              {transactionCode || 'N/A'}
             </p>
           </div>
           <p className={`text-xs print:text-[8.5px] font-normal text-[#000000] print:text-black mt-2 px-2 ${poppins.className}`}>

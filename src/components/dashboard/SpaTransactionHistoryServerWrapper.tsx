@@ -1,21 +1,22 @@
 import createAxiosInstance from "@/lib/axios";
-import TransactionHistoryClientContainer from "./TransactionHistoryClientContainer";
+import LuxuryTransactionHistoryClientContainer from "./LuxuryTransactionHistoryClientContainer";
 import axios from "axios";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { redirect } from "next/navigation";
-import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
+import { transformSpaRecordsToSpaTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
+import SpaTransactionHistoryClientContainer from "./SpaTransactionHistoryClientContainer";
 
 const handleFetchTransactionHistory = async(userID: string ) => {
 
   if (!userID){
-    redirect("/pos/categories")
+    redirect("/pos/spa-section/services/")
   }
 
   try{
     const axiosInstance = await createAxiosInstance()
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const res = await axiosInstance.get(`${baseUrl}/api/worker/sales`)
+    const res = await axiosInstance.get(`${baseUrl}/api/worker/spa/sales/`)
     return {
       data: res.data,
       success: true
@@ -45,7 +46,7 @@ const handleFetchTransactionHistory = async(userID: string ) => {
 }
 
 
-export default async function TransactionHistoryServerWrapper({ userID }:{ userID: string }){
+export default async function LuxuryTransactionHistoryServerWrapper({ userID }:{ userID: string }){
     
     const { data, success, errorMessage } = await handleFetchTransactionHistory(userID)
 
@@ -59,6 +60,6 @@ export default async function TransactionHistoryServerWrapper({ userID }:{ userI
     }
     
     return (
-      <TransactionHistoryClientContainer data={transformSaleRecordsToTransactions(data)}  />
+      <SpaTransactionHistoryClientContainer data={transformSpaRecordsToSpaTransactions(data)}  />
     )
 }

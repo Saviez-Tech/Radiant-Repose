@@ -88,7 +88,7 @@ interface SaleRecord {
     price_at_sale: string;
     transaction: {
         id: number;
-        staff: Staff;
+        staff: number;
         timestamp: string;
         subtotal: string;
         discount: string;
@@ -96,9 +96,23 @@ interface SaleRecord {
         customer_contact: string;
     }
 }
+
+interface SaleRecordForSpa {
+    id: number;
+    transaction_code: string;
+    barcode: string | null;
+    image_url: string | null;
+    transaction_time: string;
+    staff: string;
+    product_name: string;
+    service_name: string | null;
+    quantity: number;
+    price_at_sale: string;
+}
  
 // For an array of sales:
 type SalesRecordList = SaleRecord[]
+type SalesRecordForSpaList = SaleRecordForSpa[]
 
 // Legacy Transaction type - keeping for reference or compatibility
 interface Transaction {
@@ -112,11 +126,26 @@ interface Transaction {
     time: string;
     date: string;
     amount: string;
-    staff: Staff;
+    staff: number;
     subtotal: string;
     discount: string;
     customer_name: string;
     customer_contact: string;
+}
+
+interface SpaTransaction {
+    id: string;
+    transaction_code: string;
+    barcode: string | null;
+    product_name: string | null;
+    service_name: string | null;
+    quantity: number;
+    price_at_sale: string;
+    staff: string;
+    image_url: string | null;
+    time: string;
+    date: string;
+    transaction_time: string;
 }
  
 type SalePayload = {
@@ -125,7 +154,8 @@ type SalePayload = {
     customer_name: string;
     customer_contact: string;
     scanned_items: {
-      product_id: string;
+      product_id?: number;
+      service_id?: number;
       quantity: number;
     }[]
 }
@@ -167,8 +197,10 @@ type SingleBookingDetail = {
     description: string;
     price: string;
     image: string;
+    type?: string;
   };
   time: string;
+  code?: string
 };
 
 type BookingDetails = {

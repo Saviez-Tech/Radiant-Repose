@@ -15,7 +15,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     const [selectedFilter, setSelectedFilter] = useState('all')
     const [selectedProductType, setSelectedProductType] = useState<ProductType | null>(null)
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(7)
+    const [rowsPerPage, setRowsPerPage] = useState(25)
     const [searchValue, setSearchValue] = useState("")
     const [searchedProducts, setSearchedProducts] = useState<Product[] | null>(null)
     const [isSearching, setIsSearching] = useState(false)

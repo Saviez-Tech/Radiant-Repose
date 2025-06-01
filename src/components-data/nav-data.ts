@@ -6,7 +6,7 @@ export const navItems = [
         path: "/services",
         hasDropdown: true,
         dropdownItems: [
-        // { name: "Luxury", path: "/services/luxury" },
+        { name: "Luxury", path: "/services/luxury" },
         { name: "Spa", path: "/services/spa" },
         // { name: "Pharmacy", path: "/services/pharmacy" },
         ],

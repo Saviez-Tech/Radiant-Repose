@@ -15,7 +15,7 @@ export default function Products({ products: data }: { products: Product[] }) {
   const [selectedProductType] =
     useState<ProductType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(7);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [searchValue] = useState("");
   const [searchedProducts] = useState<Product[] | null>(
     null

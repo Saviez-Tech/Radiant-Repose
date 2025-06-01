@@ -7,7 +7,7 @@ import PendingOrderCard from "./PendingOrdersCard";
 export default function PendingOrderMC({ data }: { data: OrderList[] }){
 
     const [currentPage, setCurrentPage] = useState(1)
-    const [rowsPerPage, setRowsPerPage] = useState(7)
+    const [rowsPerPage, setRowsPerPage] = useState(25)
 
     const paginatedOrderListData = useMemo(() => {
         return data.slice(
