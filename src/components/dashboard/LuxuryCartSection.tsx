@@ -87,7 +87,7 @@ export default function LuxuryCartSection() {
       customer_contact: "",
       customer_name: "",
       discount: 0,
-      scanned_items: scannedItems.map(v => ({ product_id: v.id, quantity: v.quantity })),
+      scanned_items: scannedItems.map(v => ({ product_id: Number(v.id), quantity: v.quantity })),
       subtotal: calculateCartTotal(scannedItems)
     })
 
