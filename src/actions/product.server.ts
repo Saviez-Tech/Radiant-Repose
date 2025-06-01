@@ -30,6 +30,7 @@ export const fetchProductAction = async (searchValue: string, productSection: "s
         'Authorization': `Token ${await getUserSession()}`,
       },
     })
+
     
     if (!response.ok) {
       if (response.status === 404) {
