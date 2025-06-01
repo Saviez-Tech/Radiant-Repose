@@ -105,7 +105,7 @@ export default function AdminDashboardTransactionHistory({ transactions, timeFil
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.time}</td>
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.date}</td>
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.amount}</td>
-                  <td className="p-4 text-center text-xs text-gray-600">{transaction.staff.name}</td>
+                  <td className="p-4 text-center text-xs text-gray-600">{transaction.staff}</td>
                 </tr>
               ))
             ) : (
