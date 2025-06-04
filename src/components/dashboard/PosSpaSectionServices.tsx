@@ -175,7 +175,10 @@ function PosSpaSectionServices({ services }: { services: SpaService[] }) {
                     setSearchError(null)
                 }} 
             />
-            <SpaServiceFilter services={services} onFilterChange={(v) => setFilteredServices(v)} />
+            {
+                !showBookingConfirmation && !isSearching && !searchValue &&
+                <SpaServiceFilter services={services} onFilterChange={(v) => setFilteredServices(v)} />
+            }
             {content}
         </div>
     )

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 function PosSpaOnlineCodeFound({ bookingData, handleClearBookingData }: { bookingData: SingleBookingDetail[], handleClearBookingData: () => void }) {
 
-    const { date, time } = formatDateTime(bookingData[0].time)
+    const { date, time } = bookingData.length ? formatDateTime(bookingData[0].time) : { date: "", time: ""}
     const router = useRouter()
 
     return (
