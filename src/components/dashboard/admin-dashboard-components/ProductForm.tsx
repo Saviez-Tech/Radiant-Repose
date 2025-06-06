@@ -95,26 +95,38 @@ export default function ProductForm({ formActionType, productID }: { productID?:
             error={errors.image?.message}
           />
 
-          <div className="space-y-1 max-w-full">
-            <Label htmlFor="unitPrice" className="font-medium mb-1 text-primary-dark_gray">
-              Unit Price
-            </Label>
-            <div className="flex max-w-full rounded-md focus-within:outline-offset-0 focus-within:outline focus-within:outline-[1.5px] focus-within:outline-stone-400">
-              <div className="flex items-center justify-center bg-gray-100 px-3 border border-r-0 border-gray-300 rounded-l-md">
-                <span className="text-gray-500">₦</span>
+          <div className="max-w-full col-span-1 flex gap-4 justify-between">
+            <div className="space-y-1 max-w-full w-1/2">
+              <Label htmlFor="unitPrice" className="font-medium mb-1 text-primary-dark_gray">
+                Unit Price
+              </Label>
+              <div className="flex max-w-full rounded-md focus-within:outline-offset-0 focus-within:outline focus-within:outline-[1.5px] focus-within:outline-stone-400">
+                <div className="flex items-center justify-center bg-gray-100 px-3 border border-r-0 border-gray-300 rounded-l-md">
+                  <span className="text-gray-500">₦</span>
+                </div>
+                <input
+                  type="text"
+                  id="unitPrice"
+                  placeholder="150,000"
+                  className={cn(
+                    "border rounded-r-md text-primary-dark_gray border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
+                    errors.unitPrice ? "border-red-500 focus:ring-red-500" : "border-gray-300"
+                  )}
+                  {...register("unitPrice")}
+                />
               </div>
-              <input
-                type="text"
-                id="unitPrice"
-                placeholder="150,000"
-                className={cn(
-                  "border rounded-r-md border-s-0 w-full text-sm py-3 h-12 focus:outline-none px-3",
-                  errors.unitPrice ? "border-red-500 focus:ring-red-500" : "border-gray-300"
-                )}
-                {...register("unitPrice")}
-              />
+              {errors.unitPrice && <p className="text-xs text-red-500">{errors.unitPrice.message}</p>}
             </div>
-            {errors.unitPrice && <p className="text-xs text-red-500">{errors.unitPrice.message}</p>}
+            
+            <AppInput
+              label="Quantity in Stock"
+              name="quantityInStock"
+              placeholder="Enter Quantity in Stock"
+              register={register}
+              error={errors.quantityInStock?.message}
+              type="number"
+              className="w-1/2 whitespace-nowrap"
+            />
           </div>
         </div>
 

@@ -28,7 +28,8 @@ function DashboardDesktopSideNav() {
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
                         { href: "/pos/luxury", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos/luxury") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                        { href:  `/pos/transaction-history`, label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href:  "/pos/service-verification", label: "Verification", icon: <Icon icon="stash:shield-check" width="24" height="24" className={`${isActiveRoute("/pos/service-verification") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
+                        { href:  "/pos/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (

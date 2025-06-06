@@ -110,7 +110,7 @@ export default function LuxuryCartSection() {
     ?
     null
     :
-    pathName.startsWith("/pos") && !pathName.includes("/spa-section") && !pathName.includes("/transaction-history")
+    pathName.startsWith("/pos") && !pathName.includes("/service-verification") && !pathName.includes("/spa-section") && !pathName.includes("/transaction-history")
     ?
     <div className={`w-[270px] pt-6 flex flex-col ${scannedItems && scannedItems.length ? "justify-between" : "justify-center items-center"}`}>
       {

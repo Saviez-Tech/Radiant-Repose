@@ -21,6 +21,7 @@ export type ProductFormValues = z.infer<typeof productFormSchema>;
 export const editProductFormSchema = z.object({
   image: z.instanceof(File).optional(),
   productName: z.string().min(1, "Product name is required"),
+  quantityInStock: z.string().min(1, "Quantity is required"),
   unitPrice: z.string()
     .min(1, "Unit price is required")
     .regex(/^\d+(\.\d{1,2})?$/, "Price must contain only numbers (with optional decimal point)"),

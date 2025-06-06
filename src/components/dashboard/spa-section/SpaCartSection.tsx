@@ -113,7 +113,7 @@ export default function SpaCartSection() {
     ?
     null
     :
-    pathName.startsWith("/pos") && !pathName.match("/luxury") && !pathName.includes("/transaction-history")
+    pathName.startsWith("/pos") && !pathName.match("/luxury") && !pathName.includes("/service-verification") && !pathName.includes("/transaction-history")
     ?
     <div className={`w-[270px] pt-6 flex flex-col ${hasItems ? "justify-between" : "justify-center items-center"}`}>
       {

@@ -41,6 +41,7 @@ export default function CategoriesTabSection() {
     return (
         !pathName.includes("/spa-section") &&
         !pathName.includes("/transaction-history") &&
+        !pathName.includes("/service-verification") &&
         !pathName.includes("/spa-section/item-barcode-lookup") && 
         <div className="pt-5">
             <h2 className="font-semibold text-primary-deepBlack">Categories</h2>

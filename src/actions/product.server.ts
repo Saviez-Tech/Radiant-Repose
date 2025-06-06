@@ -153,6 +153,10 @@ export async function editProductHandler(productDetails: ProductFormValues | Edi
     if (productDetails.productName) formData.append("name", productDetails.productName)
     if (productDetails.image) formData.append("image", productDetails.image)
     if (productDetails.unitPrice) formData.append("price", productDetails.unitPrice.toString())
+    if (productDetails.quantityInStock) {
+      const stockQuantity = parseInt(productDetails.quantityInStock, 10)
+      formData.append("stock_quantity", String(stockQuantity))
+    }
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${productId}/`, {
       method: "PATCH",
