@@ -300,3 +300,38 @@ export async function fulFillSaleHandler(orderID: string){
     }
   }
 }
+
+
+
+export async function verifyServiceCode(serviceCode: string) {
+  try {
+    const auth_token = await getUserSession()
+    if (!serviceCode) {
+      return {
+        success: false,
+        error: "Invalid Service Code"
+      }
+    }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/spa/services/${serviceCode}/`, {
+      method: "GET",
+      headers: {
+        Authorization: `Token ${auth_token}`,
+      }
+    })
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(handleApiError(errorData))
+    }
+    const data = await response.json()
+    return {
+      success: true,
+      data
+    }
+  } catch (error) {
+    console.error("Error verifying service code", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unknown error occurred"
+    }
+  }
+}

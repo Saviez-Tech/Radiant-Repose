@@ -210,3 +210,19 @@ type BookingDetails = {
   created_at: string;
   booked_services: SingleBookingDetail[];
 }
+
+
+interface ServiceListVerificationData {
+  id: number;
+  service_name: string;
+  service_image: string | null;
+  service_description: string;
+  service_price: string;
+  service_duration: number;
+  quantity: number;
+  price_at_sale: string;
+  status: "Pending" | "Done";
+  transaction: number;
+  product: number | null;
+  service: number;
+}

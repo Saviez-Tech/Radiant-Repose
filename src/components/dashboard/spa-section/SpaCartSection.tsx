@@ -21,7 +21,7 @@ const SpaCartItem = ({ item }: { item: ScannedProduct }) => {
   return (
     <div className="flex items-center py-3 border-b border-gray-100 text-[#1F1F1F]">
       <div className="w-14 h-14 rounded-xl overflow-hidden mr-4">
-        <CustomSafeImage src={image_url} alt={name} width={40} height={40} className="w-full h-full object-cover"  />
+        <CustomSafeImage src={image_url || "/images/static/spa-placeholder.svg"} alt={name} width={40} height={40} className="w-full h-full object-cover"  />
       </div>
       
       <div className="flex-grow">
