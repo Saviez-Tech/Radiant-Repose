@@ -20,13 +20,6 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     const [searchedProducts, setSearchedProducts] = useState<Product[] | null>(null)
     const [isSearching, setIsSearching] = useState(false)
     
-    const categoryFilteredProducts = useMemo(() => {
-        if (section) {
-            return data;
-        }
-        return data.filter(product => product.category === section)
-    }, [data, section])
-    
     const handleSearch = async (value: string) => {
         // Update search value first
         setSearchValue(value)
@@ -69,8 +62,8 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
         if (searchValue && searchedProducts !== null) {
             return searchedProducts;
         }
-        return categoryFilteredProducts;
-    }, [searchValue, searchedProducts, categoryFilteredProducts])
+        return data;
+    }, [searchValue, searchedProducts, data, section])
     
     // Then apply additional filters based on selectedFilter and selectedProductType
     // Only if we're not showing search results
@@ -109,7 +102,7 @@ export default function ProductManagementMC({ data, section }: { data: Product[]
     // Reset pagination when filter changes or search changes
     useEffect(() => {
         setCurrentPage(1)
-    }, [selectedFilter, selectedProductType, section, searchValue])
+    }, [selectedFilter, selectedProductType, searchValue])
    
     // Handle page change
     const handlePageChange = (page: number) => {

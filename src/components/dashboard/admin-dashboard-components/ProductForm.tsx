@@ -14,8 +14,9 @@ import FileUpload from "@/components/custom-utils/FileUpload";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppSelector } from "@/lib/redux/hooks";
+import { useEffect, useState } from "react";
 
-export default function ProductForm({ formActionType, productID }: { productID?: string, formActionType: "add" | "edit" }) {
+export default function ProductForm({ formActionType, productID, branch }: { branch?: string, productID?: string, formActionType: "add" | "edit" }) {
 
   
   const { branches } = useAppSelector(store => store.storeBranches)
@@ -36,7 +37,7 @@ export default function ProductForm({ formActionType, productID }: { productID?:
       id: productToEdit?.id || "",
       image: undefined,
       productName: productToEdit?.name || "",
-      branch: productToEdit?.branch,
+      branch: Number(branch),
       unitPrice: productToEdit?.price.toString() || "",
       productSection: productToEdit?.category || "",
       category: productToEdit?.productType || "",
@@ -63,10 +64,10 @@ export default function ProductForm({ formActionType, productID }: { productID?:
   ]
 
   const onSubmit: SubmitHandler<ProductFormValues | EditProductFormValues> = async(data) => {
-    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID || "")
+    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID || "", Number(branch)!)
     if (success){
       toast.success(`Product ${formActionType === "add" ? "Added" : "Edited"}`)
-      router.push("/admin/product-management/luxury-collection")
+      router.back()
     }
     else if (error){
       toast.error(error)

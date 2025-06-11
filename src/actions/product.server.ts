@@ -4,6 +4,7 @@ import { getUserSession } from "@/lib/helperFns/getUserSession";
 import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import { EditProductFormValues, ProductFormValues } from "@/schemas/addProduct.schema";
 import { revalidatePath } from "next/cache";
+import { fetchStoreBranches } from "./auth.server";
 
 
 type FetchProductResult = {
@@ -90,7 +91,7 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
       description: "description" in productDetails ? productDetails.description : "",
       stock_quantity: "quantityInStock" in productDetails ? parseInt(productDetails.quantityInStock, 10) : 0,
       barcode: "barcode" in productDetails ? productDetails.barcode : "",
-      branch: "branch" in productDetails ? parseInt(productDetails.branch) : 1,
+      branch: "branch" in productDetails ? Number(productDetails.branch) : 1,
     }
 
     const formData = new FormData()
@@ -136,11 +137,18 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
 
 
 
-export async function editProductHandler(productDetails: ProductFormValues | EditProductFormValues, productId: string) {
+export async function editProductHandler(productDetails: ProductFormValues | EditProductFormValues, productId: string, productBranch: Number) {
   if (!productId) {
     return {
       success: false,
       error: "Invalid Product ID"
+    }
+  }
+
+  if (!productBranch) {
+    return {
+      success: false,
+      error: "Invalid Product Branchu"
     }
   }
 
@@ -158,13 +166,36 @@ export async function editProductHandler(productDetails: ProductFormValues | Edi
       formData.append("stock_quantity", String(stockQuantity))
     }
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${productId}/`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Token ${auth_token}`,
-      },
-      body: formData
-    })
+    let response : Response;
+
+    const { data: branchData } = await fetchStoreBranches()
+    const branch : StoreBranch = branchData.find((v: StoreBranch) => v.id === productBranch)
+    const isSpa = branch.name.toLowerCase().includes('spa')
+    const isLuxury = branch.name.toLowerCase().includes('luxury')
+
+    if (isSpa) {
+      response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/spa/products/${productId}/`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Token ${auth_token}`,
+        },
+        body: formData
+      })
+    } else if(isLuxury){
+      response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products/${productId}/`, {
+        method: "PATCH",
+        headers: {
+          Authorization: `Token ${auth_token}`,
+        },
+        body: formData
+      })
+    }else {
+      return {
+        success: false,
+        error: "Invalid Product Branch"
+      }
+    }
+
 
     if (!response.ok) {
       const errorData = await response.json()
@@ -174,7 +205,7 @@ export async function editProductHandler(productDetails: ProductFormValues | Edi
     const data = await response.json()
 
     // Revalidate product management page
-    revalidatePath("/admin/product-management/luxury-collection")
+    revalidatePath(`/admin/product-management/${isSpa ? "spa-collection" : "luxury-collection"}/`)
 
     return {
       success: true,
@@ -329,6 +360,42 @@ export async function verifyServiceCode(serviceCode: string) {
     }
   } catch (error) {
     console.error("Error verifying service code", error)
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "An unknown error occurred"
+    }
+  }
+}
+
+
+
+
+export async function markServiceDone(serviceId: number) {
+  try {
+    const auth_token = await getUserSession()
+    if (!serviceId) {
+      return {
+        success: false,
+        error: "Invalid Service ID"
+      }
+    }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/spa/mark_done/${serviceId}/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Token ${auth_token}`,
+      }
+    })
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(handleApiError(errorData))
+    }
+    const data = await response.json()
+    return {
+      success: true,
+      data
+    }
+  } catch (error) {
+    console.error("Error marking service as done", error)
     return {
       success: false,
       error: error instanceof Error ? error.message : "An unknown error occurred"

@@ -4,10 +4,26 @@ import createAxiosInstance from "@/lib/axios";
 import ProductManagementMC from "./ProductManagementMC";
 
 
-export async function fetchProductsData() {
+export async function fetchProductsData(section: "luxury-collection" | "spa-collection" | "pharmacy-collection") {
   try {
     const axiosInstance = await createAxiosInstance()
-    const res = await axiosInstance.get(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/products`)
+    const getApiPath = (section: string): string => {
+      switch (section) {
+        case "luxury-collection":
+          return "admin";
+        case "spa-collection":
+          return "admin/spa";
+        case "pharmacy-collection":
+          return "admin/pharmacy";
+        default:
+          return "admin";
+      }
+    }
+
+    const res = await axiosInstance.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/${getApiPath(section)}/products`
+    )
+    
     return {
       success: true,
       data: res.data
@@ -34,8 +50,8 @@ export async function fetchProductsData() {
   }
 }
 
-export default async function ProductManagementServerWrapper({ section }:{ section: string}) {
-  const { success, data, errorMessage } = await fetchProductsData()
+export default async function ProductManagementServerWrapper({ section }:{ section: "luxury-collection" | "spa-collection" | "pharmacy-collection"}) {
+  const { success, data, errorMessage } = await fetchProductsData(section)
   
   if (!success) {
     return (
