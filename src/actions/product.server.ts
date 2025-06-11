@@ -148,7 +148,7 @@ export async function editProductHandler(productDetails: ProductFormValues | Edi
   if (!productBranch) {
     return {
       success: false,
-      error: "Invalid Product Branchu"
+      error: "Invalid Product Branch"
     }
   }
 
