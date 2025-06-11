@@ -1,6 +1,5 @@
 "use client"
 
-import { storeLocation } from "@/components-data/store-locations";
 import {
   Select,
   SelectContent,

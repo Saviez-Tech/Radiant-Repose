@@ -1,4 +1,3 @@
-import { productManagementSections } from "@/components-data/productsManagementSectionsLinkData";
 import ProductManagementServerWrapper from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 import ProductListSkeleton from "@/components/loaders/ProductListSkeleton";
 import { Suspense } from "react";

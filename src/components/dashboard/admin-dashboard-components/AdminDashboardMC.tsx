@@ -14,7 +14,6 @@ import { transformLuxurySaleRecordsToTransactions } from "@/lib/helperFns/transf
 import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { validateDate } from "@/lib/helperFns/formatDate";
-import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function AdminDashboardMC({ data, branchID }:{ branchID?: string,  data: {
     categorySales: SalesSummaryData;

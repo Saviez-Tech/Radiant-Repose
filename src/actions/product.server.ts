@@ -13,7 +13,7 @@ type FetchProductResult = {
   status?: number;
 }
   
-export const fetchProductAction = async (searchValue: string, productSection: "spa" | "luxury"): Promise<FetchProductResult> => {
+export const fetchProductAction = async (searchValue: string, productSection: "spa" | "luxury" = "luxury"): Promise<FetchProductResult> => {
   try {
     
     const response = 
@@ -137,7 +137,7 @@ export async function addProductHandler(productDetails: ProductFormValues | Edit
 
 
 
-export async function editProductHandler(productDetails: ProductFormValues | EditProductFormValues, productId: string, productBranch: Number) {
+export async function editProductHandler(productDetails: ProductFormValues | EditProductFormValues, productId: string, productBranch: number) {
   if (!productId) {
     return {
       success: false,

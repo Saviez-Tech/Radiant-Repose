@@ -14,7 +14,6 @@ import FileUpload from "@/components/custom-utils/FileUpload";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppSelector } from "@/lib/redux/hooks";
-import { useEffect, useState } from "react";
 
 export default function ProductForm({ formActionType, productID, branch }: { branch?: string, productID?: string, formActionType: "add" | "edit" }) {
 
