@@ -6,7 +6,7 @@ import { Suspense } from "react";
 import CheckoutSuccessfulModal from "@/components/modals/CheckoutSuccessfulModal";
 
 export default async function Page() {
-  const { success, data, errorMessage } = await fetchProductsData();
+  const { success, data, errorMessage } = await fetchProductsData("luxury-collection");
 
   if (!success) {
     return (
