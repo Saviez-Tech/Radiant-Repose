@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link";
 import { Modal as MuiModal } from "@mui/material";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
