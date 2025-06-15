@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { Toaster } from "react-hot-toast";
 import AuthUserPersistor from "@/components/layout-components/AuthUserPersistor";
 import { cookies } from "next/headers";
+import HubSpotChat from "@/HubSpotChat";
 
 
 export const metadata : Metadata = {
@@ -37,6 +38,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <HubSpotChat />
       <ReduxStoreProvider>
         <body
           className={`${poppins.className} min-h-screen bg-white`}
