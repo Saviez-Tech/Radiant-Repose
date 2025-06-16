@@ -38,7 +38,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      {/* <HubSpotChat /> */}
+      <HubSpotChat />
       <ReduxStoreProvider>
         <body
           className={`${poppins.className} min-h-screen bg-white`}
