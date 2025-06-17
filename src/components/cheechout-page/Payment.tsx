@@ -4,7 +4,7 @@ import { Copy } from "lucide-react";
 
 export default function Payment() {
  
-  const isFormValid = false;
+  // const isFormValid = false;
 
 
 

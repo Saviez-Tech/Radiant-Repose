@@ -5,10 +5,47 @@ import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa"
 import Logo from "./Logo"
 import LogoSrc from "../../public-assets/logo/Logo2.svg"
 import Link from "next/link"
+import { SubmitHandler, useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import { newsletterHandler } from "@/actions/newsletter.server"
+import AppInput from "../custom-utils/AppInput"
 
+type NewsletterFormData = {
+  email: string;
+};
 export default function Footer() {
+     const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset
+      } = useForm<NewsletterFormData>()
 
     const pathName = usePathname()
+
+
+const handleFormSubmit: SubmitHandler<NewsletterFormData> = async (data) => {
+  try {
+    const result = await newsletterHandler(data.email);
+    console.log({ result });
+
+    if (!result.success) {
+      toast.error(result.error || "Something went wrong");
+      return;
+    }
+
+    toast.success("You've successfully subscribed to our newsletter!");
+    reset();
+  } catch (err) {
+    console.error("Newsletter error in component:", err);
+
+    if (err instanceof Error) {
+      toast.error(err.message);
+    } else {
+      toast.error("An unexpected error occurred");
+    }
+  }
+};
 
     return (
         pathName.startsWith("/auth") || 
@@ -25,16 +62,18 @@ export default function Footer() {
                         Sign up to our newsletter and enjoy timely updates revolving around Wellness, Beauty and Luxury
                     </p>
                 </div>
-                <div className="flex flex-col gap-4 md:items-end">
-                    <input
+                <form onSubmit={handleSubmit(handleFormSubmit)} className="flex flex-col gap-4 md:items-end">
+                    <AppInput
+                        {...register("email", { required: true })}
+                        register={register}
                         type="email"
                         placeholder="Enter your email address"
                         className="px-4 py-3 rounded-md text-black w-full md:w-[400px] focus:outline-none"
                     />
-                    <button className="bg-primary-red hover:bg-red-600 text-primary-base_color1 font-semibold px-6 py-3 rounded-md transition">
-                        Get Started
+                    <button  className="bg-primary-red hover:bg-red-600 text-primary-base_color1 font-semibold px-6 py-3 rounded-md transition">
+                       {isSubmitting ? "Loading..." : "Get Started"}
                     </button>
-                </div>
+                </form>
             </div>
 
             <div className="border-t border-primatext-primary-base_color1/30 my-10"></div>
