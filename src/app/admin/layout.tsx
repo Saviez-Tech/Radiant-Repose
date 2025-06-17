@@ -1,10 +1,16 @@
 import AdminDashboardHeaderSection from "@/components/dashboard/admin-dashboard-components/AdminDashboardHeaderSection";
 import AdminDashboardSideNav from "@/components/dashboard/admin-dashboard-components/AdminDashboardSideNav";
+import { Metadata } from "next";
 import { ReactNode } from "react";
 
 
 type LayoutProps = {
   children: ReactNode;
+}
+
+
+export const metadata : Metadata = {
+  title: 'Radiant Repose | Admin Managing Board'
 }
 
 export default function Layout({ children }: LayoutProps) {

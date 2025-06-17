@@ -86,7 +86,7 @@ export default function ProductCard3({ product, onSearch, searchValue }: { produ
             <button aria-label="edit" onClick={(e) => {
               e.stopPropagation()
               dispatch(setProductToEdit(product))
-              router.push(`/admin/product-management/edit-product/${product.id}`)
+              router.push(`/admin/product-management/edit-product/${product.id}?branch=${product.branch}`)
             }} className="bg-yellow-400 text-primary-base_color1 rounded-full font-semibold p-1 w-6 h-6 flex items-center justify-center">
                 <Icon icon="iconamoon:edit-light" width="24" height="24" />
             </button>

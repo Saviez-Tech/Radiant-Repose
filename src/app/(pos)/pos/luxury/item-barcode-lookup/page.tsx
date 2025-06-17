@@ -49,7 +49,7 @@ export default function ItemBarCodeManualLookupPage() {
     (barcode: string) => {
       if (items.length === 1) {
         dispatch(removeSearchValue());
-        router.push("/pos/luxury/categories");
+        router.push("/pos/luxury");
         return;
       }
 
@@ -68,7 +68,7 @@ export default function ItemBarCodeManualLookupPage() {
   useEffect(() => {
     setIsLoading(true);
     if (!searchValue) {
-      router.push("/pos/luxury/categories");
+      router.push("/pos/luxury");
     }
     const debounce = setTimeout(() => {
       if (
@@ -119,7 +119,7 @@ export default function ItemBarCodeManualLookupPage() {
         if (updatedItems.length === 0) {
           timer = setTimeout(() => {
             dispatch(removeSearchValue());
-            router.push("/pos/luxury/categories");
+            router.push("/pos/luxury");
           }, 0);
 
           return updatedItems;

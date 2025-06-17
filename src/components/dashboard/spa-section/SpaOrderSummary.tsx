@@ -1,26 +1,62 @@
 "use client"
 
-import { calculateCartTotal, calculateCartTotalWithDiscountAndBalance, calculateGrandTotalWithDiscount, calculateServicesTotal, calculateServicesTotalWithDiscount } from '@/lib/helperFns/calculateTotal';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { calculateCartTotal, calculateCartTotalWithDiscountAndBalance, calculateGrandTotal, calculateGrandTotalWithDiscount, calculateServicesTotal, calculateServicesTotalWithDiscount } from '@/lib/helperFns/calculateTotal';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { formatNaira } from '@/lib/helperFns/formatNumber';
 import { useState } from 'react';
 import { dm_mono } from '@/fonts';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import SpaSummarySuccessModal from '@/components/modals/SpaSummarySuccessModal';
 import ReceiptPrinter from '@/lib/ReceiptPrinter';
+import { Loader2 } from 'lucide-react';
+import { addSaleHandler } from '@/actions/product.server';
+import toast from 'react-hot-toast';
+import { clearCart } from '@/store/spaCartSlice';
+import { useRouter } from 'next/navigation';
 
 const SpaOrderSummary = () => {
 
     const [showSuccessModal, setShowSuccessModal] = useState(false)
     const [showReceiptModal, setShowReceiptModal] = useState(false)
+    const [transactionCode, setTransactionCode] = useState<string | null>(null)
     const [selectedPayment, setSelectedPayment] = useState('')
     const { addedServices, scannedProducts, orderNumber } = useAppSelector(store => store.spaPosFlow)    
+    const [isProcessing, setIsProcessing] = useState(false)
+
+    const router = useRouter()
+    const dispatch = useAppDispatch()
     
     const paymentMethods = [
         'Cash',
         'Card',
         'Bank Transfer',
     ]
+    
+    const handlePaymentConfirmation = async () => {
+        setIsProcessing(true)
+        if (!selectedPayment) {
+            return;
+        }
+        
+        const { success, error, data } = await addSaleHandler({
+            customer_contact: "",
+            customer_name: "",
+            discount: 0,
+            scanned_items: [...scannedProducts.map(v => ({ product_id: Number(v.id), quantity: v.quantity })), ...addedServices.map(v => ({ service_id: Number(v.id), quantity: 1 }))],
+            subtotal: calculateGrandTotal(scannedProducts, addedServices),
+        }, "spa")
+
+        if(success){
+            setShowSuccessModal(true)
+            console.log(data)
+            setTransactionCode(data.code)
+        }else{
+            toast.error(error || "Error Processing Sale")
+        }
+
+        setIsProcessing(false)
+    }
+
 
     return (
         <div className="w-full max-w-sm mx-auto mt-8 text-[#1F1F1F] bg-white">
@@ -104,15 +140,23 @@ const SpaOrderSummary = () => {
             </div>
             
             <button
-                onClick={() => setShowSuccessModal(true)}
-                className={`w-full py-3 px-4 text-white font-medium rounded-md transition-colors ${
+                onClick={handlePaymentConfirmation}
+                className={`w-full flex items-center justify-center gap-1 py-3 px-4 text-white font-medium rounded-md transition-colors ${
                 selectedPayment
                     ? 'bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2'
                     : 'bg-red-400 cursor-not-allowed'
                 }`}
-                disabled={!selectedPayment}
+                disabled={!selectedPayment || isProcessing}
             >
-                Confirm Payment
+                {
+                    isProcessing ?
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Processing</span>
+                    </>
+                    :
+                    "Confirm Payment"
+                }
             </button>
 
             <SpaSummarySuccessModal open={showSuccessModal} onClose={() => {
@@ -125,12 +169,19 @@ const SpaOrderSummary = () => {
                 orderNumber={orderNumber || ""}
                 print={showReceiptModal}
                 setPrint={setShowReceiptModal}
-                printFor="luxury"
-                handleClose={() => setShowReceiptModal(false)}
+                printFor="spa"
+                handleClose={() => {
+                    dispatch(clearCart())
+                    setShowReceiptModal(false)
+                    setTransactionCode(null)
+                    router.push("/pos/spa-section/services")
+                }}
                 scannedItems={scannedProducts}
+                services={addedServices}
                 subTotal={calculateCartTotal(scannedProducts)}
                 total={calculateCartTotalWithDiscountAndBalance(scannedProducts,0,0)}
                 amountPaid={0}
+                transactionCode={transactionCode}
                 discount={0}
             />
         </div>

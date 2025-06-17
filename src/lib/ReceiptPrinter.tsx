@@ -24,11 +24,13 @@ interface ReceiptPrinterProps {
   subTotal: number,
   handleClose: () => void;
   print: boolean,
+  transactionCode?: string | null;
   setPrint: Dispatch<SetStateAction<boolean>>
 }
 
 export default function ReceiptPrinter({ 
   orderNumber, 
+  transactionCode,
   scannedItems,
   printFor,
   services = [],
@@ -223,6 +225,7 @@ export default function ReceiptPrinter({
               date={date}
               orderNumber={orderNumber}
               spaServices={services}
+              transactionCode={transactionCode || null}
               scannedItems={scannedItems}
               subTotal={formatNaira(subTotal, true, true)}
               total={formatNaira(total, true, true)}

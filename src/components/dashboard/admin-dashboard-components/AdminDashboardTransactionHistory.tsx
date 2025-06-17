@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
 
 export default function AdminDashboardTransactionHistory({ transactions, timeFilter }: { transactions: Transaction[], timeFilter: string, setTimeFilter: Dispatch<SetStateAction<string>>  }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(7)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
 
   const applyDateFilter = (transactions: Transaction[], filter: string) => {
     const today = new Date()
@@ -105,7 +105,7 @@ export default function AdminDashboardTransactionHistory({ transactions, timeFil
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.time}</td>
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.date}</td>
                   <td className="p-4 text-center text-xs text-gray-600">{transaction.amount}</td>
-                  <td className="p-4 text-center text-xs text-gray-600">{transaction.staff.name}</td>
+                  <td className="p-4 text-center text-xs text-gray-600">{transaction.staff}</td>
                 </tr>
               ))
             ) : (

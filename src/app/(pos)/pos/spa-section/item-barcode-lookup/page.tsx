@@ -66,9 +66,8 @@ export default function ItemBarCodeManualLookupPage() {
 
   // Search value effect
   useEffect(() => {
-    setIsLoading(true)
     if (!searchValue) {
-      router.push("/pos/spa-section")
+      router.push("/pos/spa-section/products")
     }
     const debounce = setTimeout(() => {
       if (

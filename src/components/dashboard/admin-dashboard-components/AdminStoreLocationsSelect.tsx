@@ -1,6 +1,5 @@
 "use client"
 
-import { storeLocation } from "@/components-data/store-locations";
 import {
   Select,
   SelectContent,
@@ -8,11 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAppSelector } from "@/lib/redux/hooks";
 import { Dispatch, SetStateAction } from "react";
 
 
 
 export default function AdminStoreLocationsSelect({ selectedStore, setSelectedStore }:{ selectedStore: string, setSelectedStore: Dispatch<SetStateAction<string>>}){
+
+    const { branches } = useAppSelector(store => store.storeBranches)
 
     return(
         <Select 
@@ -24,8 +26,8 @@ export default function AdminStoreLocationsSelect({ selectedStore, setSelectedSt
             </SelectTrigger>
             <SelectContent>
                 {
-                    storeLocation.map((v,i) => (
-                        <SelectItem key={i} value={v.branch.toString()}>{v.location}</SelectItem>
+                    branches.map((v,i) => (
+                        <SelectItem key={i} value={v.id.toString()}>{v.name}, {v.location}</SelectItem>
                     ))
                 }
             </SelectContent>

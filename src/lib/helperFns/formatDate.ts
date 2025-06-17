@@ -76,3 +76,34 @@ export const getDateForFilter = (filter: string): string => {
       return validateDate(filter)
   }
 }
+
+
+export const formatDateTime = (dateString: string): { date: string; time: string } => {
+  try {
+    const dateObj = new Date(dateString)
+    
+    if (isNaN(dateObj.getTime())) {
+      console.warn('Invalid date string provided:', dateString)
+      return { date: 'Invalid Date', time: 'Invalid Time' };
+    }
+    
+    // Format date as MM/DD/YYYY
+    const date = dateObj.toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    })
+    
+    // Format time as HH:MM AM/PM
+    const time = dateObj.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    })
+    
+    return { date, time };
+  } catch (error) {
+    console.error('Error formatting date:', error)
+    return { date: 'Error', time: 'Error' };
+  }
+}

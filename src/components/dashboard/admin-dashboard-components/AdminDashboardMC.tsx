@@ -10,12 +10,12 @@ import ExportDataBtn from "@/components/buttons/ExportDataBtn";
 import TimeFrameSelect from "@/components/custom-utils/TimeFrameSelect";
 import AdminDashboardTransactionHistory from "./AdminDashboardTransactionHistory";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { transformSaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
+import { transformLuxurySaleRecordsToTransactions } from "@/lib/helperFns/transformSaleRecordsToTransactions";
 import AdminDashboardSkeleton from "@/components/loaders/DashboardSkeleton";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { validateDate } from "@/lib/helperFns/formatDate";
 
-export default function AdminDashboardMC({ data }:{  data: {
+export default function AdminDashboardMC({ data, branchID }:{ branchID?: string,  data: {
     categorySales: SalesSummaryData;
     sales: SalesRecordList;
     totalGoodsSold: StatData;
@@ -23,10 +23,9 @@ export default function AdminDashboardMC({ data }:{  data: {
   } | undefined }){
 
       
-      const [selectedStore,setSelectedStore] = useState<string>(storeLocation[0].branch.toString())
-      const [timeFilter, setTimeFilter] = useState<string>(data?.filter || validateDate(new Date().toISOString()))
-      const [isLoading, setIsLoading] = useState(false)
-      console.log(timeFilter)
+    const [selectedStore,setSelectedStore] = useState<string>(branchID ?? storeLocation[0].branch.toString())
+    const [timeFilter, setTimeFilter] = useState<string>(data?.filter || validateDate(new Date().toISOString()))
+    const [isLoading, setIsLoading] = useState(false)
     
     const router = useRouter()
     const pathname = usePathname()
@@ -47,11 +46,11 @@ export default function AdminDashboardMC({ data }:{  data: {
         })
     )
 
-    const transactions = data?.sales ? transformSaleRecordsToTransactions(data?.sales) : []
+    const transactions = data?.sales ? transformLuxurySaleRecordsToTransactions(data?.sales) : []
     
     const handlePageRefresh = () => {
         setIsLoading(true)
-        const newUrl = `${pathname}?filter=${timeFilter}`
+        const newUrl = `${pathname}?filter=${timeFilter}&branchID=${selectedStore}`
         router.push(newUrl)
     }
 
@@ -64,6 +63,10 @@ export default function AdminDashboardMC({ data }:{  data: {
             handlePageRefresh()
         }
     }, [timeFilter, data?.filter])
+
+    useEffect(() => {
+        handlePageRefresh()
+    }, [selectedStore])
 
     if (isLoading) {
         return <AdminDashboardSkeleton />

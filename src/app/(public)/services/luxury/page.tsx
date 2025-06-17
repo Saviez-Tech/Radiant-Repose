@@ -5,7 +5,7 @@ import Products from "./Products";
 
 export default async function Page() {
 
-  const { success, data, errorMessage } = await fetchProductsData()
+  const { success, data, errorMessage } = await fetchProductsData("luxury-collection")
   
   if (!success) {
     return (

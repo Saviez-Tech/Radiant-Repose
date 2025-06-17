@@ -3,7 +3,6 @@ import DashboardDesktopSideNav from "@/components/dashboard/DashboardDesktopSide
 import { ReactNode } from "react";
 import LuxuryCartSection from "@/components/dashboard/LuxuryCartSection";
 import CategoriesTabSection from "@/components/dashboard/CategoriesTabSection";
-import { getUserSessionID } from "@/lib/helperFns/getUserSession";
 import SpaCartSection from "@/components/dashboard/spa-section/SpaCartSection";
 
 
@@ -13,11 +12,10 @@ type LayoutProps = {
 
 export default async function Layout({ children }: LayoutProps) {
 
-  const sessionUserID = await getUserSessionID()
   return (
     <div className="flex md:min-h-screen bg-gray-50/80  md:px-0">
       <div className="flex-grow">
-        <DashboardDesktopSideNav sessionUserID={sessionUserID} />
+        <DashboardDesktopSideNav />
       </div>
 
       <div className="flex-grow relative md:overflow-y-auto w-full md:pt-28 px-1">

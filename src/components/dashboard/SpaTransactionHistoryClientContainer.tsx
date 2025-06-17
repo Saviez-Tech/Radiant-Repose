@@ -1,12 +1,13 @@
 "use client"
 
-import Image from "next/image";
 import { Pagination } from "./Pagination";
 import { useMemo, useState } from "react";
+import CustomSafeImage from "../custom-utils/SafeImage";
+import { formatNaira } from "@/lib/helperFns/formatNumber";
 
-export default function TransactionHistoryClientContainer({ data }: { data: Transaction[] }) {
+export default function SpaTransactionHistoryClientContainer({ data }: { data: SpaTransaction[] }) {
   const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(7)
+  const [rowsPerPage, setRowsPerPage] = useState(25)
 
   // Calculate pagination
   const paginatedTransactions = useMemo(() => {
@@ -28,8 +29,9 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
     setCurrentPage(1)
   }
 
+  
   return (
-    <div className="w-full py-16">
+    <div className="w-full py-14">
       <h2 className="text-lg font-medium text-primary-deepBlack mb-4">Transaction History</h2>
       
       <div className="overflow-x-auto">
@@ -37,7 +39,7 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
               <thead className="bg-[#F8F8F8]">
                   <tr>
                       <th className="text-left p-4 text-[13px] font-semibold text-gray-600">Barcode No.</th>
-                      <th className="text-left p-4 text-[13px] font-semibold text-gray-600">Product Name</th>
+                      <th className="text-left p-4 text-[13px] font-semibold text-gray-600">Product/Service Name</th>
                       <th className="text-center p-4 text-[13px] font-semibold text-gray-600">Quantity</th>
                       <th className="text-center p-4 text-[13px] font-semibold text-gray-600">Time</th>
                       <th className="text-center p-4 text-[13px] font-semibold text-gray-600">Date</th>
@@ -49,23 +51,23 @@ export default function TransactionHistoryClientContainer({ data }: { data: Tran
                   {paginatedTransactions.length > 0 ? (
                       paginatedTransactions.map((transaction) => (
                           <tr key={transaction.id} className="border-t hover:bg-gray-50">
-                              <td className="p-4 text-sm text-gray-600">{transaction.barcode}</td>
+                              <td className="p-4 text-sm text-gray-600">{transaction.barcode || "NO_BARCODE"}</td>
                               <td className="p-4">
                                   <div className="flex items-center gap-3">
-                                      <Image
-                                          src={transaction.image_url}
-                                          alt={transaction.name}
+                                      <CustomSafeImage
+                                          src={transaction.image_url as string}
+                                          alt={transaction.product_name || transaction.service_name || "Spa Item"}
                                           width={40}
                                           height={40}
                                           className="w-10 h-10 rounded-md object-cover"
-                                      />
-                                      <span className="text-xs text-gray-700">{transaction.name}</span>
+                                        />
+                                      <span className="text-xs text-gray-700">{transaction.product_name || transaction.service_name}</span>
                                   </div>
                               </td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.quantity}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.time}</td>
                               <td className="p-4 text-center text-xs text-gray-600">{transaction.date}</td>
-                              <td className="p-4 text-center text-xs text-gray-600">{transaction.amount}</td>
+                              <td className="p-4 text-center text-xs text-gray-600">{formatNaira(parseInt(transaction.price_at_sale) * transaction.quantity)}</td>
                               <td className="p-4 text-center text-xs text-gray-600">0</td>
                           </tr>
                       ))

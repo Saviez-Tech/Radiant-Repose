@@ -3,11 +3,12 @@ import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import createAxiosInstance from "@/lib/axios";
 import AdminDashboardMC from "./AdminDashboardMC";
 import { dateToString } from "@/lib/helperFns/formatDate";
+import { fetchStoreBranches } from "@/actions/auth.server";
 
 
 export const revalidate = 1800 ;
 
-export async function fetchDashboardData(filter?: string): Promise<{
+export async function fetchDashboardData(filter?: string, branchID?: string): Promise<{
   success: boolean;
   data?: {
     categorySales: SalesSummaryData;
@@ -16,20 +17,36 @@ export async function fetchDashboardData(filter?: string): Promise<{
   };
   errorMessage?: string;
 }> {
-  
+ 
   try {
     const axiosInstance = await createAxiosInstance()
     const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
     
-    // Fetch all data concurrently for better performance
+    // Determine if we should use spa or luxury endpoints
+    let apiPath = 'admin'; // Default to luxury
+    
+    if (branchID) {
+      // Fetch branches to determine the type
+      const { data: branches, success: branchSuccess } = await fetchStoreBranches()
+      
+      if (branchSuccess && branches) {
+        const branchIdNum = parseInt(branchID);
+        const branch = branches.find((branch: Branch) => branch.id === branchIdNum);
+        
+        // Check if branch name contains 'spa' to determine API path
+        if (branch && branch.name.toLowerCase().includes('spa')) {
+          apiPath = 'admin/spa';
+        }
+        // If branch contains 'luxury' or no keywords found, keep default 'admin'
+      }
+    }
+   
     const [categorySalesRes, salesRes, totalGoodsSoldRes] = await Promise.all([
-      axiosInstance.get(`${baseUrl}/api/admin/category-sales-report/?filter=${filter}`),
-      axiosInstance.get(`${baseUrl}/api/admin/sales/?date=${filter}`),
-      axiosInstance.get(`${baseUrl}/api/admin/total-goods-sold/?filter=${filter}`)
+      axiosInstance.get(`${baseUrl}/api/${apiPath}/category-sales-report/?filter=${filter}`),
+      axiosInstance.get(`${baseUrl}/api/${apiPath}/sales/?date=${filter}`),
+      axiosInstance.get(`${baseUrl}/api/${apiPath}/total-goods-sold/?filter=${filter}`)
     ])
-
-
+    
     return {
       success: true,
       data: {
@@ -40,7 +57,7 @@ export async function fetchDashboardData(filter?: string): Promise<{
     };
   } catch (err) {
     let errorMessage = "An error occurred while fetching dashboard data";
-    
+   
     if (axios.isAxiosError(err)) {
       if (err.response) {
         console.log(err.response.data)
@@ -55,7 +72,7 @@ export async function fetchDashboardData(filter?: string): Promise<{
       console.error("Non-Axios error:", err);
       errorMessage = err.message;
     }
-    
+   
     return {
       success: false,
       errorMessage
@@ -65,9 +82,10 @@ export async function fetchDashboardData(filter?: string): Promise<{
 
 
 
+export default async function AdminDashboardServerWrapper({ branchID,  filter = dateToString(new Date())}:{ filter: string, branchID?: string }) {
+    const { success, data, errorMessage } = await fetchDashboardData(filter, branchID)
 
-export default async function AdminDashboardServerWrapper({ filter = dateToString(new Date())}:{ filter: string }) {
-    const { success, data, errorMessage } = await fetchDashboardData(filter)
+    console.log(data)
     
     if (!success) {
       return (
@@ -78,5 +96,5 @@ export default async function AdminDashboardServerWrapper({ filter = dateToStrin
       )
     }
     
-    return <AdminDashboardMC data={{...data!, filter }} />
+    return <AdminDashboardMC branchID={branchID} data={{...data!, filter }} />
 }

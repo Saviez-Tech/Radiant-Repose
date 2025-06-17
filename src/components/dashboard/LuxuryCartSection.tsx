@@ -87,7 +87,7 @@ export default function LuxuryCartSection() {
       customer_contact: "",
       customer_name: "",
       discount: 0,
-      scanned_items: scannedItems.map(v => ({ product_id: v.id, quantity: v.quantity })),
+      scanned_items: scannedItems.map(v => ({ product_id: Number(v.id), quantity: v.quantity })),
       subtotal: calculateCartTotal(scannedItems)
     })
 
@@ -106,11 +106,11 @@ export default function LuxuryCartSection() {
   },[scannedItems.length])
 
   return (
-    !pathName.startsWith("/pos")
+    (!pathName.startsWith("/pos"))
     ?
     null
     :
-    pathName.startsWith("/pos") && !pathName.match("/spa-section")
+    pathName.startsWith("/pos") && !pathName.includes("/service-verification") && !pathName.includes("/spa-section") && !pathName.includes("/transaction-history")
     ?
     <div className={`w-[270px] pt-6 flex flex-col ${scannedItems && scannedItems.length ? "justify-between" : "justify-center items-center"}`}>
       {
