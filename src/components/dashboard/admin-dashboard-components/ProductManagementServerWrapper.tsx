@@ -33,7 +33,7 @@ export async function fetchProductsData(section: "luxury-collection" | "spa-coll
     console.log(err)
     if (axios.isAxiosError(err)) {
       if (err.response) {
-        errorMessage = handleApiError(err.response.data)
+        errorMessage = handleApiError("Something went wrong")
       } else if (err.request) {
         console.log(err.request);
         errorMessage = "Request Failed";

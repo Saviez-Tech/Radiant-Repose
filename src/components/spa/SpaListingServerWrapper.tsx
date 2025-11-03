@@ -18,7 +18,7 @@ import SpaListingMC from "./SpaListingMC";
     console.log(err)
     if (axios.isAxiosError(err)) {
       if (err.response) {
-        errorMessage = handleApiError(err.response.data)
+        errorMessage = handleApiError("Something went wrong")
       } else if (err.request) {
         console.log(err.request);
         errorMessage = "Request Failed";
@@ -40,7 +40,7 @@ export default async function SpaListingServerWrapper() {
   
   if (!success) {
     return (
-      <div className="glob-px !py-40 bg-red-50 border border-red-200 rounded-md">
+      <div className="glob-px !py-40 bg-red-50 border border-red-200 rounded-md justify-center flex flex-col items-center">
         <h3 className="text-red-600 font-medium mb-2">Error Loading Services</h3>
         <p className="text-red-500">{errorMessage}</p>
       </div>
