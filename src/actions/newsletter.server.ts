@@ -1,4 +1,4 @@
-import { ContactFormData } from "@/components/contact-us/ContactForm";
+// import { ContactFormData } from "@/components/contact-us/ContactForm";
 
 export async function newsletterHandler(email: string) {
   try {
