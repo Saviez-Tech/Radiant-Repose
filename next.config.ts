@@ -9,3 +9,6 @@ const nextConfig: NextConfig = {
 }
 
 export default nextConfig;
+
+
+// old= gslnwqfmocbffblfwtco.supabase.co
