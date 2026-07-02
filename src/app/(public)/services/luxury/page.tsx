@@ -9,8 +9,8 @@ export default async function Page() {
   
   if (!success) {
     return (
-      <div className="p-6 bg-red-50 border border-red-200 rounded-md">
-        <h3 className="text-red-600 font-medium mb-2">Error Loading Products Data</h3>
+      <div className="glob-px !py-40 bg-red-50 border border-red-200 rounded-md justify-center flex flex-col items-center">
+        <h3 className="text-red-600 font-medium mb-2">Error Loading products</h3>
         <p className="text-red-500">{errorMessage}</p>
       </div>
     )

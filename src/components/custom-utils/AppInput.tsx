@@ -11,7 +11,7 @@ import type { PaymentFormValues } from "@/schemas/paymentFormSchema";
 import { SpaCheckoutFormValues } from "@/schemas/SpaCheckoutSchema";
 
 type FormInputFieldProps = {
-  label: string;
+  label?: string;
   name:
     | keyof StaffFormValues
     | keyof ProductFormValues

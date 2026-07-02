@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
 import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function ExploreBtn() {
   return (
-    <button
+    <Link
+    href="/services/luxury"
+
+    
       className="group bg-gradient-to-r from-[#990000] to-[#FF0000] hover:from-[#b30000] hover:to-[#cc0000]
                  active:scale-95 text-white font-medium px-6 py-3 rounded-lg inline-flex items-center gap-2
                  transition-all duration-300 shadow-md hover:shadow-lg"
@@ -24,6 +28,6 @@ export default function ExploreBtn() {
       >
         <FaArrowRight className="text-sm group-hover:text-white" />
       </motion.span>
-    </button>
-  )
+    </Link>
+  );
 }
