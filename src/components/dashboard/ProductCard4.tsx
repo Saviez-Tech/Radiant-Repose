@@ -13,8 +13,8 @@ interface IProps extends Product {
 export default function ProductCard4({ image_url, price_at_sale, quantity, name, price, description, stock_quantity }: IProps) {
     return (
     <div  
-        className="relative w-full max-h-[320px] pb-1 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none flex flex-col">
-        <div className="relative h-40 flex-shrink-0">
+        className="group relative w-full max-h-[320px] pb-1 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 outline-none flex flex-col">
+        <div className="relative h-40 flex-shrink-0 overflow-hidden">
             {
                 image_url?.length ?
                 <Image
@@ -22,10 +22,10 @@ export default function ProductCard4({ image_url, price_at_sale, quantity, name,
                     width={300}
                     height={300}
                     alt={name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
                 />
                 :
-                <Skeleton className="w-full h-full" />
+                <Skeleton className="w-full h-full group-hover:scale-110 transition-transform duration-500 ease-in-out" />
             }
         </div>
         

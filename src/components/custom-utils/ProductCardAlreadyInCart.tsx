@@ -22,12 +22,13 @@ export default function ProductCardAlreadyInCart({
   return (
     <div
       className={`
+        group
         ${isOutOfStock ? "opacity-60 grayscale" : "cursor-pointer"} 
-        relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md border border-gray-200 outline-none
+        relative max-w-64 pb-2 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 outline-none
       `}
     >
       <div className="relative">
-        <div className="relative h-40 flex-shrink-0">
+        <div className="relative h-40 flex-shrink-0 overflow-hidden">
           <p className="absolute bottom-4 opacity-90 left-1 z-10 rounded-3xl flex items-center gap-1 p-2 bg-primary-base_color1 text-[10px] md:text-xs font-medium text-brand-primary-light_black">
             <strong>4.5</strong>
             <span className="flex items-center">
@@ -48,10 +49,10 @@ export default function ProductCardAlreadyInCart({
               width={300}
               height={300}
               alt={product.name}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
             />
           ) : (
-            <Skeleton className="w-full h-full" />
+            <Skeleton className="w-full h-full group-hover:scale-110 transition-transform duration-500 ease-in-out" />
           )}
         </div>
 
