@@ -1,4 +1,11 @@
-export const navItems = [
+export interface NavItem {
+    name: string;
+    path: string;
+    hasDropdown?: boolean;
+    dropdownItems?: { name: string; path: string }[];
+}
+
+export const navItems: NavItem[] = [
     { name: "Home", path: "/" },
     { name: "About Us", path: "/about-us" },
     {
