@@ -2,26 +2,26 @@ export const missionPoints = [
   {
     key: "educate",
     prefix: "To",
-    boldText: "educate users",
-    normalText: "about our pharmacy, spa, and luxury offerings."
+    boldText: "provide customers",
+    normalText: "with access to quality imported products for children, homes, gifts, and everyday living."
   },
   {
     key: "connect",
     prefix: "To",
-    boldText: "connect customers",
-    normalText: "with the nearest Radiant Repose locations."
+    boldText: "offer a seamless",
+    normalText: "and enjoyable online shopping experience with secure ordering and nationwide delivery."
   },
   {
     key: "experience",
     prefix: "To",
     boldText: "provide a seamless web experience",
-    normalText: "for spa bookings and general inquiries."
+    normalText: "for  general inquiries."
   },
   {
     key: "trust",
     prefix: "To",
     boldText: "establish trust and credibility",
-    normalText: "by offering expert insights into health, beauty, and luxury products."
+    normalText: "by offering expert insights into services we offer."
   },
   {
     key: "platform",
@@ -39,27 +39,27 @@ export const features = [
   {
     id: 1,
     heading: "Rooted in Wellness Expertise",
-    text: "Our foundation lies in professional pharmaceutical care, ensuring all our offerings—from prescriptions to skincare—are guided by health-first principles."
+    text: "Our foundation lies in professional service, ensuring all our offerings are of the highest quality."
   },
   {
     id: 2,
-    heading: "Where Science Meets Self-Care",
-    text: "We blend medical-grade products with therapeutic spa treatments to offer safe, effective, and luxurious self-care experiences."
+    heading: "Where Demand Meets Expertise",
+    text: "We bridge the gap between consumer needs and professional expertise to deliver exceptional experiences."
   },
   {
     id: 3,
-    heading: "Curated Beauty, Backed by Experts",
-    text: "Our beauty selections are vetted by pharmacists and skincare specialists, guaranteeing quality, safety, and visible results."
+    heading: "Curated with Care, Delivered with Trust",
+    text: "We are committed to offering trusted products and services that combine quality, value, and customer satisfaction."
   },
   {
     id: 4,
     heading: "A Luxury Experience, Every Step of the Way",
-    text: "From spa ambiance to product packaging, we elevate every interaction with intentional design, premium services, and a refined user journey."
+    text: "From the moment you explore our platform to the delivery of your order, we ensure a seamless and luxurious experience."
   },
   {
     id: 5,
     heading: "One Platform, All Your Needs",
-    text: "Whether you're booking a first massage, refilling a prescription, or shopping for luxury beauty items, it all happens seamlessly in one place."
+    text: "Discover quality products, trusted services, and seamless experiences—all thoughtfully brought together in one place."
   },
   {
     id: 6,

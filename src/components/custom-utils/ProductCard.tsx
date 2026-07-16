@@ -11,7 +11,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
   return (
     <div className="group cursor-pointer relative w-full min-h-[325px] h-fit pb-2 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 outline-none flex flex-col">
-      
+
       <div className="relative h-40 flex-shrink-0 overflow-hidden">
         <p className="absolute bottom-4 opacity-90 left-1 z-10 rounded-3xl flex items-center gap-1 p-2 bg-primary-base_color1 text-[10px] md:text-xs font-medium text-brand-primary-light_black">
           <strong>4.5</strong>
@@ -20,18 +20,18 @@ export default function ProductCard({ product }: { product: Product }) {
             <span className="text-[9px] md:text-[10px] text-primary-dark_ash_slate">(25+)</span>
           </span>
         </p>
-        
+
         {
           product.image_url?.length ?
-          <Image
-            src={product.image_url}
-            width={300}
-            height={300}
-            alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
-          />
-          :
-          <Skeleton className="w-full h-full group-hover:scale-110 transition-transform duration-500 ease-in-out" />
+            <Image
+              src={product.image_url}
+              width={300}
+              height={300}
+              alt={product.name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+            />
+            :
+            <Skeleton className="w-full h-full group-hover:scale-110 transition-transform duration-500 ease-in-out" />
         }
       </div>
 
@@ -52,16 +52,16 @@ export default function ProductCard({ product }: { product: Product }) {
               {formatNaira(product.price, false, true)}
             </span>
           </div>
-          <p className="text-primary-dark_gray text-right text-[11px] md:text-xs capitalize truncate">
+          {/* <p className="text-primary-dark_gray text-right text-[11px] md:text-xs capitalize truncate">
             <span className="font-semibold">Category:</span>{" "}
             {product.category?.split("-").join(" ")}
-          </p>
+          </p> */}
         </div>
 
         <div className="flex justify-between items-center overflow-hidden gap-2 pb-1">
-          <span className="text-[9px] md:text-xs text-gray-500 bg-gray-100 p-1 rounded">
+          {/* <span className="text-[9px] md:text-xs text-gray-500 bg-gray-100 p-1 rounded">
             {product.stock_quantity} Pieces left
-          </span>
+          </span> */}
           <div className="flex flex-col gap-2 items-center">
             <button
               onClick={() => addItem({ product: product.id, quantity: 1 })}

@@ -22,19 +22,19 @@ export default function ContactInformations() {
 
 const contactInfos = [
     {
-        address: "Varoyal Plaza, Opp Royal Spring Palm Suite, Akachi Road, Owerri, Imo State.",
-        services: "Pharmacy | Spa | Luxury Retail",
+        address: "Shop 4, Estrella Plaza No 2 Nwaturuocha str, Ikenegbu by Pacs junction, Owerri, Imo State, Nigeria",
+        services: "Luxury Retail",
         phone: "+234(0)916 0666 820",
     },
     {
-        address: "Plot 421 Aminu Kano Crescent, Wuse II, Abuja, FCT.",
-        services: "Pharmacy | Spa | Luxury Retail",
+        address: "Orange Groove Plaza, IMSU junction, Owerri, Imo State, Nigeria.",
+        services: "Luxury Retail",
         phone: "+234(0)809 8765 432",
     },
-    {
-        address: "No. 17 Adebayo Osibanjo Street, Lekki Phase 1, Lagos.",
-        services: "Pharmacy | Spa | Luxury Retail",
-        phone: "+234(0)916 0666 820",
-    },
+    // {
+    //     address: "No. 17 Adebayo Osibanjo Street, Lekki Phase 1, Lagos.",
+    //     services: "Luxury Retail",
+    //     phone: "+234(0)916 0666 820",
+    // },
 ];
 

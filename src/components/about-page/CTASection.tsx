@@ -14,14 +14,14 @@ export default function CTASection() {
                 className="object-cover absolute w-full z-10"
                 priority
             />
-            <div style={{ background: "rgba(153, 0, 0, 0.3)"}} className="absolute inset-0 z-10"></div>
+            <div style={{ background: "rgba(153, 0, 0, 0.3)" }} className="absolute inset-0 z-10"></div>
 
             <div className="relative z-20 text-center px-4 max-w-3xl">
                 <h2 className="text-3xl md:text-5xl font-bold mb-4 md:leading-[1.2em]">
-                Use a creative copy here <br /> as <span className="text-white/90">CTA Header</span>
+                    Everything You Need, <br /> all <span className="text-white/90">in One Place</span>
                 </h2>
                 <p className="text-white/80 text-sm md:text-base mb-8">
-                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur t in voluptate velit esser.
+                    Discover quality products, trusted services, and exceptional experiences designed to make everyday living easier. Start exploring today.
                 </p>
                 <ExploreBtn />
             </div>

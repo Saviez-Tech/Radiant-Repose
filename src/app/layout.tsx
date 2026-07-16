@@ -10,16 +10,18 @@ import { cookies } from "next/headers";
 import HubSpotChat from "@/HubSpotChat";
 
 
-export const metadata : Metadata = {
+export const metadata: Metadata = {
   title: 'Radiant Repose | Wellness, Beauty & Luxury',
   description: 'Radiant Repose is Nigeria’s premier destination for holistic wellness, luxury self-care, and pharmaceutical services—offering spa bookings, pharmacy consultations, and luxury product orders all in one elegant platform.',
 }
 
 
+import FloatingCart from "@/components/layout-components/FloatingCart";
+
 export default async function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode; 
+  children: React.ReactNode;
 }>) {
 
   const cookieStore = await cookies()
@@ -28,7 +30,7 @@ export default async function RootLayout({
       const cookieValue = cookieStore.get("user_session")?.value;
       if (!cookieValue) return null;
       const userData = JSON.parse(cookieValue)
-    
+
       return !userData.id || !userData.username ? null : userData;
 
     } catch {
@@ -44,8 +46,9 @@ export default async function RootLayout({
           className={`${poppins.className} min-h-screen bg-white`}
         >
           <Header />
-          <Toaster position="top-right" containerStyle={{ fontSize: "14px"}} />
+          <Toaster position="top-right" containerStyle={{ fontSize: "14px" }} />
           {children}
+          <FloatingCart />
           <Footer />
         </body>
         <AuthUserPersistor persistedUserData={persistedUserData()} />

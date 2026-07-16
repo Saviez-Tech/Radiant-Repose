@@ -1,7 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
-import { FaPhone, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa"
+import { FaPhone, FaMapMarkerAlt } from "react-icons/fa"
 import Logo from "./Logo"
 import LogoSrc from "../../public-assets/logo/Logo2.svg"
 import Link from "next/link"
@@ -82,10 +82,10 @@ export default function Footer() {
                     <div className="max-w-xs">
                         <Logo src={LogoSrc} />
                         <p className="my-2">
-                            We transform your vision into reality with tailored Tech solutions that drive growth.
+                            We bring quality imported products from Turkey and China to your home.
                         </p>
                         <p>
-                            Our focus is on delivering impactful digital solutions that creates lasting impression.
+                            Carefully curated essentials, luxury gifts, and everyday products you can trust.
                         </p>
                     </div>
 
@@ -137,10 +137,17 @@ export default function Footer() {
                             <div className="flex items-start gap-2">
                                 <FaMapMarkerAlt className="mt-1" />
                                 <span>
-                                    At Varoyal Plaza, opp Royal Spring Palm suit, Akachi road, Owerri
+                                    Shop 4, Estrella Plaza
+                                    No 2 Nwaturuocha str, Ikenegbu by Pacs junction, Owerri, Imo State, Nigeria
                                 </span>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-start gap-2">
+                                <FaMapMarkerAlt className="mt-1" />
+                                <span>
+                                    Orange Groove Plaza, IMSU junction, Owerri, Imo State, Nigeria
+                                </span>
+                            </div>
+                            {/* <div className="flex items-center gap-2">
                                 <FaEnvelope />
                                 <Link
                                     href="mailto:info@radiantrepose.com"
@@ -148,7 +155,7 @@ export default function Footer() {
                                 >
                                     info@radiantrepose.com
                                 </Link>
-                            </div>
+                            </div> */}
                             <div className="flex items-center gap-2">
                                 <FaPhone />
                                 <Link
@@ -167,7 +174,7 @@ export default function Footer() {
                         <ul className="space-y-1 text-primary-base_color1/80">
                             <li>
                                 <Link
-                                    href="https://facebook.com"
+                                    href="https://web.facebook.com/profile.php?id=61574584304697"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="hover:text-primary-base_color1 transition-colors duration-200"
@@ -177,7 +184,7 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    href="https://instagram.com"
+                                    href="https://www.instagram.com/p/DXmOmh2CIXo/"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="hover:text-primary-base_color1 transition-colors duration-200"
@@ -187,12 +194,12 @@ export default function Footer() {
                             </li>
                             <li>
                                 <Link
-                                    href="https://twitter.com"
+                                    href="https://www.tiktok.com/@radiantreposeluxu"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="hover:text-primary-base_color1 transition-colors duration-200"
                                 >
-                                    Twitter
+                                    Tiktok
                                 </Link>
                             </li>
                         </ul>

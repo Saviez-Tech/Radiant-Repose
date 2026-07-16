@@ -3,7 +3,7 @@ import AboutSection from "./AboutSection";
 import Blog from "./blog";
 import ConsultationSection from "./Consultation";
 import Hero from "./Hero";
-import ServicesSection from "./Services";
+// import ServicesSection from "./Services";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
 import HomepageProducts from "./HomepageProducts";
 
@@ -13,13 +13,13 @@ export default async function Page() {
 
   return (
     <main>
-      <div className="flex relative flex-col "> 
+      <div className="flex relative flex-col ">
         <Hero />
-          <ServicesSection />
-          {products.length > 0 && <HomepageProducts products={products} />}
-          <AboutSection />
-          <Blog />
-          <ConsultationSection />
+        {/* <ServicesSection /> */}
+        {products.length > 0 && <HomepageProducts products={products} />}
+        <AboutSection />
+        <Blog />
+        <ConsultationSection />
       </div>
     </main>
   )

@@ -109,9 +109,8 @@ export default function ProductCardAlreadyInCart({
 
         <div className="flex justify-between items-center gap-2 mt-1">
           <span
-            className={`text-[9px] md:text-xs bg-gray-100 p-1 rounded ${
-              isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"
-            }`}
+            className={`text-[9px] md:text-xs bg-gray-100 p-1 rounded ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"
+              }`}
           >
             {isOutOfStock
               ? "Out of stock"

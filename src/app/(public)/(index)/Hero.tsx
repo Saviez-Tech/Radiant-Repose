@@ -16,18 +16,18 @@ export default function Hero() {
           <div className="space-y-6 pt-8">
             <h1 className="text-2xl md:text-[2.5rem] text-primary-deepBlack font-semibold">
               Your Premier Destination <br />
-              for <span className="text-primary-darkRed">Wellness, Beauty</span>
+              for <span className="text-primary-darkRed">HouseHold Items, Children</span>
               <br />
               and <span className="text-primary-darkRed">Luxury.</span>
             </h1>
             <p className="md:text-lg text-base">
               Explore our{" "}
               <span className="font-semibold text-primary-deepBlack">
-                Pharmacy, Spa
+                Large collections for children,Household items
               </span>{" "}
               and{" "}
               <span className="font-semibold text-primary-deepBlack">
-                Luxury
+                Gift Items
               </span>{" "}
               collections
               <br />
@@ -56,7 +56,7 @@ export default function Hero() {
             <div className="flex flex-col pt-40 gap-4">
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/images/spa.png"
+                  src="/images/child1.jpg"
                   alt="Hero"
                   width={300}
                   height={300}
@@ -66,7 +66,7 @@ export default function Hero() {
               </div>
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/icons/fw.svg"
+                  src="/images/bag.png"
                   alt="Hero"
                   width={300}
                   height={300}
@@ -88,7 +88,7 @@ export default function Hero() {
               </div>
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/images/ce.png"
+                  src="/images/house2.jpg"
                   alt="Hero"
                   width={300}
                   height={300}
@@ -110,7 +110,7 @@ export default function Hero() {
               </div>
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/images/bag.png"
+                  src="/images/blen1der.jpg"
                   alt="Hero"
                   width={300}
                   height={300}
@@ -120,7 +120,7 @@ export default function Hero() {
               </div>
               <div className="relative w-full md:aspect-[167/227] aspect-[4/5] rounded-3xl overflow-hidden">
                 <Image
-                  src="/images/watch.png"
+                  src="/images/clothe.jpg"
                   alt="Hero"
                   width={300}
                   height={300}

@@ -2,6 +2,6 @@
 export const storeLocation = [
     {
         branch: 1,
-        location: "Varoyal Plaza, opp Royal Spring Palm suit, Akachi road, Owerri"
+        location: "Shop 4, Estrella Plaza No 2 Nwaturuocha str, Ikenegbu by Pacs junction, Owerri, Imo State, Nigeria"
     }
 ]

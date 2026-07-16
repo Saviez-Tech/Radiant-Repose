@@ -9,13 +9,13 @@ export default function AboutSection() {
             We are only known for Excellence & Competence
           </h2>
           <p className=" md:text-xl text-base text-primary-deepBlack">
-            <span className="font-semibold text-base">Radiant Repose</span> is home to one
-            of the finest wellness and luxury self-care destinations in Nigeria.
-            Our Excellence in these services speaks for us.
+            <span className="font-semibold text-base">Radiant Repose</span> is your trusted destination for quality imported products,
+            offering carefully selected children&apos;s leading retailer essentials, luxury gifts, kitchenware, household items, back-to-school supplies,
+            and more. We source from trusted manufacturers in Turkey and China to bring exceptional quality, style, and value to every home.
           </p>
           <div className="relative max-md:hidden z-[2]">
             <div className="w-[135%] aspect-[650/274] py-12 px-8 absolute bg-left-top top-0 left-0 md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
-              
+
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@ export default function AboutSection() {
           />
 
           <div className="w-[90%] md:hidden -translate-x-1/2 left-1/2  aspect-[326/457] py-12 px-8 relative -top-20 bg-top md:bg-[url('/icons/services.svg')] bg-[url('/icons/responsive-services.svg')] bg-contain bg-no-repeat">
-           
+
           </div>
         </div>
       </div>
