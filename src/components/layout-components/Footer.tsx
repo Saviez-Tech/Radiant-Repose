@@ -126,6 +126,30 @@ export default function Footer() {
                                         Blog
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link
+                                        href="/terms-and-conditions"
+                                        className="hover:text-primary-base_color1 transition-colors duration-200"
+                                    >
+                                        Terms & Conditions
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/refund-policy"
+                                        className="hover:text-primary-base_color1 transition-colors duration-200"
+                                    >
+                                        Refund Policy
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/delivery-shipping-policy"
+                                        className="hover:text-primary-base_color1 transition-colors duration-200"
+                                    >
+                                        Delivery & Shipping Policy
+                                    </Link>
+                                </li>
                             </ul>
                         </nav>
                     </div>
