@@ -1,27 +1,23 @@
 "use client";
 
-// import { fetchProductAction } from "@/actions/product.server";
-// import ProductCard from "@/components/custom-utils/ProductCard";
 import { Pagination } from "@/components/dashboard/Pagination";
 import { useEffect, useMemo, useState } from "react";
-// import toast from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
 import ServiceHeader from "./ServiceHeader";
 import ProductCardAlreadyInCart from "@/components/custom-utils/ProductCardAlreadyInCart";
 import { useCart } from "@/hooks/useCart";
 import ProductCard from "@/components/custom-utils/ProductCard";
 
 export default function Products({ products: data }: { products: Product[] }) {
+  const searchParams = useSearchParams();
   const [selectedFilter] = useState("all");
   const [selectedProductType] =
     useState<ProductType | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(25);
-  const [searchValue] = useState("");
-  const [searchedProducts] = useState<Product[] | null>(
-    null
-  );
+  const [searchValue, setSearchValue] = useState(searchParams.get("search") || "");
   // const [isSearching, setIsSearching] = useState(false);
-  const [activeTab, setActiveTab] = useState("");
+  const [activeTab, setActiveTab] = useState(searchParams.get("category") || "");
   const [priceFrom, setPriceFrom] = useState(0);
   const [priceTo, setPriceTo] = useState<undefined | number>(undefined);
 
@@ -31,25 +27,23 @@ export default function Products({ products: data }: { products: Product[] }) {
     }
     return data.filter((product) => product.category === activeTab);
   }, [data, activeTab])
-  console.log({data});
-  
+
 
   // Determine which products to display based on search state
   const productsToFilter = useMemo(() => {
-    if (searchValue && searchedProducts !== null) {
-      return searchedProducts;
+    if (searchValue) {
+      return data.filter((product) => 
+        product.name?.toLowerCase().includes(searchValue.toLowerCase()) ||
+        product.description?.toLowerCase().includes(searchValue.toLowerCase()) ||
+        product.category?.toLowerCase().includes(searchValue.toLowerCase())
+      );
     }
     return categoryFilteredProducts;
-  }, [searchValue, searchedProducts, categoryFilteredProducts]);
+  }, [searchValue, data, categoryFilteredProducts]);
 
   // Then apply additional filters based on selectedFilter and selectedProductType
   // Only if we're not showing search results
   const filteredProducts = useMemo(() => {
-    // If we have search results or error, don't apply additional filters
-    if (searchValue && searchedProducts !== null) {
-      return searchedProducts;
-    }
-
     // Start with products already filtered by category
     const products = productsToFilter.filter((product) => {
       if (priceFrom && product.price < priceFrom) {
@@ -82,8 +76,6 @@ export default function Products({ products: data }: { products: Product[] }) {
     productsToFilter,
     selectedFilter,
     selectedProductType,
-    searchValue,
-    searchedProducts,
     priceFrom,
     priceTo,
   ]);
@@ -123,6 +115,8 @@ return (
       setTo={setPriceTo} 
       activeTab={activeTab} 
       setActiveTab={setActiveTab} 
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
     />
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
       {paginatedProductsData.map((product) => {

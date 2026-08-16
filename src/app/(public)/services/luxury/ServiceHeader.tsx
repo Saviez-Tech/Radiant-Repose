@@ -1,4 +1,5 @@
 "use client";
+import { useEffect, useState } from "react";
 
 import NormalSelect from "@/components/custom-utils/NormalSelect";
 import Link from "next/link";
@@ -15,6 +16,8 @@ export default function ServiceHeader({
   to,
   setFrom,
   setTo,
+  searchValue,
+  setSearchValue,
 }: {
   activeTab: string;
   setActiveTab: (value: string) => void;
@@ -22,6 +25,8 @@ export default function ServiceHeader({
   to?: number;
   setFrom: (value: number) => void;
   setTo?: (value?: number) => void;
+  searchValue?: string;
+  setSearchValue?: (value: string) => void;
 }) {
   const branches = useAppSelector((store) => store.storeBranches?.branches);
 
@@ -37,13 +42,45 @@ export default function ServiceHeader({
       ];
 
   const { items } = useCart(); // Get cart items
-  const cartCount = items.length;
-  // alert(JSON.stringify(items))
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const cartCount = isMounted ? items.length : 0;
 
   return (
-    <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-      <div className="flex max-md:items-end gap-4">
-        <NormalSelect options={locationOptions} />
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4">
+        {/* Branch select — kept in DOM but hidden from view */}
+        <div className="sr-only" aria-hidden="true">
+          <NormalSelect options={locationOptions} />
+        </div>
+
+        {/* Search bar */}
+        <div className="relative h-fit flex-1 min-w-0">
+          <span className="absolute inset-y-0 left-4 flex items-center text-gray-400 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </span>
+          <input
+            type="text"
+            value={searchValue || ""}
+            onChange={(e) => setSearchValue?.(e.target.value)}
+            className="w-full pl-11 pr-12 py-3.5 rounded-2xl border-2 border-gray-200 focus:outline-none focus:border-primary-darkRed focus:ring-0 text-sm text-gray-700 bg-white shadow-sm transition-all duration-200 min-w-[320px] placeholder:text-gray-400 font-medium"
+            placeholder="Search products by name or category..."
+            aria-label="Search products input"
+          />
+          {searchValue ? (
+            <button
+              onClick={() => setSearchValue?.("")}
+              className="absolute inset-y-0 right-4 flex items-center text-gray-400 hover:text-primary-darkRed transition-colors"
+              aria-label="Clear input"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          ) : null}
+        </div>
         <ServicePopOver setFrom={setFrom} setTo={setTo} from={from} to={to}>
           <svg
             width="1em"
@@ -59,14 +96,17 @@ export default function ServiceHeader({
           </svg>
         </ServicePopOver>
       </div>
-      <div className="flex max-md:flex-col md:items-center gap-2 md:gap-4">
-        <h2 className="text-primary-dark_slate font-semibold">Categories</h2>
-        <div className="flex items-center gap-2 flex-1">
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h2 className="text-primary-dark_slate font-semibold">Categories</h2>
+        </div>
+        <div className="flex items-center gap-2 w-full overflow-x-auto pb-1">
           <ProductTypeFilter
             activeTab={activeTab}
             setActiveTab={setActiveTab}
+            onCategoryClick={(label) => setSearchValue?.(label)}
           />
-          <p className="text-primary-dark_slate">|</p>
+          <div className="shrink-0 flex items-center gap-2">
           <Link
           
             href={cartCount > 0 ? "/services/luxury/cart":"#"}
@@ -100,6 +140,7 @@ export default function ServiceHeader({
               )}
             </span>
           </Link>
+          </div>
         </div>
       </div>
     </div>
