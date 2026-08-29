@@ -10,7 +10,7 @@ type FormFileUploadFieldProps = {
   label: string;
   name: keyof ProductFormValues;
   control: Control<any>;
-  error?: string;
+  error?: any;
   className?: string;
   disabled?: boolean
 }

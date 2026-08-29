@@ -33,6 +33,7 @@ function FloatingCartInner({
   }, [pathname]);
 
   if (!mounted) return null;
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <Link

@@ -1,54 +1,51 @@
-import axios from "axios";
-import { handleApiError } from "@/lib/helperFns/handleApiErrors";
-import createAxiosInstance from "@/lib/axios";
+import { cookies } from "next/headers";
 import ProductManagementMC from "./ProductManagementMC";
 
 
-export async function fetchProductsData(section: "luxury-collection" | "spa-collection" | "pharmacy-collection") {
-  try {
-    const axiosInstance = await createAxiosInstance()
-    const getApiPath = (section: string): string => {
-      switch (section) {
-        case "luxury-collection":
-          return "admin";
-        case "spa-collection":
-          return "admin/spa";
-        case "pharmacy-collection":
-          return "admin/pharmacy";
-        default:
-          return "admin";
-      }
-    }
-
-    const res = await axiosInstance.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/${getApiPath(section)}/products`
-    )
-    
-    return {
-      success: true,
-      data: res.data
-    }
-  } catch (err) {
-    let errorMessage = "An Error Occurred";
-    console.log(err)
-    if (axios.isAxiosError(err)) {
-      if (err.response) {
-        errorMessage = handleApiError("Something went wrong")
-      } else if (err.request) {
-        console.log(err.request);
-        errorMessage = "Request Failed";
-      } else {
-        errorMessage = err.message;
-      }
-    } else if (err instanceof Error) {
-      errorMessage = err.message;
-    }
-    return {
-      success: false,
-      errorMessage
-    }
+function getApiPath(section: string): string {
+  switch (section) {
+    case "luxury-collection":  return "admin";
+    case "spa-collection":     return "admin/spa";
+    case "pharmacy-collection":return "admin/pharmacy";
+    default:                   return "admin";
   }
 }
+
+export async function fetchProductsData(section: "luxury-collection" | "spa-collection" | "pharmacy-collection") {
+  try {
+    // Read auth token from cookies for authenticated requests
+    let authToken = "";
+    try {
+      const cookieStore = await cookies();
+      const userSession = cookieStore.get("user_session")?.value;
+      if (userSession) {
+        const parsed = JSON.parse(userSession);
+        if (parsed.auth_token) authToken = `Token ${parsed.auth_token}`;
+      }
+    } catch { /* no session cookie — public request */ }
+
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/api/${getApiPath(section)}/products`;
+
+    // Use native fetch with Next.js built-in caching (5 min) — safe with dynamic APIs
+    const res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+        ...(authToken ? { Authorization: authToken } : {}),
+      },
+      next: { revalidate: 300 }, // cache for 5 minutes
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json();
+    return { success: true, data };
+  } catch (err) {
+    const errorMessage = err instanceof Error ? err.message : "An Error Occurred";
+    console.error("[fetchProductsData]", errorMessage);
+    return { success: false, errorMessage };
+  }
+}
+
 
 export default async function ProductManagementServerWrapper({ section }:{ section: "luxury-collection" | "spa-collection" | "pharmacy-collection"}) {
   const { success, data, errorMessage } = await fetchProductsData(section)

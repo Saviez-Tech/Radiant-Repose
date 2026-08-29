@@ -39,16 +39,16 @@ export default function StaffForm({
   const { branches } = useAppSelector(store => store.storeBranches)
 
   const locationOptions = branches.map(v => {
-    return { label: `${v.name}, ${v.location}`, value: v.id.toString()}
+    return { label: `${v.name}, ${v.location}`, value: v.id.toString() }
   })
 
-  const onSubmit: SubmitHandler<StaffFormValues | EditStaffFormValues> = async(data) => {
-    const { success, error } = formActionType === "add" ? await addStaffHandler(data as StaffFormValues) : await editStaffHandler(data as EditStaffFormValues,staffID)
-    if (success){
+  const onSubmit: SubmitHandler<StaffFormValues | EditStaffFormValues> = async (data) => {
+    const { success, error } = formActionType === "add" ? await addStaffHandler(data as StaffFormValues) : await editStaffHandler(data as EditStaffFormValues, staffID)
+    if (success) {
       toast.success(`Staff ${formActionType === "add" ? "Added" : "Editted"}`)
       router.push("/admin/staff-management")
     }
-    else if (error){
+    else if (error) {
       toast.error(error)
     }
   }
@@ -62,7 +62,7 @@ export default function StaffForm({
           name="AssignedLocation"
           placeholder="Select Location"
           options={locationOptions}
-          control={control}
+          control={control as any}
           error={errors.AssignedLocation?.message}
         />
 
@@ -99,7 +99,7 @@ export default function StaffForm({
           label="Upload Staff Photo"
           name="image"
           className="h-12"
-          control={control}
+          control={control as any}
           error={errors.staffPhoto?.message}
         /> */}
 
@@ -127,7 +127,7 @@ export default function StaffForm({
       </div>
 
       <div className="flex mt-10">
-        <SubmitBtnWithLoader isSubmitting={isSubmitting} text={formActionType === "add" ? "Create Staff" : "Edit Staff"}/>
+        <SubmitBtnWithLoader isSubmitting={isSubmitting} text={formActionType === "add" ? "Create Staff" : "Edit Staff"} />
       </div>
     </form>
   );

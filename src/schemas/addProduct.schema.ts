@@ -5,9 +5,7 @@ export const productFormSchema = z.object({
   productName: z.string().min(1, "Product name is required"),
   category: z.string().min(1, "Category is required"),
   branch: z.string().min(1, "Select a branch"),
-  barcode: z.string({
-    required_error: "Barcode is required"
-  }).min(5, "Barcode must be at least 5 characters"),
+  barcode: z.string().min(5, "Barcode must be at least 5 characters"),
   unitPrice: z.string()
     .min(1, "Unit price is required")
     .regex(/^\d+(\.\d{1,2})?$/, "Price must contain only numbers (with optional decimal point)"),

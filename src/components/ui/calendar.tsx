@@ -58,7 +58,7 @@ function Calendar({
           "aria-selected:bg-accent aria-selected:text-accent-foreground",
         day_hidden: "invisible",
         ...classNames,
-      }}
+      } as any}
       // components={{
       //   NextMonthButton: ({ className, ...props }) => (
       //     <ChevronLeft className={cn("h-4 w-4", className)} {...props} />

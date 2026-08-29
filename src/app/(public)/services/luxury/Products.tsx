@@ -20,6 +20,11 @@ export default function Products({ products: data }: { products: Product[] }) {
   const [activeTab, setActiveTab] = useState(searchParams.get("category") || "");
   const [priceFrom, setPriceFrom] = useState(0);
   const [priceTo, setPriceTo] = useState<undefined | number>(undefined);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const categoryFilteredProducts = useMemo(() => {
     if (!activeTab) {
@@ -122,7 +127,7 @@ return (
       {paginatedProductsData.map((product) => {
         if (!product || !product.id) return null; // Skip invalid products
 
-        const isInCart = cartItems.some(item => item?.id === product.id); 
+        const isInCart = mounted ? cartItems.some(item => item?.id === product.id) : false; 
         
         return isInCart ? (
           <ProductCardAlreadyInCart 

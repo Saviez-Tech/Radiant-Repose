@@ -17,6 +17,7 @@ export const metadata: Metadata = {
 
 
 import FloatingCart from "@/components/layout-components/FloatingCart";
+import NextTopLoader from "nextjs-toploader";
 
 export default async function RootLayout({
   children,
@@ -45,6 +46,7 @@ export default async function RootLayout({
         <body
           className={`${poppins.className} min-h-screen bg-white`}
         >
+          <NextTopLoader color="#E0342D" showSpinner={false} />
           <Header />
           <Toaster position="top-right" containerStyle={{ fontSize: "14px" }} />
           {children}

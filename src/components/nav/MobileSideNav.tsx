@@ -49,11 +49,11 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
             event.preventDefault()
             event.stopPropagation()
         }
-        
+
         // Close dropdown and nav
         setExpandedDropdown(null)
         dispatch(closeMobileNav())
-        
+
         // Navigate after a small delay to ensure modal closes
         setTimeout(() => {
             router.push(path)
@@ -64,11 +64,11 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
     const handleDropdownToggle = (itemName: string, event: React.MouseEvent) => {
         event.preventDefault()
         event.stopPropagation()
-        
+
         setExpandedDropdown(prev => prev === itemName ? null : itemName)
     }
 
-    const sidebarVariants = {
+    const sidebarVariants: any = {
         open: {
             x: 0,
             transition: {
@@ -87,7 +87,7 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
         }
     }
 
-    const dropdownVariants = {
+    const dropdownVariants: any = {
         open: {
             opacity: 1,
             height: "auto",
@@ -107,10 +107,10 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
     }
 
     return (
-        <MuiModal 
-            open={showModal} 
+        <MuiModal
+            open={showModal}
             onClose={handleClose}
-            sx={{ 
+            sx={{
                 bgcolor: 'rgba(0, 0, 0, 0.5)',
                 backdropFilter: 'blur(3px)',
                 zIndex: 1300
@@ -125,7 +125,7 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                 }}
             >
                 {isOpen && (
-                    <motion.nav 
+                    <motion.nav
                         className="focus:outline-none outline-none fixed left-0 top-0 h-screen overflow-y-auto w-[80%] max-w-[320px] text-primary-dark_slate font-medium bg-white shadow-lg drop-shadow-md text-sm p-4 flex justify-between flex-col z-[1400]"
                         initial="closed"
                         animate="open"
@@ -136,7 +136,7 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                         <div>
                             <div className="flex justify-between items-center mb-8">
                                 <Logo src={LogoSrc} className="w-32" />
-                                <button 
+                                <button
                                     onClick={handleClose}
                                     className="p-2 rounded-full hover:bg-gray-100 touch-manipulation"
                                     type="button"
@@ -144,7 +144,7 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                                     <Icon icon="heroicons:x-mark" width="24" height="24" />
                                 </button>
                             </div>
-                            
+
                             <ul className="flex flex-col gap-2">
                                 {navItems.map((item) => (
                                     <li key={item.name} className="w-full">
@@ -152,12 +152,11 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                                             <div className="w-full">
                                                 <button
                                                     onClick={(e) => handleDropdownToggle(item.name, e)}
-                                                    className={`${
-                                                        pathName === item.path ||
-                                                        pathName.startsWith(item.path + "/")
+                                                    className={`${pathName === item.path ||
+                                                            pathName.startsWith(item.path + "/")
                                                             ? "bg-gray-100 text-primary-deepBlack font-medium"
                                                             : "text-primary-dark_slate"
-                                                    } w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
+                                                        } w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
                                                     type="button"
                                                 >
                                                     <span>{item.name}</span>
@@ -165,12 +164,11 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                                                         icon="cuida:caret-down-outline"
                                                         width="20"
                                                         height="20"
-                                                        className={`transform transition-transform ${
-                                                            expandedDropdown === item.name ? 'rotate-180' : ''
-                                                        }`}
+                                                        className={`transform transition-transform ${expandedDropdown === item.name ? 'rotate-180' : ''
+                                                            }`}
                                                     />
                                                 </button>
-                                                
+
                                                 <AnimatePresence>
                                                     {expandedDropdown === item.name && (
                                                         <motion.div
@@ -185,11 +183,10 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                                                                     <button
                                                                         key={dropdownItem.path}
                                                                         onClick={(e) => handleNavigation(dropdownItem.path, e)}
-                                                                        className={`${
-                                                                            pathName === dropdownItem.path
+                                                                        className={`${pathName === dropdownItem.path
                                                                                 ? "bg-gray-100 text-primary-deepBlack font-medium"
                                                                                 : "text-primary-dark_slate"
-                                                                        } w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
+                                                                            } w-full text-left px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
                                                                         type="button"
                                                                     >
                                                                         {dropdownItem.name}
@@ -203,11 +200,10 @@ export default function MobileSidebarNav({ navItems }: { navItems: typeof NavIte
                                         ) : (
                                             <button
                                                 onClick={(e) => handleNavigation(item.path, e)}
-                                                className={`${
-                                                    pathName === item.path
+                                                className={`${pathName === item.path
                                                         ? "bg-gray-100 text-primary-deepBlack font-medium"
                                                         : "text-primary-dark_slate"
-                                                } w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
+                                                    } w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 transition-colors touch-manipulation`}
                                                 type="button"
                                             >
                                                 {item.name}

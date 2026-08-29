@@ -17,7 +17,7 @@ import { useAppSelector } from "@/lib/redux/hooks";
 
 export default function ProductForm({ formActionType, productID, branch }: { branch?: string, productID?: string, formActionType: "add" | "edit" }) {
 
-  
+
   const { branches } = useAppSelector(store => store.storeBranches)
   const { productToEdit } = useAppSelector(store => store.editProduct)
 
@@ -25,18 +25,18 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: formActionType === "edit" 
+    formState,
+  } = useForm<ProductFormValues | EditProductFormValues>({
+    // @ts-ignore
+    resolver: formActionType === "edit"
       ? zodResolver(editProductFormSchema)
       : zodResolver(productFormSchema),
     defaultValues: {
       barcode: productToEdit?.barcode || "",
       description: productToEdit?.description || "",
-      id: productToEdit?.id || "",
       image: undefined,
       productName: productToEdit?.name || "",
-      branch: Number(branch),
+      branch: branch || "",
       unitPrice: productToEdit?.price.toString() || "",
       productSection: productToEdit?.category || "",
       category: productToEdit?.productType || "",
@@ -44,6 +44,8 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
     },
   })
 
+  const errors: any = formState.errors;
+  const isSubmitting = formState.isSubmitting;
 
   const router = useRouter()
 
@@ -52,7 +54,7 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
   ]
 
   const locationOptions = branches.map(v => {
-    return { label: `${v.name}, ${v.location}`, value: v.id.toString()}
+    return { label: `${v.name}, ${v.location}`, value: v.id.toString() }
   })
 
   const categoryOptions = [
@@ -62,28 +64,28 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
     { value: "perfumes", label: "Perfumes" },
   ]
 
-  const onSubmit: SubmitHandler<ProductFormValues | EditProductFormValues> = async(data) => {
-    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data,productID || "", Number(branch)!)
-    if (success){
+  const onSubmit: SubmitHandler<ProductFormValues | EditProductFormValues> = async (data) => {
+    const { success, error } = formActionType === "add" ? await addProductHandler(data) : await editProductHandler(data, productID || "", Number(branch)!)
+    if (success) {
       toast.success(`Product ${formActionType === "add" ? "Added" : "Edited"}`)
       router.back()
     }
-    else if (error){
+    else if (error) {
       toast.error(error)
     }
   }
-  
+
 
   // Render different form based on formActionType
   if (formActionType === "edit") {
     return (
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
+      <form onSubmit={handleSubmit(onSubmit as any)} className="w-full flex-col  gap-10 pb-5 pt-3">
         <div className="grid grid-cols-2 gap-8 mb-6">
           <AppInput
             label="Product Name"
             name="productName"
             placeholder="Enter Product name"
-            register={register}
+            register={register as any}
             error={errors.productName?.message}
           />
 
@@ -91,7 +93,7 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
             label="Upload Product Photo"
             name="image"
             className="h-12"
-            control={control}
+            control={control as any}
             error={errors.image?.message}
           />
 
@@ -117,12 +119,12 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
               </div>
               {errors.unitPrice && <p className="text-xs text-red-500">{errors.unitPrice.message}</p>}
             </div>
-            
+
             <AppInput
               label="Quantity in Stock"
               name="quantityInStock"
               placeholder="Enter Quantity in Stock"
-              register={register}
+              register={register as any}
               error={errors.quantityInStock?.message}
               type="number"
               className="w-1/2 whitespace-nowrap"
@@ -139,14 +141,14 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
 
   // Add mode form with all fields
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full py-6">
+    <form onSubmit={handleSubmit(onSubmit as any)} className="w-full py-6">
       <div className="grid md:grid-cols-3 gap-x-6 gap-y-8 mb-6">
         <AppSelect
           label="Assigned Location"
           name="branch"
           placeholder="Select Location"
           options={locationOptions}
-          control={control}
+          control={control as any}
           error={errors.branch?.message}
         />
 
@@ -156,7 +158,7 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
           name="productSection"
           placeholder="Select Product Section"
           options={productSectionOptions}
-          control={control}
+          control={control as any}
           error={errors.productSection?.message}
         />
 
@@ -164,7 +166,7 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
           label="Product Name"
           name="productName"
           placeholder="Enter Product name"
-          register={register}
+          register={register as any}
           error={errors.productName?.message}
         />
 
@@ -173,15 +175,15 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
           name="category"
           placeholder="Select Category"
           options={categoryOptions}
-          control={control}
+          control={control as any}
           error={errors.category?.message}
         />
-        
+
         <FileUpload
           label="Upload Product Photo"
           name="image"
           className="h-12"
-          control={control}
+          control={control as any}
           error={errors.image?.message}
         />
 
@@ -189,7 +191,7 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
           label="Barcode"
           name="barcode"
           placeholder="Enter Barcode"
-          register={register}
+          register={register as any}
           error={errors.barcode?.message}
         />
 
@@ -215,18 +217,18 @@ export default function ProductForm({ formActionType, productID, branch }: { bra
             </div>
             {errors.unitPrice && <p className="text-xs text-red-500">{errors.unitPrice.message}</p>}
           </div>
-          
+
           <AppInput
             label="Quantity in Stock"
             name="quantityInStock"
             placeholder="Enter Quantity in Stock"
-            register={register}
+            register={register as any}
             error={errors.quantityInStock?.message}
             type="number"
             className="w-1/2 whitespace-nowrap"
           />
         </div>
-        
+
         <div className="space-y-1">
           <Label htmlFor="description" className="font-medium mb-1 text-primary-dark_gray">
             Description

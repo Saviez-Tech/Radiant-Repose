@@ -14,7 +14,7 @@ type FormSelectFieldProps = {
   placeholder?: string;
   options: { value: string; label: string }[];
   control?: Control<any, any>;
-  error?: string;
+  error?: any;
   className?: string;
   disabled?: boolean;
   variant?: "solid" | "transparent";

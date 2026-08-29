@@ -7,7 +7,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ClientLayout from "@/app/(public)/services/luxury/ClientLayout";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const categories = [
   { label: "All Items", value: "" },
@@ -21,6 +21,11 @@ function HomepageProductsContent({ products }: { products: Product[] }) {
   const { cartItems } = useCart(products);
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +75,7 @@ function HomepageProductsContent({ products }: { products: Product[] }) {
           </button>
         </form>
 
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 overflow-x-auto hide-scrollbar flex-nowrap" style={{ WebkitOverflowScrolling: "touch" }}>
           {categories.map((cat) => (
             <button
               key={cat.label}
@@ -87,7 +92,7 @@ function HomepageProductsContent({ products }: { products: Product[] }) {
         {products.map((product) => {
           if (!product || !product.id) return null;
 
-          const isInCart = cartItems.some(item => item?.id === product.id);
+          const isInCart = mounted ? cartItems.some(item => item?.id === product.id) : false;
 
           return isInCart ? (
             <ProductCardAlreadyInCart

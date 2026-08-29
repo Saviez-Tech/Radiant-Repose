@@ -1,6 +1,5 @@
 "use client"
 
-import { fetchStoreBranches } from "@/actions/auth.server";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setAuthUser } from "@/lib/redux/slices/authUserSlice";
 import { clearProductToEdit } from "@/lib/redux/slices/editProductSlice";
@@ -21,13 +20,32 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
 
 
     const fetchBranchesClientHandler = async() => {
-        const { data, success } = await fetchStoreBranches()
+        // Check localStorage cache first (10 min TTL) to avoid slow API calls on every navigation
+        try {
+            const cached = localStorage.getItem("rr_branches_cache")
+            if (cached) {
+                const { data: cachedData, ts } = JSON.parse(cached)
+                if (Date.now() - ts < 10 * 60 * 1000 && cachedData?.length) {
+                    dispatch(setBranches(cachedData))
+                    return
+                }
+            }
+        } catch {/* ignore parse errors */}
 
-        if (!success){
+        try {
+            // Call the API directly from the client — avoids the slow server action POST roundtrip
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/luxury-branches/`, {
+                credentials: "include",
+            })
+            if (!res.ok) throw new Error("Failed to fetch branches")
+            const data = await res.json()
+            try {
+                localStorage.setItem("rr_branches_cache", JSON.stringify({ data, ts: Date.now() }))
+            } catch {/* ignore storage errors */}
+            dispatch(setBranches(data))
+        } catch {
             toast.error("Failed To Fetch Stores")
         }
-
-        dispatch(setBranches(data))
     }
 
     useEffect(() => {

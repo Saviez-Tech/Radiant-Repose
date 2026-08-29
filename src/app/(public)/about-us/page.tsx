@@ -5,6 +5,8 @@ import OurVisionSection from "@/components/about-page/OurVisionSection";
 import TestimonialSection from "@/components/about-page/TestimonialSection";
 import Image from "next/image";
 
+export const revalidate = 3600; // Cache for 1 hour — purely static content
+
 export default function Page(){
     return (
         <main className="space-for-header bg-gradient-to-tr from-[#ffffff] to-[#ffefe6db]">

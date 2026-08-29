@@ -3,6 +3,9 @@ import { fetchProductsData } from "@/components/dashboard/admin-dashboard-compon
 import { Suspense } from "react";
 import Products from "./Products";
 
+export const dynamic = 'force-dynamic';
+
+
 export default async function Page() {
 
   const { success, data, errorMessage } = await fetchProductsData("luxury-collection")

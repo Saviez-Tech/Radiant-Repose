@@ -4,6 +4,9 @@ import About from "./About";
 import Services from "./Services";
 import Appointment from "./Appointment";
 
+export const dynamic = 'force-dynamic';
+
+
 export default function Page() {
   return (
     <Scaffold>

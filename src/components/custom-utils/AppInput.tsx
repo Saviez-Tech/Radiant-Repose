@@ -20,7 +20,7 @@ type FormInputFieldProps = {
     | string;
   placeholder: string;
   register: any;
-  error?: string;
+  error?: any;
   type?: string;
   prefix?: React.ReactNode;
   className?: string;

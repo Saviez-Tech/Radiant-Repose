@@ -10,7 +10,7 @@ export default function ProductTypeFilter({
   onCategoryClick?: (label: string) => void;
 }) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-1 flex-nowrap w-full" style={{ WebkitOverflowScrolling: "touch" }}>
+    <div className="flex gap-2 overflow-x-auto hide-scrollbar flex-nowrap w-full" style={{ WebkitOverflowScrolling: "touch" }}>
       {categories.map((cat) => (
         <button
           key={cat.label}

@@ -28,13 +28,13 @@ interface ReceiptPrinterProps {
   setPrint: Dispatch<SetStateAction<boolean>>
 }
 
-export default function ReceiptPrinter({ 
-  orderNumber, 
+export default function ReceiptPrinter({
+  orderNumber,
   transactionCode,
   scannedItems,
   printFor,
   services = [],
-  date, 
+  date,
   discount = 0,
   amountPaid = 0,
   customerName = "",
@@ -42,7 +42,7 @@ export default function ReceiptPrinter({
   subTotal,
   handleClose,
   print,
-  cashierName = "" 
+  cashierName = ""
 }: ReceiptPrinterProps) {
 
   const [hasPrinted, setHasPrinted] = useState(false)
@@ -56,7 +56,7 @@ export default function ReceiptPrinter({
     try {
       // Create a new window for printing
       const printWindow = window.open('', '_blank', 'width=800,height=600')
-      
+
       if (!printWindow) {
         toast.error('Please allow pop-ups to print the receipt')
         return;
@@ -69,7 +69,7 @@ export default function ReceiptPrinter({
             return Array.from(styleSheet.cssRules)
               .map(rule => rule.cssText)
               .join('\n')
-          } catch{
+          } catch {
             return '';
           }
         })
@@ -78,7 +78,7 @@ export default function ReceiptPrinter({
 
       // Clone the receipt content
       const receiptContent = receiptRef.current.cloneNode(true) as HTMLElement;
-      
+
       printWindow.document.write(`
         <!DOCTYPE html>
         <html>
@@ -139,7 +139,7 @@ export default function ReceiptPrinter({
           </body>
         </html>
       `)
-      
+
       printWindow.document.close()
       setHasPrinted(true)
       toast.success('Sending to printer...')
@@ -151,7 +151,7 @@ export default function ReceiptPrinter({
 
   const saveReceiptAsImage = async () => {
     if (!receiptRef.current) return;
-    
+
     try {
       const canvas = await html2canvas(receiptRef.current, {
         scale: 3,
@@ -160,7 +160,7 @@ export default function ReceiptPrinter({
         logging: false,
         allowTaint: true,
       })
-      
+
       // Create a download link
       const link = document.createElement('a')
       link.download = `Receipt-${orderNumber}.png`;
@@ -179,6 +179,7 @@ export default function ReceiptPrinter({
       open={print}
       aria-labelledby="receipt-modal-title"
       aria-describedby="receipt-modal-description"
+      // @ts-ignore
       disableEscapeKeyDown
     >
       <Box sx={{
@@ -196,7 +197,7 @@ export default function ReceiptPrinter({
         overflow: 'auto',
       }}>
         {/* Close button - only way to close the modal */}
-        <button 
+        <button
           disabled={!hasPrinted}
           onClick={handleClose}
           className="absolute print:hidden disabled:cursor-not-allowed top-1 right-2 p-1 rounded-full hover:bg-gray-100 transition-colors"
@@ -204,35 +205,35 @@ export default function ReceiptPrinter({
         >
           <X size={20} />
         </button>
-        
+
         <div ref={receiptRef} className="">
           {
             printFor === "luxury"
-            ?
-            <Receipt
-              date={date}
-              orderNumber={orderNumber}
-              scannedItems={scannedItems}
-              subTotal={formatNaira(subTotal, true, true)}
-              total={formatNaira(total, true, true)}
-              amountPaid={amountPaid}
-              cashierName={cashierName}
-              customerName={customerName}
-              discount={discount}
-            />
-            :
-            <SpaReceipt
-              date={date}
-              orderNumber={orderNumber}
-              spaServices={services}
-              transactionCode={transactionCode || null}
-              scannedItems={scannedItems}
-              subTotal={formatNaira(subTotal, true, true)}
-              total={formatNaira(total, true, true)}
-              discount={discount}
-            />
+              ?
+              <Receipt
+                date={date}
+                orderNumber={orderNumber}
+                scannedItems={scannedItems}
+                subTotal={formatNaira(subTotal, true, true)}
+                total={formatNaira(total, true, true)}
+                amountPaid={amountPaid}
+                cashierName={cashierName}
+                customerName={customerName}
+                discount={discount}
+              />
+              :
+              <SpaReceipt
+                date={date}
+                orderNumber={orderNumber}
+                spaServices={services}
+                transactionCode={transactionCode || null}
+                scannedItems={scannedItems}
+                subTotal={formatNaira(subTotal, true, true)}
+                total={formatNaira(total, true, true)}
+                discount={discount}
+              />
           }
-          
+
         </div>
 
         <div className="flex justify-center gap-4 my-6 w-[90%]">

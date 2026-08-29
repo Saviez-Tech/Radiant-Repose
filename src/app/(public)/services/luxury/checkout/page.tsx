@@ -1,4 +1,4 @@
-import Payment from "@/components/cheechout-page/Payment";
+
 import Scalffold from "@/components/custom-utils/Scalffold";
 import CheckoutForm from "./CheckoutForm";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
@@ -22,16 +22,11 @@ export default async function Page() {
   return (
     <Scalffold>
       <div className="flex app-container flex-col  py-6">
-        <div className="grid md:grid-cols-2 gap-[65px]">
-          <div>
-            <CheckoutForm products={data} />
-          </div>
-          <div>
-            <Payment />
-          </div>
+        <div className="w-full">
+          <CheckoutForm products={data} />
         </div>
       </div>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <CheckoutSuccessfulModal />
       </Suspense>
     </Scalffold>

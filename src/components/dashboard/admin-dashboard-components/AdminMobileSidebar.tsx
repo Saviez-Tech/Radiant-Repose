@@ -51,7 +51,7 @@ export default function AdminMobileSidebar() {
     }
 
     // Sidebar animation variants
-    const sidebarVariants = {
+    const sidebarVariants: any = {
         open: {
             x: 0,
             transition: {
@@ -71,10 +71,10 @@ export default function AdminMobileSidebar() {
     }
 
     return (
-        <MuiModal 
-            open={showModal} 
+        <MuiModal
+            open={showModal}
             onClose={handleClose}
-            sx={{ 
+            sx={{
                 bgcolor: 'rgba(0, 0, 0, 0.5)',
                 backdropFilter: 'blur(3px)'
             }}
@@ -87,7 +87,7 @@ export default function AdminMobileSidebar() {
                 }}
             >
                 {isOpen && (
-                    <motion.nav 
+                    <motion.nav
                         className="focus:outline-none outline-none fixed left-0 h-screen overflow-y-auto w-[21em] text-[#444444] font-medium bg-primary-light_peach shadow-lg drop-shadow-md text-sm p-4 flex justify-between flex-col gap-20"
                         initial="closed"
                         animate="open"
@@ -101,60 +101,60 @@ export default function AdminMobileSidebar() {
                                 {/* // { href: "/admin/staff-analysis", label: "Staff Analysis", icon: <Analytics className={`${isActiveRoute("/admin/staff-analysis") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                                 // { href: "/admin/payment-tracking", label: "Payment Tracking", icon: <Icon icon="uil:wallet" width="24" height="24" className={`${isActiveRoute("/admin/payment-tracking") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> }, */}
                                 {[
-                                    { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/admin/dashboard") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
-                                    { href: "/admin/product-management", label: "Product Management", icon: <BagIcon className={`${isActiveRoute("/admin/product-management") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
-                                    { href: "/admin/staff-management", label: "Staff Management", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-management") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
-                                    { href: "/admin/pending-order", label: "Pending Order", icon:<ReceiptIcon className={`${isActiveRoute("/admin/pending-order") ? "text-primary-base_color1" : "text-primary-dark_slate" }`} /> },
+                                    { href: "/admin/dashboard", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/admin/dashboard") ? "stroke-white" : "stroke-primary-dark_slate"} fill-transparent`} size={20} /> },
+                                    { href: "/admin/product-management", label: "Product Management", icon: <BagIcon className={`${isActiveRoute("/admin/product-management") ? "stroke-white" : "stroke-primary-dark_slate"} fill-transparent`} /> },
+                                    { href: "/admin/staff-management", label: "Staff Management", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-management") ? "text-white" : "text-primary-dark_slate"} fill-transparent`} /> },
+                                    { href: "/admin/pending-order", label: "Pending Order", icon: <ReceiptIcon className={`${isActiveRoute("/admin/pending-order") ? "text-primary-base_color1" : "text-primary-dark_slate"}`} /> },
                                 ].map(({ href, label, icon }) => {
                                     const isActive = isActiveRoute(href)
                                     return (
                                         href === "/admin/product-management" ?
-                                        <DropdownMenu key={href}>
-                                            <DropdownMenuTrigger 
-                                                className={`${isActive ? "bg-primary-darkRed text-primary-base_color1 hover:bg-primary-darkRed hover:text-primary-base_color1" : "hover:bg-red-200"} relative flex items-center gap-2 pe-3 min-h-12 ps-2 py-2 rounded-lg focus:outline-none transition ease-in-out duration-200`}>
-                                                {icon}
-                                                <span>{label}</span>
-                                                {isActive && <Icon icon="basil:caret-right-outline" width="26" height="26" className="absolute top-0 bottom-0 my-auto -right-1" />}
-                                            </DropdownMenuTrigger>
+                                            <DropdownMenu key={href}>
+                                                <DropdownMenuTrigger
+                                                    className={`${isActive ? "bg-primary-darkRed text-primary-base_color1 hover:bg-primary-darkRed hover:text-primary-base_color1" : "hover:bg-red-200"} relative flex items-center gap-2 pe-3 min-h-12 ps-2 py-2 rounded-lg focus:outline-none transition ease-in-out duration-200`}>
+                                                    {icon}
+                                                    <span>{label}</span>
+                                                    {isActive && <Icon icon="basil:caret-right-outline" width="26" height="26" className="absolute top-0 bottom-0 my-auto -right-1" />}
+                                                </DropdownMenuTrigger>
 
-                                            <DropdownMenuContent 
-                                                className="z-[9999]" 
-                                                sideOffset={5}
-                                                align="start"
-                                                forceMount
-                                            >
-                                                {
-                                                    productManagementSections.map(({ href: categoryHref, label: categoryLabel },i) => {
-                                                        return (
-                                                            <React.Fragment key={categoryHref}>
-                                                                <DropdownMenuItem 
-                                                                    onClick={() => {
-                                                                        router.push(`${href}/${categoryHref}`);
-                                                                        dispatch(closeMobileNav());
-                                                                    }}
-                                                                >
-                                                                    {categoryLabel}
-                                                                </DropdownMenuItem>
-                                                                {
-                                                                    i < productManagementSections.length - 1 && <DropdownMenuSeparator />
-                                                                }
-                                                            </React.Fragment>
-                                                        )
-                                                })}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                        :
-                                        <li key={href} className="inline-block">
-                                            <Link
-                                            className={`${isActive ? "bg-primary-darkRed text-primary-base_color1 hover:bg-primary-darkRed hover:text-primary-base_color1" : "hover:bg-red-200"} relative flex items-center gap-2 pe-3 min-h-12 ps-2 py-2 rounded-lg transition ease-in-out duration-200`}
-                                            href={href}
-                                            onClick={() => isOpen && dispatch(closeMobileNav())}
-                                            >
-                                            {icon}
-                                            <span>{label}</span>
-                                            {isActive && <Icon icon="basil:caret-right-outline" width="26" height="26" className="absolute top-0 bottom-0 my-auto -right-1" />}
-                                            </Link>
-                                        </li>
+                                                <DropdownMenuContent
+                                                    className="z-[9999]"
+                                                    sideOffset={5}
+                                                    align="start"
+                                                    forceMount
+                                                >
+                                                    {
+                                                        productManagementSections.map(({ href: categoryHref, label: categoryLabel }, i) => {
+                                                            return (
+                                                                <React.Fragment key={categoryHref}>
+                                                                    <DropdownMenuItem
+                                                                        onClick={() => {
+                                                                            router.push(`${href}/${categoryHref}`);
+                                                                            dispatch(closeMobileNav());
+                                                                        }}
+                                                                    >
+                                                                        {categoryLabel}
+                                                                    </DropdownMenuItem>
+                                                                    {
+                                                                        i < productManagementSections.length - 1 && <DropdownMenuSeparator />
+                                                                    }
+                                                                </React.Fragment>
+                                                            )
+                                                        })}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                            :
+                                            <li key={href} className="inline-block">
+                                                <Link
+                                                    className={`${isActive ? "bg-primary-darkRed text-primary-base_color1 hover:bg-primary-darkRed hover:text-primary-base_color1" : "hover:bg-red-200"} relative flex items-center gap-2 pe-3 min-h-12 ps-2 py-2 rounded-lg transition ease-in-out duration-200`}
+                                                    href={href}
+                                                    onClick={() => isOpen && dispatch(closeMobileNav())}
+                                                >
+                                                    {icon}
+                                                    <span>{label}</span>
+                                                    {isActive && <Icon icon="basil:caret-right-outline" width="26" height="26" className="absolute top-0 bottom-0 my-auto -right-1" />}
+                                                </Link>
+                                            </li>
                                     )
                                 })}
                             </ul>

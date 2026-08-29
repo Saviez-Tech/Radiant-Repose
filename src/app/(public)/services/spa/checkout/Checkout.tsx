@@ -22,7 +22,7 @@ export default function Checkout({}) {
       scheduling: "same-day",
       services: JSON.stringify(items.map((i) => i.id)),
     },
-    resolver: zodResolver(SpaCheckoutSchema),
+    resolver: zodResolver(SpaCheckoutSchema) as any,
   });
 
   const onSubmit = async (data: SpaCheckoutFormValues) => {
@@ -50,14 +50,14 @@ export default function Checkout({}) {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit as any)}
         className="flex flex-col md:flex-row justify-center items-start gap-12 py-12 app-container"
       >
         <div className="w-full md:max-w-md lg:max-w-lg">
-          <CheckoutForm form={form} />
+          <CheckoutForm form={form as any} />
         </div>
         <div className="w-full md:max-w-md lg:max-w-lg">
-          <SelectedService form={form} />
+          <SelectedService form={form as any} />
         </div>
       </form>
       {!!data && <SpaCheckoutSuccessfulModal

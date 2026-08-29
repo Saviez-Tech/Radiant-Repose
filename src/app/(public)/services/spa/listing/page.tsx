@@ -2,6 +2,8 @@ import ProductListSkeleton from "@/components/loaders/ProductListSkeleton";
 import SpaListingServerWrapper from "@/components/spa/SpaListingServerWrapper";
 import { Suspense } from "react";
 
+export const dynamic = 'force-dynamic';
+
 export default function Page() {
     return (
         <main className="">
@@ -10,7 +12,7 @@ export default function Page() {
                     <ProductListSkeleton />
                 </div>
             }>
-                <SpaListingServerWrapper/>
+                <SpaListingServerWrapper />
             </Suspense>
         </main>
     )
