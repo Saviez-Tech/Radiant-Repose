@@ -14,10 +14,11 @@ function DashboardDesktopSideNav() {
 
     const pathName = usePathname()
     const isActiveRoute = (route: string) => {
-        if (route.includes("luxury") || route.includes("spa-section")) {
-            return pathName.startsWith("/pos/luxury") || pathName.startsWith("/pos/spa-section");
+        // If it's exactly the dashboard base routes, match exactly to prevent overriding subpages like loyalty
+        if (route === "/pos/luxury" || route === "/pos/spa-section") {
+            return pathName === route || pathName.startsWith(`${route}/item-barcode-lookup`);
         }
-        return pathName.startsWith(route)
+        return pathName.startsWith(route);
     }
 
     return (
@@ -28,6 +29,7 @@ function DashboardDesktopSideNav() {
                 <ul className="flex mt-7 flex-col gap-5">
                     {[
                         { href: "/pos/luxury", label: "Dashboard", icon: <LayoutDashboard className={`${isActiveRoute("/pos/luxury") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
+                        { href: "/pos/luxury/loyalty", label: "Loyalty & Referrals", icon: <Icon icon="stash:users-group" width="24" height="24" className={`${isActiveRoute("/pos/luxury/loyalty") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                         { href:  "/pos/service-verification", label: "Verification", icon: <Icon icon="stash:shield-check" width="24" height="24" className={`${isActiveRoute("/pos/service-verification") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                         { href:  "/pos/transaction-history", label: "Transaction History", icon: <ReceiptIcon className={`${isActiveRoute("/pos/transaction-history") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                     ].map(({ href, label, icon }) => {
