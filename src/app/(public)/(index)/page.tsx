@@ -1,7 +1,8 @@
 // Page.tsx
 import AboutSection from "./AboutSection";
 import Blog from "./blog";
-import ConsultationSection from "./Consultation";
+// import ConsultationSection from "./Consultation";
+import LoyaltyProgramAd from "./LoyaltyProgramAd";
 import Hero from "./Hero";
 // import ServicesSection from "./Services";
 import { fetchProductsData } from "@/components/dashboard/admin-dashboard-components/ProductManagementServerWrapper";
@@ -19,7 +20,8 @@ export default async function Page() {
         {products.length > 0 && <HomepageProducts products={products} />}
         <AboutSection />
         <Blog />
-        <ConsultationSection />
+        {/* <ConsultationSection /> */}
+        <LoyaltyProgramAd />
       </div>
     </main>
   )
