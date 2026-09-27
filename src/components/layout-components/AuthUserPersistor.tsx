@@ -66,10 +66,6 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
                 name: persistedUserData.name,
                 branch: persistedUserData.branch
             }))
-
-            if (persistedUserData.group === "Administrator" && !pathName.startsWith("/admin")){
-                router.push("/admin")
-            }
         }
     },[persistedUserData?.id,persistedUserData?.username])
 
