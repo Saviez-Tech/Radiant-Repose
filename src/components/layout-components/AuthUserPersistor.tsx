@@ -8,6 +8,7 @@ import { setBranches } from "@/lib/redux/slices/storeBranchesSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import { logoutHandler } from "@/actions/auth.server";
 
 export default function AuthUserPersistor({ persistedUserData }:{ persistedUserData: { id: string, username: string, branch?: string, group: "Administrator" | "Worker", name: string } | null }){
 
@@ -50,6 +51,14 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
 
     useEffect(() => {
         if (persistedUserData && persistedUserData.id && persistedUserData.username){
+            
+            if (!sessionStorage.getItem("tab_session_active") && (pathName.startsWith("/admin") || pathName.startsWith("/pos"))) {
+                logoutHandler().then(() => {
+                    router.push("/auth/login");
+                });
+                return;
+            }
+
             dispatch(setAuthUser({
                 id: persistedUserData.id,
                 emailOrUsername: persistedUserData.username,
@@ -78,6 +87,46 @@ export default function AuthUserPersistor({ persistedUserData }:{ persistedUserD
         }
 
     },[pathName])
+
+    // Idle timeout effect
+    useEffect(() => {
+        // Only run if user is authenticated and on protected route
+        if (!persistedUserData || (!pathName.startsWith("/admin") && !pathName.startsWith("/pos"))) {
+            return;
+        }
+
+        let timeoutId: NodeJS.Timeout;
+
+        const resetTimer = () => {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                // Log out after 30 minutes of inactivity
+                logoutHandler().then(() => {
+                    sessionStorage.removeItem("tab_session_active");
+                    router.push("/auth/login");
+                });
+            }, 30 * 60 * 1000); // 30 minutes
+        };
+
+        // Events that reset the timer
+        const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+
+        // Initialize timer
+        resetTimer();
+
+        // Add event listeners
+        events.forEach(event => {
+            window.addEventListener(event, resetTimer, { passive: true });
+        });
+
+        // Cleanup
+        return () => {
+            clearTimeout(timeoutId);
+            events.forEach(event => {
+                window.removeEventListener(event, resetTimer);
+            });
+        };
+    }, [persistedUserData, pathName, router]);
 
     return null;
 }

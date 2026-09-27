@@ -43,6 +43,7 @@ export default function Login(){
                 dispatch(setAuthUser({ emailOrUsername: username, id, group, name }))
                 
                 toast.success("Login Successful")
+                sessionStorage.setItem("tab_session_active", "true")
                 
                 if (redirectPath && redirectPath.length > 2) {
                     if (redirectPath.startsWith("/admin") && group.toLowerCase() === "administrator") {
