@@ -33,7 +33,12 @@ function FloatingCartInner({
   }, [pathname]);
 
   if (!mounted) return null;
-  if (pathname.startsWith("/admin")) return null;
+  if (
+    pathname.startsWith("/admin") || 
+    pathname.startsWith("/pos") || 
+    pathname.startsWith("/cart-monitor") || 
+    pathname.startsWith("/auth")
+  ) return null;
 
   return (
     <Link

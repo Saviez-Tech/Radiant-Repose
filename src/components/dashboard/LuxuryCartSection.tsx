@@ -10,7 +10,7 @@ import DestructiveActionPromptSuccess from "../modals/DestructiveActionPromptSuc
 import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { usePathname } from "next/navigation";
-import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/luxuryPosFlowSlice";
+import { clearScannedItems, decrementItemQuantity, incrementItemQuantity, setItemQuantity, manageOrderNumber, removeScannedItem } from "@/lib/redux/slices/luxuryPosFlowSlice";
 import { addSaleHandler } from "@/actions/product.server";
 import toast from "react-hot-toast";
 import ReceiptPrinter from "@/lib/ReceiptPrinter";
@@ -42,7 +42,18 @@ const CartItem = ({ item }: { item: ScannedProduct }) => {
             <button onClick={() => dispatch(decrementItemQuantity(barcode!))} className="text-gray-500">
               <Minus size={13} />
             </button>
-            <span className="text-xs">{quantity}</span>
+            <input 
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => {
+                const val = parseInt(e.target.value);
+                if (!isNaN(val) && val > 0) {
+                  dispatch(setItemQuantity({ barcode: barcode!, quantity: val }));
+                }
+              }}
+              className="text-xs w-12 text-center border border-gray-200 rounded py-1 bg-transparent outline-none focus:border-gray-400"
+            />
             <button onClick={() => dispatch(incrementItemQuantity(barcode!))} className="text-gray-500">
               <Plus size={13} />
             </button>

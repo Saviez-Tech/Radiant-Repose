@@ -21,7 +21,7 @@ export default function ItemBarCodeManualLookupPage() {
   )
   const [items, setItems] = useState<ScannedProduct[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [selectedItems, setSelectedItems] = useState<SelectedProduct[]>([])
+
   const dispatch = useAppDispatch()
   const router = useRouter()
 
@@ -58,11 +58,7 @@ export default function ItemBarCodeManualLookupPage() {
     [items.length, dispatch, router]
   )
 
-  const handleAddSelectedItems = () => {
-    if (selectedItems.length) {
-      selectedItems.forEach((item) => dispatch(addScannedProduct(item)))
-    }
-  };
+
 
   // Search value effect
   useEffect(() => {
@@ -82,22 +78,7 @@ export default function ItemBarCodeManualLookupPage() {
     return () => clearTimeout(debounce)
   }, [searchValue])
 
-  useEffect(() => {
-    if (!scannedProducts.length || !selectedItems.length) return;
 
-    // Create a new array with items that are NOT in scannedProducts
-    const updatedSelectedItems = selectedItems.filter(
-      (selectedItem) =>
-        !scannedProducts.some(
-          (scannedItem) => scannedItem.barcode === selectedItem.barcode
-        )
-    )
-
-    // Only update state if there's actually a change
-    if (updatedSelectedItems.length !== selectedItems.length) {
-      setSelectedItems(updatedSelectedItems)
-    }
-  }, [scannedProducts.length, selectedItems.length])
 
   useEffect(() => {
     if (!items.length) return;
@@ -153,27 +134,11 @@ export default function ItemBarCodeManualLookupPage() {
                 product={v}
                 key={v.barcode}
                 handleItemRemove={handleItemRemove}
-                setIsSelected={setSelectedItems}
-                isSelected={selectedItems.some(
-                  (item) => item.barcode === v.barcode
-                )}
+                onSelect={() => dispatch(addScannedProduct(v))}
+                isSelected={false}
               />
             ))}
           </div>
-
-          <Button
-            onClick={handleAddSelectedItems}
-            disabled={!selectedItems.length}
-            className={clsx(
-              "flex items-center gap-2 px-4 my-14 py-3 text-sm h-12 rounded-md font-medium transition-colors",
-              selectedItems.length
-                ? "bg-green-600 text-white hover:bg-green-700"
-                : "bg-primary-dark_gray/10 text-primary-dark_gray/70 cursor-not-allowed"
-            )}
-          >
-            Add Selected Item
-            <ArrowRight size={16} />
-          </Button>
         </section>
       ) : (
         <div className="flex h-full justify-center items-center flex-col my-2">

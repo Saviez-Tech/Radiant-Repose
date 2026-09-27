@@ -125,6 +125,19 @@ const spaPosSlice = createSlice({
         }
       }
     },
+
+    setProductQuantity: (state, { payload }: PayloadAction<{ barcode: string, quantity: number }>) => {
+      const existingIndex = state.scannedProducts.findIndex(product => product.barcode === payload.barcode)
+      if (existingIndex !== -1) {
+        const existingProduct = state.scannedProducts[existingIndex];
+        const newQuantity = Math.max(1, payload.quantity);
+        state.scannedProducts[existingIndex] = {
+          ...existingProduct,
+          quantity: newQuantity,
+          totalPrice: Number(existingProduct.price) * newQuantity
+        }
+      }
+    },
     
     removeScannedProduct: (state, { payload }: PayloadAction<string>) => {
       // Remove scanned product with matching barcode
@@ -235,6 +248,7 @@ export const {
   removeSearchValue,
   addScannedProduct,
   incrementProductQuantity,
+  setProductQuantity,
   decrementProductQuantity,
   removeScannedProduct,
   clearScannedProducts,

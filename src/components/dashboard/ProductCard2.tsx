@@ -7,27 +7,17 @@ import { Skeleton } from "../ui/skeleton";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 
 // This Is The Product Card Used For The Manual Porduct Lookup Page
-export default function ProductCard2({ product, handleItemRemove, setIsSelected, isSelected }: { 
+export default function ProductCard2({ product, handleItemRemove, isSelected, onSelect }: { 
   product: ScannedProduct, 
   handleItemRemove: (barcode: string) => void, 
   isSelected: boolean, 
-  setIsSelected: Dispatch<SetStateAction<ScannedProduct[]>> 
+  onSelect: () => void 
 }) {
   const isOutOfStock = !product.stock_quantity || product.stock_quantity <= 0;
 
   const handleCardClick = () => {
     if (isOutOfStock) return;
-    
-    setIsSelected((prev) => {
-      const isSelected = prev.some((v) => v.barcode === product.barcode)
-      if (isSelected) {
-        // Remove it
-        return prev.filter((v) => v.barcode !== product.barcode)
-      } else {
-        // Add it
-        return [...prev, product]
-      }
-    })
+    onSelect();
   };
 
   return (

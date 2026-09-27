@@ -10,7 +10,7 @@ import DestructiveActionPromptSuccess from "../../modals/DestructiveActionPrompt
 import { useEffect, useState } from "react";
 import { formatNaira } from "@/lib/helperFns/formatNumber";
 import { usePathname } from "next/navigation";
-import { clearAll, decrementProductQuantity, incrementProductQuantity, manageOrderNumber, removeScannedProduct, removeService } from "@/lib/redux/slices/spaPosSlice";
+import { clearAll, decrementProductQuantity, incrementProductQuantity, setProductQuantity, manageOrderNumber, removeScannedProduct, removeService } from "@/lib/redux/slices/spaPosSlice";
 import ReceiptPrinter from "@/lib/ReceiptPrinter";
 import CustomSafeImage from "@/components/custom-utils/SafeImage";
 
@@ -38,7 +38,18 @@ const SpaCartItem = ({ item }: { item: ScannedProduct }) => {
             <button onClick={() => dispatch(decrementProductQuantity(barcode!))} className="text-gray-500">
               <Minus size={13} />
             </button>
-            <span className="text-xs">{quantity}</span>
+            <input 
+              type="number"
+              min="1"
+              value={quantity}
+              onChange={(e) => {
+                const val = parseInt(e.target.value);
+                if (!isNaN(val) && val > 0) {
+                  dispatch(setProductQuantity({ barcode: barcode!, quantity: val }));
+                }
+              }}
+              className="text-xs w-12 text-center border border-gray-200 rounded py-1 bg-transparent outline-none focus:border-gray-400"
+            />
             <button onClick={() => dispatch(incrementProductQuantity(barcode!))} className="text-gray-500">
               <Plus size={13} />
             </button>

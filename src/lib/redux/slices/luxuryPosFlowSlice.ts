@@ -150,6 +150,19 @@ const posFlowSlice = createSlice({
         }
       }
     },
+
+    setItemQuantity: (state, { payload }: PayloadAction<{ barcode: string, quantity: number }>) => {
+      const existingIndex = state.scannedItems.findIndex(item => item.barcode === payload.barcode)
+      if (existingIndex !== -1) {
+        const existingItem = state.scannedItems[existingIndex];
+        const newQuantity = Math.max(1, payload.quantity);
+        state.scannedItems[existingIndex] = {
+          ...existingItem,
+          quantity: newQuantity,
+          totalPrice: Number(existingItem.price) * newQuantity
+        }
+      }
+    },
     
     removeScannedItem: (state, { payload }: PayloadAction<string>) => {
       // Remove scanned item with matching barcode
@@ -236,6 +249,7 @@ export const {
   removeSearchValue,
   addScannedItem,
   incrementItemQuantity,
+  setItemQuantity,
   setSearchValue,
   decrementItemQuantity,
   removeScannedItem,
