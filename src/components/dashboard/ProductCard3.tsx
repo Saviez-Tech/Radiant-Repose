@@ -69,6 +69,7 @@ export default function ProductCard3({ product, onSearch, searchValue }: { produ
             width={300}
             height={300}
             alt={product.name}
+            unoptimized={true}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
           />
           :

@@ -37,6 +37,7 @@ const CustomSafeImage = ({ src, alt, ...props }:SafeImageProps) => {
       {...props}
       src={src}
       alt={alt}
+      unoptimized={true}
     />
   )
 }

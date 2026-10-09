@@ -18,14 +18,14 @@ export const fetchProductAction = async (searchValue: string, productSection: "s
     
     const response = 
     productSection === "luxury" ? 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}`,{
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/products/search/?search=${searchValue}&limit=100&page_size=100`,{
       method: "GET",
       headers: {
         'Authorization': `Token ${await getUserSession()}`,
       },
     }) 
     :
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/spa/product/?search=${searchValue}`,{
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/worker/spa/product/?search=${searchValue}&limit=100&page_size=100`,{
       method: "GET",
       headers: {
         'Authorization': `Token ${await getUserSession()}`,
@@ -51,7 +51,7 @@ export const fetchProductAction = async (searchValue: string, productSection: "s
 
 
     return {
-      products: (data && typeof data === "object" && data.length) ? data : [],
+      products: Array.isArray(data) ? data : (data?.results ? data.results : []),
       status: 200,
     }
   } catch (err) {
