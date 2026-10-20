@@ -7,6 +7,7 @@ import ServiceHeader from "./ServiceHeader";
 import ProductCardAlreadyInCart from "@/components/custom-utils/ProductCardAlreadyInCart";
 import { useCart } from "@/hooks/useCart";
 import ProductCard from "@/components/custom-utils/ProductCard";
+import PreorderBanner from "@/components/preorder/PreorderBanner";
 
 export default function Products({ products: data }: { products: Product[] }) {
   const searchParams = useSearchParams();
@@ -123,11 +124,12 @@ return (
       searchValue={searchValue}
       setSearchValue={setSearchValue}
     />
+    <PreorderBanner variant="compact" className="mt-6 mb-2" />
     <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))] py-10">
       {paginatedProductsData.map((product) => {
         if (!product || !product.id) return null; // Skip invalid products
 
-        const isInCart = mounted ? cartItems.some(item => item?.id === product.id) : false; 
+        const isInCart = mounted ? cartItems.some((item: any) => item?.id === product.id) : false; 
         
         return isInCart ? (
           <ProductCardAlreadyInCart 

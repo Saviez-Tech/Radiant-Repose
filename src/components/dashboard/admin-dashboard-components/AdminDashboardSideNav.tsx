@@ -5,7 +5,7 @@ import LogoSrc from "../../../public-assets/logo/Logo1.svg";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuSeparator } from "../../ui/dropdown-menu";
-import { LayoutDashboard } from "lucide-react";
+import { LayoutDashboard, PackageCheck } from "lucide-react";
 import Logo from "../../layout-components/Logo";
 import { BagIcon, ReceiptIcon } from "../../Svg";
 import { productManagementSections } from "@/components-data/productsManagementSectionsLinkData";
@@ -43,6 +43,7 @@ function AdminDashboardSideNav() {
                         { href: "/admin/product-management", label: "Product Management", icon: <BagIcon className={`${isActiveRoute("/admin/product-management") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/staff-management", label: "Staff Management", icon: <Icon icon="mingcute:user-2-line" width="25" height="25" className={`${isActiveRoute("/admin/staff-management") ? "text-white" : "text-primary-dark_slate" } fill-transparent`} /> },
                         { href: "/admin/pending-order", label: "Pending Order", icon: <ReceiptIcon className={`${isActiveRoute("/admin/pending-order") ? "stroke-primary-base_color1" : "stroke-primary-dark_slate" }`} /> },
+                        { href: "/admin/preorders", label: "Pre-Orders", icon: <PackageCheck className={`${isActiveRoute("/admin/preorders") ? "stroke-white" : "stroke-primary-dark_slate" } fill-transparent`} size={20} /> },
                     ].map(({ href, label, icon }) => {
                         const isActive = isActiveRoute(href)
                         return (

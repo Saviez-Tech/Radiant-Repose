@@ -13,17 +13,17 @@ import { useMemo } from "react";
 
 export function useCart(products: Product[] = []) {
   const dispatch = useDispatch();
-  const items = useSelector((state: RootState) => state.cart.items);
+  const items = useSelector((state: RootState) => (state as any)?.cart?.items ?? []);
   const cartItems = items.map((item: any) =>
-    products.find((i) => i.id === item.product)
+    products.find((i) => i.id === item?.product)
   );
   const totalPrice = useMemo(() => {
     if (cartItems.length === 0 || items.length === 0) return 0;
     return cartItems.reduce(
-      (acc, item) =>
+      (acc: number, item: any) =>
         acc +
         (item?.price ?? 0) * 
-          ((items.find((i) => i.product === item?.id)?.quantity) ?? 0),
+          ((items.find((i: any) => i.product === item?.id)?.quantity) ?? 0),
       0
     );
   }, [cartItems, items]);
@@ -36,7 +36,13 @@ export function useCart(products: Product[] = []) {
     incrementItem: (productId: string) => dispatch(incrementItem(productId)),
     // decrementItem: (productId: string) => dispatch(decrementItem(productId)),
     decrementItem: (productId: string) => dispatch(decrementItem(productId)),
-    clearCart: () => dispatch(clearCart()),
+    clearCart: () => {
+      try {
+        dispatch(clearCart());
+      } catch (err) {
+        console.warn("clearCart dispatch skipped:", err);
+      }
+    },
     totalPrice,
   };
 }

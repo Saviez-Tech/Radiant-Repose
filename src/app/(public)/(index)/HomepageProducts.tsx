@@ -6,6 +6,7 @@ import { useCart } from "@/hooks/useCart";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import ClientLayout from "@/app/(public)/services/luxury/ClientLayout";
+import PreorderBanner from "@/components/preorder/PreorderBanner";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -88,11 +89,14 @@ function HomepageProductsContent({ products }: { products: Product[] }) {
         </div>
       </div>
 
+      {/* Pre-Order section indication */}
+      <PreorderBanner className="mb-10" />
+
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 md:grid-cols-[repeat(auto-fill,minmax(200px,1fr))]">
         {products.map((product) => {
           if (!product || !product.id) return null;
 
-          const isInCart = mounted ? cartItems.some(item => item?.id === product.id) : false;
+          const isInCart = mounted ? cartItems.some((item: any) => item?.id === product.id) : false;
 
           return isInCart ? (
             <ProductCardAlreadyInCart

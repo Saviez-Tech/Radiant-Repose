@@ -9,7 +9,9 @@ const useDashboardSegment = () => {
     .replace(/^\/admin\/?/, "")
     .split("/")[0]
     
-    return dashboardSegment === "product-management" ? "Product Inventory Management" : dashboardSegment.split("-").join(" ")
+    if (dashboardSegment === "product-management") return "Product Inventory Management";
+    if (dashboardSegment === "preorders") return "Pre-Orders Management";
+    return dashboardSegment.split("-").join(" ");
 }
 
 export function AdminDashBoardHeaderSectionPageName() {
