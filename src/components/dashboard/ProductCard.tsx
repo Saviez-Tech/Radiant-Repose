@@ -97,9 +97,13 @@ export default function ProductCard({ product, cardFor = "luxury" }: { product: 
         </div>
        
         <div className="flex justify-between items-center mt-1">
-          <span className={`text-xs bg-gray-100 p-1 rounded ${isOutOfStock ? "text-red-500 font-medium" : "text-gray-500"}`}>
-            {isOutOfStock ? "Out of stock" : `${product.stock_quantity} Pieces left`}
-          </span>
+          {isOutOfStock ? (
+            <span className="text-xs bg-gray-100 p-1 rounded text-red-500 font-medium">
+              Out of stock
+            </span>
+          ) : (
+            <span />
+          )}
           <span className={`${dm_mono.className} text-primary-dark_gray text-sm font-medium`}>₦{Number(product.price) * product.quantity}</span>
         </div>
       </div>
