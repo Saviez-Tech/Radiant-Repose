@@ -9,8 +9,9 @@ export default function CustomerDetails({
 }: {
   form: UseFormReturn<PaymentFormValues>;
 }) {
-    const {
+  const {
     register,
+    formState: { errors },
   } = form;
 
   return (
@@ -27,8 +28,9 @@ export default function CustomerDetails({
             name="full_name"
             placeholder="Enter full name"
             register={register}
+            error={errors.full_name?.message}
           />
-          <div className="flex gap-2 w-full">
+          <div className="flex flex-col sm:flex-row gap-4 w-full">
             <AppInput
               variant="transparent"
               label="Email Address"
@@ -37,6 +39,7 @@ export default function CustomerDetails({
               placeholder="Enter email"
               type="email"
               register={register}
+              error={errors.email?.message}
             />
             <AppInput
               variant="transparent"
@@ -46,7 +49,22 @@ export default function CustomerDetails({
               placeholder="Enter phone"
               type="tel"
               register={register}
+              error={errors.phone?.message}
             />
+          </div>
+          <div className="flex flex-col gap-1">
+            <AppInput
+              variant="transparent"
+              label="Loyalty / Referral Code (optional)"
+              className="!bg-transparent w-full"
+              name="referral_id"
+              placeholder="e.g. RADIANT-9X42L1"
+              register={register}
+              error={errors.referral_id?.message}
+            />
+            <p className="text-[11px] text-gray-500">
+              Enter your loyalty referral code to earn reward points with this purchase.
+            </p>
           </div>
         </div>
       </div>

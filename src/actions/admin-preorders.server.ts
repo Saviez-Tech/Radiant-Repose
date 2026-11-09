@@ -5,34 +5,56 @@ import { handleApiError } from "@/lib/helperFns/handleApiErrors";
 import axios from "axios";
 import { revalidatePath } from "next/cache";
 
+export type AdminPreorderPayment = {
+  id?: number;
+  reference: string;
+  amount: string;
+  status: string;
+  created_at: string;
+  paid_at?: string | null;
+};
+
 export type AdminPreorder = {
   id: number;
   full_name: string;
   email: string;
-  phone: string;
-  street_address: string;
-  zip_code: string;
-  city: string;
-  state: string;
-  country: string;
-  reference: string;
+  phone?: string;
+  street_address?: string;
+  zip_code?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  reference?: string;
   product: number;
+  product_name?: string;
   quantity: number;
-  price_at_order: string;
-  note: string;
+  price_at_order?: string;
+  total_amount?: string;
+  amount_paid?: string;
+  balance_due?: string;
+  payment_complete?: boolean;
+  payment_status?: string;
+  payments?: AdminPreorderPayment[];
+  tracking_url?: string;
+  note?: string;
   status: string; // e.g. "pending", "delivered"
-  payment: boolean;
+  payment?: boolean;
   created_at: string;
 };
 
-export async function fetchAdminPreorders(): Promise<{
+export async function fetchAdminPreorders(emailQuery?: string): Promise<{
   success: boolean;
   data?: AdminPreorder[];
   errorMessage?: string;
 }> {
   try {
     const axiosInstance = await createAxiosInstance();
-    const res = await axiosInstance.get("/api/admin/preorders/");
+    const trimmedEmail = emailQuery?.trim();
+    const endpoint = trimmedEmail
+      ? `/api/admin/preorders/search/?email=${encodeURIComponent(trimmedEmail)}`
+      : `/api/admin/preorders/`;
+
+    const res = await axiosInstance.get(endpoint);
 
     // Ensure response data is an array
     const data = Array.isArray(res.data)

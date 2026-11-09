@@ -9,6 +9,18 @@ import { redirect } from "next/navigation";
 export async function CheckoutHandler(d: PaymentFormValues) {
   let paymentUrl: string = "";
   try {
+    const payload: Record<string, any> = {
+      ...d,
+      order: JSON.parse(d.order),
+    };
+
+    const trimmedReferral = d.referral_id?.trim();
+    if (trimmedReferral) {
+      payload.referral_id = trimmedReferral;
+    } else {
+      delete payload.referral_id;
+    }
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/ecommerce/make-order`,
       {
@@ -16,45 +28,48 @@ export async function CheckoutHandler(d: PaymentFormValues) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...d,
-          order: JSON.parse(d.order),
-        }),
+        body: JSON.stringify(payload),
       }
     );
 
     const data = await response.json();
     if (!response.ok) {
+      if (response.status === 400) {
+        return {
+          success: false,
+          error: handleApiError(data),
+          fieldErrors: data && typeof data === "object" ? data : undefined,
+        };
+      }
       const errorMessage =
         response.status === 401 || response.status === 404
           ? "Invalid credentials. Please try again."
           : "Failed to checkout. Please check your network or try again later.";
-      if (response.status === 400) {
-        throw new Error(handleApiError(data));
-        return;
-      }
-      throw new Error(errorMessage);
+      return {
+        success: false,
+        error: errorMessage,
+      };
     }
-
-    // console.log({ data });
 
     if (data.payment && data.payment?.data?.authorization_url) {
       paymentUrl = data.payment?.data?.authorization_url;
-      throw new Error();
-      return;
+      return {
+        success: true,
+        authorizationUrl: paymentUrl,
+        data,
+      };
     }
     return {
       success: true,
       data,
     };
   } catch (error) {
-    console.error("Login error:", error);
-    if (paymentUrl) redirect(paymentUrl);
+    console.error("Checkout error:", error);
     return {
       error:
         error instanceof Error
           ? error.message
-          : "Failed to login. Please check your network or try again later.",
+          : "Failed to checkout. Please check your network or try again later.",
       success: false,
     };
   }

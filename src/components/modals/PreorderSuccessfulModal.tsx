@@ -56,12 +56,14 @@ export default function PreorderSuccessfulModal() {
         <p className="text-sm text-primary-text_stone_color leading-relaxed mt-1">
           Your pre-order and payment have been received successfully. We will notify you via email and phone as soon as your item is dispatched!
         </p>
-        <button
-          onClick={handleClose}
-          className="mt-6 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-primary-darkRed to-primary-red text-white text-sm font-semibold hover:opacity-95 transition-opacity"
-        >
-          Done
-        </button>
+        <div className="flex flex-col sm:flex-row gap-2.5 mt-6 w-full">
+          <button
+            onClick={handleClose}
+            className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-primary-darkRed to-primary-red text-white text-sm font-semibold hover:opacity-95 transition-opacity"
+          >
+            Done
+          </button>
+        </div>
       </DialogContent>
     </Dialog>
   );

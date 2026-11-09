@@ -24,6 +24,7 @@ const preorderSchema = z.object({
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
+  payment_option: z.enum(["installments", "full"]),
   note: z.string().optional(),
 });
 
@@ -33,6 +34,7 @@ export default function PreorderForm({ product }: { product: PreorderProduct }) 
   const [qty, setQty] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [paymentOption, setPaymentOption] = useState<"installments" | "full">("installments");
   const router = useRouter();
 
   const { countries, states, setCountry } = useCountriesAndStates();
@@ -43,17 +45,23 @@ export default function PreorderForm({ product }: { product: PreorderProduct }) 
   const form = useForm<PreorderSchemaValues>({
     resolver: zodResolver(preorderSchema),
     mode: "onBlur",
+    defaultValues: {
+      payment_option: "installments",
+    },
   });
 
   const {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting, isValid },
   } = form;
 
   const preorderPrice = parseFloat(product.preorder_price) || parseFloat(product.price);
   const totalPrice = preorderPrice * qty;
+  const initialInstallmentCharge = totalPrice * 0.4;
+  const amountToPayNow = paymentOption === "installments" ? initialInstallmentCharge : totalPrice;
 
   const onSubmit = async (data: PreorderSchemaValues) => {
     try {
@@ -76,6 +84,7 @@ export default function PreorderForm({ product }: { product: PreorderProduct }) 
         product: product.id,
         quantity: qty,
         note: data.note ?? "",
+        payment_option: paymentOption,
       });
 
       if (!result.success) {
@@ -266,14 +275,109 @@ export default function PreorderForm({ product }: { product: PreorderProduct }) 
         />
       </section>
 
+      {/* ── Payment Plan Option ── */}
+      <section className="flex flex-col gap-3">
+        <div>
+          <h3 className="text-base font-semibold text-primary-deepBlack">Payment Plan</h3>
+          <p className="text-xs text-primary-text_stone_color mt-0.5">
+            Choose to pay the initial installment or clear the full preorder amount upfront.
+          </p>
+          <div className="border-t border-gray-200 mt-2" />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <label
+            onClick={() => {
+              setPaymentOption("installments");
+              setValue("payment_option", "installments");
+            }}
+            className={`flex flex-col p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              paymentOption === "installments"
+                ? "border-primary-darkRed bg-primary-light_peach/40 shadow-sm"
+                : "border-gray-200 hover:border-gray-300 bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-sm text-primary-deepBlack">Installments (40% initial)</span>
+              <input
+                type="radio"
+                name="payment_option_choice"
+                value="installments"
+                checked={paymentOption === "installments"}
+                onChange={() => {
+                  setPaymentOption("installments");
+                  setValue("payment_option", "installments");
+                }}
+                className="text-primary-darkRed focus:ring-primary-darkRed w-4 h-4 cursor-pointer"
+              />
+            </div>
+            <p className="text-xs text-primary-text_stone_color leading-relaxed">
+              Pay 40% initial deposit ({formatNaira(initialInstallmentCharge, true, true)}), then 30% and balance as your item prepares for delivery.
+            </p>
+            <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span className="text-gray-500 font-medium">Due Now:</span>
+              <span className={`${dm_mono.className} font-bold text-primary-darkRed`}>
+                {formatNaira(initialInstallmentCharge, true, true)}
+              </span>
+            </div>
+          </label>
+
+          <label
+            onClick={() => {
+              setPaymentOption("full");
+              setValue("payment_option", "full");
+            }}
+            className={`flex flex-col p-4 rounded-xl border-2 cursor-pointer transition-all ${
+              paymentOption === "full"
+                ? "border-primary-darkRed bg-primary-light_peach/40 shadow-sm"
+                : "border-gray-200 hover:border-gray-300 bg-white"
+            }`}
+          >
+            <div className="flex items-center justify-between mb-1.5">
+              <span className="font-bold text-sm text-primary-deepBlack">Full Payment (100%)</span>
+              <input
+                type="radio"
+                name="payment_option_choice"
+                value="full"
+                checked={paymentOption === "full"}
+                onChange={() => {
+                  setPaymentOption("full");
+                  setValue("payment_option", "full");
+                }}
+                className="text-primary-darkRed focus:ring-primary-darkRed w-4 h-4 cursor-pointer"
+              />
+            </div>
+            <p className="text-xs text-primary-text_stone_color leading-relaxed">
+              Pay 100% upfront ({formatNaira(totalPrice, true, true)}) and complete all payments immediately with no remaining balance.
+            </p>
+            <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+              <span className="text-gray-500 font-medium">Due Now:</span>
+              <span className={`${dm_mono.className} font-bold text-primary-darkRed`}>
+                {formatNaira(totalPrice, true, true)}
+              </span>
+            </div>
+          </label>
+        </div>
+      </section>
+
       {/* ── Order summary strip ── */}
-      <div className="flex items-center justify-between bg-primary-light_peach rounded-xl px-5 py-3">
-        <span className="text-sm text-primary-text_stone_color font-medium">
-          Total ({qty} × {product.name})
-        </span>
-        <span className={`${dm_mono.className} text-lg font-bold text-primary-darkRed`}>
-          {formatNaira(totalPrice, true, true)}
-        </span>
+      <div className="flex flex-col gap-2 bg-primary-light_peach rounded-xl px-5 py-4">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-primary-text_stone_color font-medium">
+            Preorder Total ({qty} × {product.name})
+          </span>
+          <span className={`${dm_mono.className} text-base font-bold text-primary-deepBlack`}>
+            {formatNaira(totalPrice, true, true)}
+          </span>
+        </div>
+        <div className="flex items-center justify-between border-t border-primary-light_amber/40 pt-2">
+          <span className="text-sm font-semibold text-primary-darkRed">
+            Amount Due Today ({paymentOption === "installments" ? "40% Deposit" : "Full Payment"}):
+          </span>
+          <span className={`${dm_mono.className} text-lg font-bold text-primary-darkRed`}>
+            {formatNaira(amountToPayNow, true, true)}
+          </span>
+        </div>
       </div>
 
       {/* ── Submit ── */}
@@ -304,7 +408,7 @@ export default function PreorderForm({ product }: { product: PreorderProduct }) 
             Submitting…
           </span>
         ) : (
-          `Pay & Confirm Pre-Order · ${formatNaira(totalPrice, true, true)}`
+          `Pay & Confirm Pre-Order · ${formatNaira(amountToPayNow, true, true)}`
         )}
       </button>
     </form>

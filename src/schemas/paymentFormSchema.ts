@@ -10,6 +10,7 @@ export const paymentFormSchema = z.object({
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
   order: z.string().min(1, "Order is required"),
+  referral_id: z.string().optional(),
 });
 
 export type PaymentFormValues = z.infer<typeof paymentFormSchema>;
